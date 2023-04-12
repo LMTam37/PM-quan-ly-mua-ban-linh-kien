@@ -1,4 +1,4 @@
-package model;
+package ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -21,7 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTable;
 
-public class EmpManage extends JFrame implements ActionListener{
+public class Emp extends JFrame implements ActionListener{
 
 	private JPanel pnTitle,pnEmp,pnTableEmp;
 	private JLabel lblRole, lblTitle, lblAccountName, lblUserName;
@@ -32,10 +32,10 @@ public class EmpManage extends JFrame implements ActionListener{
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack;
 
 	public static void main(String[] args) {
-		new EmpManage().setVisible(true);
+		new Emp().setVisible(true);
 	}
 
-	public EmpManage() {
+	public Emp() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1400, 700);
 		setResizable(false);

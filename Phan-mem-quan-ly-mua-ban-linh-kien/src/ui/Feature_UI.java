@@ -1,4 +1,4 @@
-package model;
+package ui;
 
 import java.awt.EventQueue;
 
@@ -149,7 +149,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 			new Product_UI().setVisible(true);
 		} else if (o.equals(btnEmpManage)) {
 			this.setVisible(false);
-			new EmpManage().setVisible(true);
+			new Emp().setVisible(true);
 		}
 
 	}
