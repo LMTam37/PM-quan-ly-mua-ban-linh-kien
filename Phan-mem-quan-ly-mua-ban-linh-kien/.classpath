@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/programing/java/Phan-mem-quan-ly-mua-ban-linh-kien/Phan-mem-quan-ly-mua-ban-linh-kien/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="D:/programing/java/Phan-mem-quan-ly-mua-ban-linh-kien/Phan-mem-quan-ly-mua-ban-linh-kien/lib/sqljdbc42.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

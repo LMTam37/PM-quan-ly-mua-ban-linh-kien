@@ -149,7 +149,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 			new Product_UI().setVisible(true);
 		} else if (o.equals(btnEmpManage)) {
 			this.setVisible(false);
-			new Emp().setVisible(true);
+			new EmpManage().setVisible(true);
 		}
 
 	}
