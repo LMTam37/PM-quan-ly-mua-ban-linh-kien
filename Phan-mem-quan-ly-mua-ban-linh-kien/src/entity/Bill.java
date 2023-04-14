@@ -4,16 +4,17 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Bill {
-	private int billId, customerId, empId, discount;
+	private int billId, discount;
+	private String customerName, empName;
 	private Date purchaseDate;
 	private BigDecimal total;
 
-	public Bill(int billId, int customerId, Date purchaseDate, int empId, int discount, BigDecimal total) {
+	public Bill(int billId, String customerName, Date purchaseDate, String empName, int discount, BigDecimal total) {
 		super();
 		this.billId = billId;
-		this.customerId = customerId;
-		this.empId = empId;
+		this.customerName = customerName;
 		this.purchaseDate = purchaseDate;
+		this.empName = empName;
 		this.discount = discount;
 		this.total = total;
 	}
@@ -26,28 +27,28 @@ public class Bill {
 		this.billId = billId;
 	}
 
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	public int getEmpId() {
-		return empId;
-	}
-
-	public void setEmpId(int empId) {
-		this.empId = empId;
-	}
-
 	public int getDiscount() {
 		return discount;
 	}
 
 	public void setDiscount(int discount) {
 		this.discount = discount;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 
 	public Date getPurchaseDate() {

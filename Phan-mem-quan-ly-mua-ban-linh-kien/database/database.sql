@@ -1,4 +1,4 @@
-﻿USE master
+﻿	USE master
 GO
 CREATE DATABASE QuanLyMuaBanLinhKien
 GO
@@ -95,3 +95,19 @@ VALUES
 	(5,7,2),
 	(5,3,1),
 	(6,1,2)
+GO
+CREATE VIEW HoaDonView AS 
+SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
+GO
+CREATE PROC GetChiTietHoaDon @MaDon INT
+AS
+	SELECT MaChiTietDon, MaDon, TenLinhKien, CTD.SoLuong, DonGia FROM ChiTietDonHang CTD JOIN LinhKien LK ON CTD.MaLinhKien = LK.MaLinhKien
+	WHERE MaDon = @Madon
+GO
+CREATE PROC GetHoaDonTheoNgay @TuNgay DATE, @DenNgay DATE
+AS
+	SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
+	WHERE NgayMua BETWEEN @TuNgay AND @DenNgay
+GO
