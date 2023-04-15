@@ -9,8 +9,8 @@ CREATE TABLE LinhKien(
 	TenLinhKien NVARCHAR(50) NOT NULL,
 	NgaySanXuat DATETIME NOT NULL,
 	HangSanXuat NVARCHAR(50) NOT NULL,
-	SoLuong INT CHECK(SoLuong > 0) DEFAULT 1,
-	DonGia MONEY CHECK(DonGia > 0) DEFAULT 1000
+	SoLuong INT CHECK(SoLuong >= 0) DEFAULT 1,
+	DonGia MONEY CHECK(DonGia >= 0) DEFAULT 1000
 )
 GO
 CREATE TABLE KhachHang(
@@ -40,7 +40,7 @@ CREATE TABLE ChiTietDonHang(
 	MaChiTietDon INT PRIMARY KEY IDENTITY,
 	MaDon INT FOREIGN KEY REFERENCES DonHang(MaDon),
 	MaLinhKien INT FOREIGN KEY REFERENCES LinhKien(MaLinhKien),
-	SoLuong INT CHECK(SoLuong > 0) DEFAULT 1
+	SoLuong INT CHECK(SoLuong >0) DEFAULT 1
 )
 GO
 INSERT INTO NhanVien(TenNhanVien, TenDangNhap, MatKhau, VaiTro)

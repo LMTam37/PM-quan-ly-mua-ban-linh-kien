@@ -82,7 +82,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnStatistic = new JPanel();
 		pnStatistic.setLayout(null);
 		pnStatistic.setBorder(
-				new TitledBorder(null, "Th\u1ED1ng k\u1EBF", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				new TitledBorder(null, "Thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnStatistic.setBackground(Color.WHITE);
 		pnStatistic.setBounds(0, 50, 1386, 40);
 		getContentPane().add(pnStatistic);

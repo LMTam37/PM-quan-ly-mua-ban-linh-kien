@@ -201,7 +201,6 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		} else if (o.equals(btnUpdate)) {
 			int row = tableEmp.getSelectedRow();
 			String username = modelEmp.getValueAt(row, 1).toString();
-			System.out.println(username);
 			if (row == -1) {
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhân viên cần cập nhật ");
 			} else {

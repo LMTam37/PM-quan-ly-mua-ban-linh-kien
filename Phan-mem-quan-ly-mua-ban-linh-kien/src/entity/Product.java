@@ -1,5 +1,6 @@
 package entity;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Product {
@@ -8,11 +9,20 @@ public class Product {
 	private Date mfg;
 	private String mfger;
 	private int qty;
-	private int price;
+	private BigDecimal price;
 
-	public Product(int productId, String productName, Date mfg, String mfger, int qty, int price) {
+	public Product(int productId, String productName, Date mfg, String mfger, int qty, BigDecimal price) {
 		super();
 		this.productId = productId;
+		this.productName = productName;
+		this.mfg = mfg;
+		this.mfger = mfger;
+		this.qty = qty;
+		this.price = price;
+	}
+
+	public Product(String productName, Date mfg, String mfger, int qty, BigDecimal price) {
+		super();
 		this.productName = productName;
 		this.mfg = mfg;
 		this.mfger = mfger;
@@ -60,11 +70,11 @@ public class Product {
 		this.qty = qty;
 	}
 
-	public int getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
