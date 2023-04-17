@@ -1,9 +1,10 @@
 package entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class BillDetail {
-	private int billDetailId, billId, qty;
+	private int billDetailId, billId, productId, qty;
 	private String productName;
 	private BigDecimal price;
 
@@ -11,9 +12,34 @@ public class BillDetail {
 		super();
 		this.billDetailId = billDetailId;
 		this.billId = billId;
-		this.qty = qty;
 		this.productName = productName;
+		this.qty = qty;
 		this.price = price;
+	}
+
+	public BillDetail(int productId, String productName, int qty, BigDecimal price) {
+		super();
+		this.productId = productId;
+		this.productName = productName;
+		this.qty = qty;
+		this.price = price;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(billId, productId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BillDetail other = (BillDetail) obj;
+		return billId == other.billId && productId == other.productId;
 	}
 
 	public int getBillDetailId() {
@@ -38,6 +64,14 @@ public class BillDetail {
 
 	public void setQty(int qty) {
 		this.qty = qty;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 
 	public String getProductName() {

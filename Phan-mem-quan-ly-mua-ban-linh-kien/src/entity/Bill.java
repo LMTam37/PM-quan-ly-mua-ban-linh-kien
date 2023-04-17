@@ -18,7 +18,14 @@ public class Bill {
 		this.discount = discount;
 		this.total = total;
 	}
-
+	public Bill(String customerName, Date purchaseDate, String empName, int discount, BigDecimal total) {
+		super();
+		this.customerName = customerName;
+		this.purchaseDate = purchaseDate;
+		this.empName = empName;
+		this.discount = discount;
+		this.total = total;
+	}
 	public int getBillId() {
 		return billId;
 	}

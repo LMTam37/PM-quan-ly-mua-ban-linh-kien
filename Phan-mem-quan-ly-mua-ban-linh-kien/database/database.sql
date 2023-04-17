@@ -16,8 +16,8 @@ GO
 CREATE TABLE KhachHang(
 	MaKhachHang INT PRIMARY KEY IDENTITY,
 	TenKhachHang NVARCHAR(50),
-	SoDienThoai NVARCHAR(10) NOT NULL,
-	DiaChi NVARCHAR(100) NOT NULL,
+	SoDienThoai NVARCHAR(10) ,
+	DiaChi NVARCHAR(100),
 )
 CREATE TABLE NhanVien(
 	MaNhanVien INT PRIMARY KEY IDENTITY,
@@ -33,7 +33,7 @@ CREATE TABLE DonHang(
 	NgayMua DATETIME NOT NULL DEFAULT GETDATE(),
 	MaNhanVien INT FOREIGN KEY REFERENCES NhanVien(MaNhanVien),
 	GiamGia INT DEFAULT 0,
-	ThanhTien MONEY CHECK(ThanhTien > 0) DEFAULT 1000,
+	ThanhTien MONEY CHECK(ThanhTien >= 0) DEFAULT 1000,
 )
 GO
 CREATE TABLE ChiTietDonHang(
@@ -111,3 +111,53 @@ AS
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 	WHERE NgayMua BETWEEN @TuNgay AND @DenNgay
 GO
+CREATE PROC TaoDonHangMoi
+AS
+BEGIN
+	IF NOT EXISTS (SELECT * FROM DonHang WHERE ThanhTien = 0)
+		INSERT INTO DonHang(MaKhachHang,NgayMua,MaNhanVien,GiamGia,ThanhTien)
+		VALUES (null,GETDATE(),null,0,0)
+END
+GO
+CREATE TRIGGER TaoKhachHangMoi ON DonHang
+FOR INSERT
+AS
+	INSERT INTO KhachHang(TenKhachHang, SoDienThoai, DiaChi)
+	VALUES (null, null, null)
+GO
+CREATE TRIGGER ThemKhachHangVaoDonHang ON KhachHang
+FOR INSERT
+AS
+	DECLARE @MaKhachHang INT
+	SELECT @MaKhachHang = MaKhachHang FROM KhachHang
+	UPDATE DonHang SET MaKhachHang = @MaKhachHang
+	WHERE ThanhTien = 0
+GO
+CREATE PROC GetDonHangMoi
+AS
+	SELECT MaDon FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang
+	WHERE ThanhTien = 0
+GO
+CREATE PROC UpdateDateDonHang
+AS
+	UPDATE DonHang SET NgayMua = GETDATE() WHERE ThanhTien = 0
+GO
+ALTER PROC ThanhToanHoaDon @MaDon INT, @GiamGia INT, @ThanhTien MONEY, @TenKhachHang NVARCHAR(50), @SDT NVARCHAR(10), @DiaChi NVARCHAR(100)
+AS
+	DEClARE @MaKhachHang NVARCHAR(50)
+	SELECT @MaKhachHang = MaKhachHang FROM DonHang WHERE MaDon = @MaDon
+
+	UPDATE KhachHang 
+	SET TenKhachHang = @TenKhachHang
+	WHERE @MaKhachHang = MaKhachHang
+
+ 	UPDATE DonHang
+	SET GiamGia = @GiamGia, ThanhTien = @ThanhTien
+	WHERE MaDon = @MaDon
+GO
+CREATE PROC ThanhToanChiTietHoaDon @MaDon INT, @MaLinhKien INT, @SoLuong INT
+AS
+	INSERT INTO ChiTietDonHang (MaDon,MaLinhKien,SoLuong)
+	VALUES (@MaDon, @MaLinhKien, @SoLuong)
+GO
+SELECT * FROM DonHang WHERE ThanhTien = 0
