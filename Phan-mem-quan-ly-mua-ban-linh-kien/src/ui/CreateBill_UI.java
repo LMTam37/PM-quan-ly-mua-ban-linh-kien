@@ -10,13 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,38 +34,37 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.CreateBillDAO;
 import dao.ProductDAO;
-import entity.Bill;
 import entity.BillDetail;
+import entity.Emp;
 import entity.Product;
+import javax.swing.JComboBox;
 
 public class CreateBill_UI extends JFrame implements ActionListener {
 
 	private JPanel pnHeader, pnBill, pnCustomerInfo, pnProduct, pnProductInfo, pnProductList, pnOrderList;
 	private JLabel lblTieuDe, lblBillid, lblBillDate, lblCustomeName, lblEmpName, lblTotal, lblDiscount, lblTotalDue,
-			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblQty;
+			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblQty, lblCategory, lblAddress;
 	private JButton btnPay, btnBack, btnSearch, btnAdd, btnRemove;
 	private JSpinner discountPercent, qtySpinner;
-	private JTextField txtBillid, txtBillDate, txtCustomerName, txtSubTotal, txtTotalDue, txtProductName, txtEmpName;
+	private JTextField txtBillid, txtBillDate, txtCustomerName, txtSubTotal, txtTotalDue, txtProductName, txtEmpName,
+			txtAddress;
 	private JTable orderListTable, productListTable;
 	private DefaultTableModel orderListModel, productListModel;
 	private ArrayList<Product> productList = new ArrayList<Product>();
 	private ArrayList<BillDetail> orderList = new ArrayList<BillDetail>();
-	private BigDecimal billSubtotal;
-	private BigDecimal billTotalDue;
+	private BigDecimal billSubtotal, billTotalDue;;
 	private JTextField txtPhoneNumber;
-	private JLabel lblAddress;
-	private JTextField txtAddress;
-	public static void main(String[] args) {
-		new CreateBill_UI().setVisible(true);
-	}
+	private JComboBox cbCategory;
+	private Emp curAccount;
 
-	public CreateBill_UI() {
+	public CreateBill_UI(Emp account) {
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1400, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		curAccount = account;
 
 		pnHeader = new JPanel();
 		pnHeader.setBackground(new Color(0, 128, 255));
@@ -136,6 +133,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnCustomerInfo.add(lblEmpName);
 
 		txtEmpName = new JTextField();
+		txtEmpName.setEnabled(false);
+		txtEmpName.setText(curAccount.getEmpName());
 		txtEmpName.setFont(new Font("Tahoma", Font.BOLD, 10));
 		txtEmpName.setColumns(10);
 		txtEmpName.setBounds(385, 22, 126, 19);
@@ -215,23 +214,23 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		lblPercent.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblPercent.setBounds(425, 119, 19, 13);
 		pnCustomerInfo.add(lblPercent);
-		
+
 		JLabel lblPhoneNumber = new JLabel("Số điện thoại");
 		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblPhoneNumber.setBounds(290, 55, 85, 13);
 		pnCustomerInfo.add(lblPhoneNumber);
-		
+
 		txtPhoneNumber = new JTextField();
 		txtPhoneNumber.setFont(new Font("Tahoma", Font.BOLD, 10));
 		txtPhoneNumber.setColumns(10);
 		txtPhoneNumber.setBounds(385, 51, 126, 19);
 		pnCustomerInfo.add(txtPhoneNumber);
-		
-		lblAddress = new JLabel("Tên khách hàng");
+
+		lblAddress = new JLabel("Địa chỉ");
 		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblAddress.setBounds(49, 85, 85, 13);
 		pnCustomerInfo.add(lblAddress);
-		
+
 		txtAddress = new JTextField();
 		txtAddress.setFont(new Font("Tahoma", Font.BOLD, 10));
 		txtAddress.setColumns(10);
@@ -302,6 +301,29 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		btnRemove.setBounds(501, 79, 140, 21);
 		pnProductInfo.add(btnRemove);
 
+		lblCategory = new JLabel("Loại");
+		lblCategory.setBounds(297, 69, 45, 13);
+		pnProductInfo.add(lblCategory);
+
+		cbCategory = new JComboBox();
+		cbCategory.addItem("CPU");
+		cbCategory.addItem("RAM");
+		cbCategory.addItem("VGA");
+		cbCategory.addItem("Mainboard");
+		cbCategory.addItem("Nguồn máy tính");
+		cbCategory.addItem("Ổ cứng");
+		cbCategory.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
+				loadTableProduct();
+			}
+		});
+
+		cbCategory.setBounds(352, 65, 120, 21);
+		pnProductInfo.add(cbCategory);
+
 		pnProductList = new JPanel();
 		pnProduct.add(pnProductList, BorderLayout.CENTER);
 		pnProductList.setLayout(new BorderLayout(0, 0));
@@ -360,7 +382,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		if (o.equals(btnBack)) {
 			this.setVisible(false);
-			new Feature_UI().setVisible(true);
+			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
 			addProduct();
 		} else if (o.equals(btnRemove)) {
@@ -380,13 +402,15 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần xóa");
 			}
 		} else if (o.equals(btnSearch)) {
-			productList = ProductDAO.getInstance().getProductByName(txtProductName.getText());
+			productList = ProductDAO.getInstance().getProductByName(txtProductName.getText(), cbCategory.getSelectedIndex() + 1);
 			loadTableProduct();
 		} else if (o.equals(btnPay)) {
 			int billId = Integer.parseInt(txtBillid.getText());
-			CreateBillDAO.getInstance().payBill(billId,Integer.parseInt(discountPercent.getValue().toString()), billTotalDue, txtCustomerName.getText(), txtPhoneNumber.getText(), txtAddress.getText());
-			for(BillDetail curBillDetail : orderList) {
-				CreateBillDAO.getInstance().payBillDetail(billId,curBillDetail);
+			CreateBillDAO.getInstance().payBill(billId, curAccount.getEmpId(),
+					Integer.parseInt(discountPercent.getValue().toString()), billTotalDue, txtCustomerName.getText(),
+					txtPhoneNumber.getText(), txtAddress.getText());
+			for (BillDetail curBillDetail : orderList) {
+				CreateBillDAO.getInstance().payBillDetail(billId, curBillDetail);
 			}
 			JOptionPane.showMessageDialog(null, "Tạo đơn thành công");
 			orderListModel.getDataVector().removeAllElements();
@@ -398,7 +422,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	}
 
 	public void setProductList() {
-		productList = ProductDAO.getInstance().getListProduct();
+		productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
 		loadTableProduct();
 	}
 
@@ -447,7 +471,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		int row = productListTable.getSelectedRow();
 		int serial = Integer.parseInt(productListModel.getValueAt(row, 0).toString());
 		Product product = productList.get(serial - 1);
-		return new BillDetail(product.getProductId(), product.getProductName(), 1, product.getPrice());
+		return new BillDetail(product.getProductId(), product.getProductName(), product.getCategory(), 1,
+				product.getPrice());
 	}
 
 	private void addProduct() {
@@ -462,4 +487,5 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		orderListModel.fireTableDataChanged();
 		loadOrder(orderList);
 	}
+
 }

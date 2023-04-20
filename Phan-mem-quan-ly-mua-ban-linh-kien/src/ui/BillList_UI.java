@@ -33,6 +33,7 @@ import com.toedter.calendar.JDateChooser;
 import dao.BillListDAO;
 import entity.Bill;
 import entity.BillDetail;
+import entity.Emp;
 
 public class BillList_UI extends JFrame implements ActionListener, MouseListener {
 
@@ -44,31 +45,17 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	private JButton btnStatistic, btnBack;
 	private ArrayList<Bill> billList;
 	private ArrayList<BillDetail> billDetailList;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BillList_UI frame = new BillList_UI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public BillList_UI() {
+	private Emp curAccount;
+	
+	public BillList_UI(Emp account) {
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1400, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-
+		curAccount = account;
+		
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
@@ -140,7 +127,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnBillDetail.setBounds(0, 404, 1386, 259);
 		getContentPane().add(pnBillDetail);
 
-		String[] billDetailColumnName = { "STT", "Tên linh kiện", "Số lượng", "Đơn giá" };
+		String[] billDetailColumnName = { "STT", "Tên linh kiện", "Tên loại","Số lượng", "Đơn giá" };
 		modelBillDetail = new DefaultTableModel(billDetailColumnName, 0);
 		tableBillDetail = new JTable(modelBillDetail);
 		JScrollPane spBillDetail = new JScrollPane(tableBillDetail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -162,7 +149,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		Object o = e.getSource();
 		if (o.equals(btnBack)) {
 			this.setVisible(false);
-			new Feature_UI().setVisible(true);
+			new Feature_UI(curAccount).setVisible(true);
 		}else if(o.equals(btnStatistic)) {
 			if(dcFromDate.getDate() == null || dcToDate.getDate() == null) {
 				JOptionPane.showMessageDialog(null, "Hãy chọn ngày thống kế");
@@ -203,7 +190,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	private void loadTableBillDetail(ArrayList<BillDetail> list) {
 		int serial = 0;
 		for (BillDetail billDetail : list) {
-			modelBillDetail.addRow(new Object[] { Integer.toString(serial++), billDetail.getProductName(),
+			modelBillDetail.addRow(new Object[] { Integer.toString(serial++), billDetail.getProductName(),billDetail.getCategory(),
 					billDetail.getQty(), billDetail.getPrice() });
 		}
 	}

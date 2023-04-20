@@ -1,37 +1,29 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.EmpManageDAO;
 import entity.Emp;
 import ui.subUI.createAccount;
-
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JButton;
-import javax.swing.JTable;
 
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
 
@@ -46,18 +38,18 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	private ArrayList<Emp> list;
 	private JTextField txtEmpId;
 	private JLabel lblEmpId;
+	private Emp curAccount;
+	
 
-	public static void main(String[] args) {
-		new EmpManage().setVisible(true);
-	}
-
-	public EmpManage() {
+	public EmpManage(Emp account) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1400, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setBackground(new Color(255, 255, 255));
 		getContentPane().setLayout(null);
+		curAccount = account;
+		
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 42);
@@ -174,7 +166,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		Object o = e.getSource();
 		if (o.equals(btnBack)) {
 			this.setVisible(false);
-			new Feature_UI().setVisible(true);
+			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
 			new createAccount().setVisible(true);
 		} else if (o.equals(btnRemove)) {

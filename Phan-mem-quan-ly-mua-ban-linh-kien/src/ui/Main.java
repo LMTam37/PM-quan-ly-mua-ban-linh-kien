@@ -1,7 +1,10 @@
 package ui;
 
+import entity.Emp;
+
 public class Main {
 	public static void main(String[] args) {
-		new Feature_UI().setVisible(true);
+		Emp tempEmp = new Emp();
+		new Feature_UI(tempEmp).setVisible(true);
 	}
 }

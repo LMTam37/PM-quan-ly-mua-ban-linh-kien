@@ -9,11 +9,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,11 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import dao.EmpManageDAO;
 import dao.ProductDAO;
 import entity.Emp;
 import entity.Product;
 import ui.subUI.createProduct;
+import javax.swing.JComboBox;
 
 public class Product_UI extends JFrame implements ActionListener, MouseListener {
 	private JPanel pnTitle, pnProductManage, pnSearch, pnTableProduct;
@@ -44,8 +40,11 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
 	private JScrollPane spProduct;
 	private ArrayList<Product> productList;
+	private Emp curAccount;
+	private JComboBox cbCategory;
+	private JLabel lblCategory;
 
-	public Product_UI() {
+	public Product_UI(Emp account) {
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setTitle("Thong Tin San Pham");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,6 +52,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		curAccount = account;
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
@@ -152,6 +152,29 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		btnSearch.setBounds(249, 16, 85, 21);
 		pnSearch.add(btnSearch);
 
+		cbCategory = new JComboBox();
+		cbCategory.addItem("CPU");
+		cbCategory.addItem("RAM");
+		cbCategory.addItem("VGA");
+		cbCategory.addItem("Mainboard");
+		cbCategory.addItem("Nguồn máy tính");
+		cbCategory.addItem("Ổ cứng");
+		cbCategory.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
+				loadProductList();
+			}
+		});
+
+		cbCategory.setBounds(435, 17, 120, 21);
+		pnSearch.add(cbCategory);
+
+		lblCategory = new JLabel("Loại");
+		lblCategory.setBounds(380, 21, 45, 13);
+		pnSearch.add(lblCategory);
+
 		pnTableProduct = new JPanel();
 		pnTableProduct.setBounds(0, 204, 1386, 459);
 		getContentPane().add(pnTableProduct);
@@ -179,16 +202,12 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		loadProductList();
 	}
 
-	public static void main(String[] args) {
-		new Product_UI().setVisible(true);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnBack)) {
 			this.setVisible(false);
-			new Feature_UI().setVisible(true);
+			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
 			createProduct createProductDialog = new createProduct();
 			createProductDialog.setVisible(true);
@@ -219,7 +238,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			clear();
 		} else if (o.equals(btnSearch)) {
 			String productName = txtSearch.getText();
-			productList = ProductDAO.getInstance().getProductByName(productName);
+			productList = ProductDAO.getInstance().getProductByName(productName, cbCategory.getSelectedIndex() + 1);
 			modelProduct.getDataVector().removeAllElements();
 			modelProduct.fireTableDataChanged();
 			load(productList);
@@ -292,7 +311,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	}
 
 	public void loadProductList() {
-		productList = ProductDAO.getInstance().getListProduct();
+		productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
 		modelProduct.getDataVector().removeAllElements();
 		modelProduct.fireTableDataChanged();
 		load(productList);

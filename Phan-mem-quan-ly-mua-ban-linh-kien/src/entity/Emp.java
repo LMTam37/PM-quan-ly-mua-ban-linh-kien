@@ -7,6 +7,10 @@ public class Emp {
 	private String username, empName, password;
 	boolean role;
 
+	public Emp() {
+		super();
+	}
+
 	public Emp(int empId, String username, String empName, String password, boolean role) {
 		super();
 		this.empId = empId;

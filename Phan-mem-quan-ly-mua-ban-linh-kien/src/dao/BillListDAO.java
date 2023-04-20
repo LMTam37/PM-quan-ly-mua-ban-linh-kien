@@ -77,9 +77,10 @@ public class BillListDAO {
 			while (rs.next()) {
 				int billDetailId = rs.getInt("MaChiTietDon");
 				String productName = rs.getNString("TenLinhKien");
+				String category = rs.getString("TenLoai");
 				int qty = rs.getInt("SoLuong");
 				BigDecimal price = rs.getBigDecimal("DonGia");
-				list.add(new BillDetail(billDetailId, billId, productName, qty, price));
+				list.add(new BillDetail(billDetailId, billId, productName,category, qty, price));
 			}
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {

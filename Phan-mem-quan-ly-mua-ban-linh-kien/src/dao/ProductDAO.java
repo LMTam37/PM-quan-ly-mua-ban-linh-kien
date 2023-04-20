@@ -15,16 +15,17 @@ public class ProductDAO {
 		return new ProductDAO();
 	}
 
-	public ArrayList<Product> getListProduct() {
+	public ArrayList<Product> getListProduct(int categoryID) {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "SELECT * FROM LinhKien";
-			PreparedStatement pst = con.prepareStatement(sql);
+			PreparedStatement pst = con.prepareStatement("EXEC GetLinhKienByMaLoai ?");
+			pst.setInt(1, categoryID);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getDate("NgaySanXuat"),
-						rs.getString("HangSanXuat"), rs.getInt("SoLuong"), rs.getBigDecimal("DonGia")));
+				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getString("TenLoai"),
+						rs.getDate("NgaySanXuat"), rs.getString("HangSanXuat"), rs.getInt("SoLuong"),
+						rs.getBigDecimal("DonGia")));
 			}
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {
@@ -86,15 +87,16 @@ public class ProductDAO {
 		return rs;
 	}
 
-	public ArrayList<Product> getProductByName(String productName) {
+	public ArrayList<Product> getProductByName(String productName, int categoryId) {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("SELECT * FROM LinhKien WHERE TenLinhKien LIKE ?");
-			pst.setString(1, "%" + productName + "%");
+			PreparedStatement pst = con.prepareStatement("GetLinhKienByMaLoaiAndName ?, ?");
+			pst.setString(1, productName);
+			pst.setInt(2, categoryId);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getDate("NgaySanXuat"),
+				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getString("TenLoai"), rs.getDate("NgaySanXuat"),
 						rs.getString("HangSanXuat"), rs.getInt("SoLuong"), rs.getBigDecimal("DonGia")));
 			}
 			ConnectDB.closeConnection(con);

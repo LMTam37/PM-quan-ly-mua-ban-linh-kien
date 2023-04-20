@@ -6,12 +6,14 @@ import java.sql.Date;
 public class Product {
 	private int productId;
 	private String productName;
+	private String category;
 	private Date mfg;
 	private String mfger;
 	private int qty;
 	private BigDecimal price;
 
-	public Product(int productId, String productName, Date mfg, String mfger, int qty, BigDecimal price) {
+	public Product(int productId, String productName, String category, Date mfg, String mfger, int qty,
+			BigDecimal price) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
@@ -21,7 +23,7 @@ public class Product {
 		this.price = price;
 	}
 
-	public Product(String productName, Date mfg, String mfger, int qty, BigDecimal price) {
+	public Product(String productName, String category, Date mfg, String mfger, int qty, BigDecimal price) {
 		super();
 		this.productName = productName;
 		this.mfg = mfg;
@@ -44,6 +46,14 @@ public class Product {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public Date getMfg() {
