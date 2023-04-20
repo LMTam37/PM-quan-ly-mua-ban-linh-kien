@@ -148,10 +148,6 @@ public class createProduct extends JDialog implements ActionListener {
 		}
 	}
 
-	public static void main(String[] args) {
-		new createProduct().setVisible(true);
-	}
-
 	private boolean isEmpty(JTextField txt) {
 		if (txt.getText().trim().equals("")) {
 			txt.requestFocus();

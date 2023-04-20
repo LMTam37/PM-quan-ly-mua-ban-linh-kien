@@ -144,10 +144,6 @@ public class createAccount extends JDialog implements ActionListener {
 		}
 	}
 
-	public static void main(String[] args) {
-		new createAccount().setVisible(true);
-	}
-
 	private boolean isEmpty(JTextField txt) {
 		if (txt.getText().trim().equals("")) {
 			txt.requestFocus();
