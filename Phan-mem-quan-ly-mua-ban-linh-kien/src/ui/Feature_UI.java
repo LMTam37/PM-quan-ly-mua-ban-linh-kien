@@ -77,7 +77,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 
 		btnEmpManage = new JButton("Quản lý nhân viên");
 		btnEmpManage.setBackground(new Color(255, 255, 255));
-		btnEmpManage.setFont(new Font("Dialog", Font.BOLD, 20));
+		btnEmpManage.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnEmpManage.setBounds(56, 367, 316, 80);
 		pnLeft.add(btnEmpManage);
 
