@@ -43,7 +43,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 	private JPanel pnHeader, pnBill, pnCustomerInfo, pnProduct, pnProductInfo, pnProductList, pnOrderList;
 	private JLabel lblTieuDe, lblBillid, lblBillDate, lblCustomeName, lblEmpName, lblTotal, lblDiscount, lblTotalDue,
-			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblQty, lblCategory, lblAddress;
+			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblQty, lblCategory, lblAddress, lblPhoneNumber;
 	private JButton btnPay, btnBack, btnSearch, btnAdd, btnRemove;
 	private JSpinner discountPercent, qtySpinner;
 	private JTextField txtBillid, txtBillDate, txtCustomerName, txtSubTotal, txtTotalDue, txtProductName, txtEmpName,
@@ -215,7 +215,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		lblPercent.setBounds(425, 119, 19, 13);
 		pnCustomerInfo.add(lblPercent);
 
-		JLabel lblPhoneNumber = new JLabel("Số điện thoại");
+		 lblPhoneNumber = new JLabel("Số điện thoại");
 		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblPhoneNumber.setBounds(290, 55, 85, 13);
 		pnCustomerInfo.add(lblPhoneNumber);
@@ -402,21 +402,24 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần xóa");
 			}
 		} else if (o.equals(btnSearch)) {
-			productList = ProductDAO.getInstance().getProductByName(txtProductName.getText(), cbCategory.getSelectedIndex() + 1);
+			productList = ProductDAO.getInstance().getProductByName(txtProductName.getText(),
+					cbCategory.getSelectedIndex() + 1);
 			loadTableProduct();
 		} else if (o.equals(btnPay)) {
-			int billId = Integer.parseInt(txtBillid.getText());
-			CreateBillDAO.getInstance().payBill(billId, curAccount.getEmpId(),
-					Integer.parseInt(discountPercent.getValue().toString()), billTotalDue, txtCustomerName.getText(),
-					txtPhoneNumber.getText(), txtAddress.getText());
-			for (BillDetail curBillDetail : orderList) {
-				CreateBillDAO.getInstance().payBillDetail(billId, curBillDetail);
+			if (validateName() && validPhoneNumber() && validEmpty(txtCustomerName, lblCustomeName) && validEmpty(txtPhoneNumber, lblPhoneNumber) && validEmpty(txtAddress, lblAddress)) {
+				int billId = Integer.parseInt(txtBillid.getText());
+				CreateBillDAO.getInstance().payBill(billId, curAccount.getEmpId(),
+						Integer.parseInt(discountPercent.getValue().toString()), billTotalDue,
+						txtCustomerName.getText(), txtPhoneNumber.getText(), txtAddress.getText());
+				for (BillDetail curBillDetail : orderList) {
+					CreateBillDAO.getInstance().payBillDetail(billId, curBillDetail);
+				}
+				JOptionPane.showMessageDialog(null, "Tạo đơn thành công");
+				orderListModel.getDataVector().removeAllElements();
+				orderListModel.fireTableDataChanged();
+				orderList.removeAll(orderList);
+				useBill();
 			}
-			JOptionPane.showMessageDialog(null, "Tạo đơn thành công");
-			orderListModel.getDataVector().removeAllElements();
-			orderListModel.fireTableDataChanged();
-			orderList.removeAll(orderList);
-			useBill();
 		}
 
 	}
@@ -488,4 +491,27 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		loadOrder(orderList);
 	}
 
+	public boolean validateName() {
+		if (txtCustomerName.getText().matches("^([A-Z][a-z]* ?)+$")) {
+			return true;
+		}
+		JOptionPane.showMessageDialog(null, "Tên khách hàng nhập vào phải theo mẫu ^([A-Z][a-z]* ?)+$");
+		return false;
+	}
+	
+	public boolean validPhoneNumber() {
+		if (txtPhoneNumber.getText().matches("^[0]\\d{9}")) {
+			return true;
+		}
+		JOptionPane.showMessageDialog(null, "Số điện thoại phải có 10 số và số đầu tiên phải là số 0");
+		return false;
+	}
+	
+	public boolean validEmpty(JTextField txt, JLabel lbl) {
+		if(!txt.getText().trim().matches("^.{0}$")) {
+			return true;
+		}
+		JOptionPane.showMessageDialog(null, lbl.getText() + " không được để trống");
+		return false;
+	}
 }
