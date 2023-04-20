@@ -63,7 +63,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 
 		lblTitle = new JLabel("Quán lý hóa đơn");
 		lblTitle.setForeground(new Color(0, 0, 0));
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 10));
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
 		pnTitle.add(lblTitle);
 
 		pnStatistic = new JPanel();

@@ -56,18 +56,18 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
-		pnTitle.setBounds(0, 0, 1386, 23);
+		pnTitle.setBounds(0, 0, 1386, 40);
 		getContentPane().add(pnTitle);
 
 		lblNewLabel = new JLabel("Quản lý linh kiện");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 26));
 		pnTitle.add(lblNewLabel);
 
 		pnProductManage = new JPanel();
 		pnProductManage.setBackground(new Color(255, 255, 255));
 		pnProductManage.setBorder(
 				new TitledBorder(null, "Thông tin linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnProductManage.setBounds(0, 22, 1386, 117);
+		pnProductManage.setBounds(0, 50, 1386, 117);
 		getContentPane().add(pnProductManage);
 		pnProductManage.setLayout(null);
 
@@ -135,7 +135,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnSearch = new JPanel();
 		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(new Color(255, 255, 255));
-		pnSearch.setBounds(0, 147, 1386, 47);
+		pnSearch.setBounds(0, 175, 1386, 47);
 		getContentPane().add(pnSearch);
 		pnSearch.setLayout(null);
 
@@ -176,7 +176,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnSearch.add(lblCategory);
 
 		pnTableProduct = new JPanel();
-		pnTableProduct.setBounds(0, 204, 1386, 459);
+		pnTableProduct.setBounds(0, 232, 1386, 431);
 		getContentPane().add(pnTableProduct);
 		pnTableProduct.setLayout(new BorderLayout(0, 0));
 

@@ -73,7 +73,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		lblTieuDe = new JLabel("Tạo đơn hàng");
-		lblTieuDe.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblTieuDe.setFont(new Font("Tahoma", Font.BOLD, 26));
 		pnHeader.add(lblTieuDe);
 
 		pnBill = new JPanel();

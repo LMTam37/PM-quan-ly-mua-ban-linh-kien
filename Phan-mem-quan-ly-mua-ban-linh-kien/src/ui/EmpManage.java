@@ -54,18 +54,18 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
-		pnTitle.setBounds(0, 0, 1386, 42);
+		pnTitle.setBounds(0, 0, 1386, 40);
 		getContentPane().add(pnTitle);
 
 		lblTitle = new JLabel("Quản lý tài khoản");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 10));
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
 		pnTitle.add(lblTitle);
 
 		pnEmp = new JPanel();
 		pnEmp.setBackground(new Color(255, 255, 255));
 		pnEmp.setBorder(
 				new TitledBorder(null, "Thông tin tài khoản", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnEmp.setBounds(0, 51, 1386, 164);
+		pnEmp.setBounds(0, 50, 1386, 165);
 		getContentPane().add(pnEmp);
 		pnEmp.setLayout(null);
 
