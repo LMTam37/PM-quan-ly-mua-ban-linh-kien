@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -79,10 +80,12 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnStatistic.add(lblDateFrom);
 
 		dcFromDate = new JDateChooser();
+		dcFromDate.setDate(new java.util.Date());
 		dcFromDate.setBounds(142, 13, 96, 19);
 		pnStatistic.add(dcFromDate);
 
 		dcToDate = new JDateChooser();
+		dcToDate.setDate(new java.util.Date());
 		dcToDate.setBounds(364, 13, 96, 19);
 		pnStatistic.add(dcToDate);
 
