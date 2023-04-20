@@ -41,8 +41,8 @@ public class EmpManageDAO {
 			Connection con = ConnectDB.getConnection();
 			String sql = "INSERT INTO NhanVien " + "VALUES (?,?,?,?)";
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, empUsername);
-			pst.setString(2, empName);
+			pst.setString(1, empName);
+			pst.setString(2, empUsername);
 			pst.setString(3, password);
 			pst.setBoolean(4, role);
 			result = pst.executeUpdate();

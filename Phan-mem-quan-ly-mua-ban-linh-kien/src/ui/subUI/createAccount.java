@@ -23,7 +23,7 @@ import javax.swing.JButton;
 
 public class createAccount extends JDialog implements ActionListener {
 	private JLabel lblEmpUsername, lblEmpName, lblPassword, lblConfirmPassword, lblRole;
-	private JTextField txtEmpUserName, txtEmpName;
+	private JTextField txtEmpUsername, txtEmpName;
 	private JPasswordField txtPassword, txtConfirmPassword;
 	private JButton btnCreate, btnCancel;
 	private JComboBox cbRole;
@@ -61,11 +61,11 @@ public class createAccount extends JDialog implements ActionListener {
 		lblRole.setBounds(10, 190, 148, 13);
 		pnMain.add(lblRole);
 
-		txtEmpUserName = new JTextField();
-		txtEmpUserName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtEmpUserName.setBounds(168, 27, 158, 19);
-		pnMain.add(txtEmpUserName);
-		txtEmpUserName.setColumns(10);
+		txtEmpUsername = new JTextField();
+		txtEmpUsername.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtEmpUsername.setBounds(168, 27, 158, 19);
+		pnMain.add(txtEmpUsername);
+		txtEmpUsername.setColumns(10);
 
 		txtEmpName = new JTextField();
 		txtEmpName.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -113,7 +113,7 @@ public class createAccount extends JDialog implements ActionListener {
 		} else {
 			role = false;
 		}
-		Emp emp = new Emp(txtEmpUserName.getText(), txtEmpName.getText(), String.valueOf(txtPassword.getPassword()),
+		Emp emp = new Emp(txtEmpUsername.getText(), txtEmpName.getText(), String.valueOf(txtPassword.getPassword()),
 				role);
 		return emp;
 	}
@@ -122,7 +122,7 @@ public class createAccount extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnCreate)) {
-			if (isEmpty(txtEmpUserName) || isEmpty(txtEmpName) || isEmpty(txtPassword)) {
+			if (isEmpty(txtEmpUsername) || isEmpty(txtEmpName) || isEmpty(txtPassword)) {
 				JOptionPane.showMessageDialog(null, "Chưa nhập đủ thông tin");
 			} else if (!String.valueOf(txtConfirmPassword.getPassword())
 					.equals(String.valueOf(txtPassword.getPassword()))) {
