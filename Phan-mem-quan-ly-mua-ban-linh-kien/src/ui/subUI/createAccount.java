@@ -111,7 +111,7 @@ public class createAccount extends JDialog implements ActionListener {
 		if (cbRole.getSelectedIndex() == 1) {
 			role = false;
 		} else {
-			role = false;
+			role = true;
 		}
 		Emp emp = new Emp(txtEmpUsername.getText(), txtEmpName.getText(), String.valueOf(txtPassword.getPassword()),
 				role);
