@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -23,7 +24,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtUserName;
-	private JTextField txtPassword;
+	private JPasswordField txtPassword;
 	private JButton btnCreateBill, btnBills, btnProduct, btnEmpManage, btnLogin, btnLogOut;
 	private JLabel lblRightTitle, lblUserName, lblPassword;
 	private Emp curAccount;
@@ -105,7 +106,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 		lblPassword.setBounds(42, 215, 128, 32);
 		pnRight.add(lblPassword);
 
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		txtPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtPassword.setColumns(10);
 		txtPassword.setBounds(185, 209, 194, 40);
