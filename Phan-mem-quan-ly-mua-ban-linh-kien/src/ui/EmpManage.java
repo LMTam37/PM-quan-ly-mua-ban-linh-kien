@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	private JTextField txtEmpName;
 	private JTable tableEmp;
 	private DefaultTableModel modelEmp;
-	private JButton btnAdd, btnRemove, btnUpdate, btnFind, btnClear, btnRefresh, btnBack;
+	private JButton btnAdd, btnRemove, btnUpdate, btnFind, btnClear, btnBack;
 	private JComboBox cbRole;
 	private ArrayList<Emp> list;
 	private JTextField txtEmpId;
@@ -126,12 +128,8 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		pnEmp.add(btnFind);
 
 		btnBack = new JButton("Thoát");
-		btnBack.setBounds(860, 132, 100, 21);
+		btnBack.setBounds(714, 132, 100, 21);
 		pnEmp.add(btnBack);
-
-		btnRefresh = new JButton("Làm mới");
-		btnRefresh.setBounds(715, 132, 100, 21);
-		pnEmp.add(btnRefresh);
 
 		pnTableEmp = new JPanel();
 		pnTableEmp.setBackground(new Color(255, 255, 255));
@@ -155,7 +153,6 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		btnRemove.addActionListener(this);
 		btnUpdate.addActionListener(this);
 		btnFind.addActionListener(this);
-		btnRefresh.addActionListener(this);
 		tableEmp.addMouseListener(this);
 
 		loadAccountList();
@@ -168,7 +165,34 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
-			new createAccount().setVisible(true);
+			createAccount dialog = new createAccount();
+			dialog.setVisible(true);
+			dialog.addComponentListener(new ComponentListener() {
+				
+				@Override
+				public void componentShown(ComponentEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void componentResized(ComponentEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void componentMoved(ComponentEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void componentHidden(ComponentEvent e) {
+					// TODO Auto-generated method stub
+					loadAccountList();
+				}
+			});
 		} else if (o.equals(btnRemove)) {
 			int row = tableEmp.getSelectedRow();
 			if (row == -1) {
@@ -207,10 +231,6 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 					updateEmpPassword(row, username);
 				}
 			}
-		} else if (o.equals(btnRefresh)) {
-			modelEmp.getDataVector().removeAllElements();
-			modelEmp.fireTableDataChanged();
-			loadAccountList();
 		} else if(o.equals(btnFind)) {
 			int id = Integer.parseInt(txtEmpId.getText());
 			Emp emp = new Emp(id, "", "", "", true);
