@@ -35,6 +35,24 @@ public class EmpManageDAO {
 		return list;
 	}
 
+	public ArrayList<Emp> getListEmpBySearch(String name) {
+		ArrayList<Emp> list = new ArrayList<Emp>();
+		try {
+			Connection con = ConnectDB.getConnection();
+			PreparedStatement pst = con.prepareStatement("SELECT * FROM NhanVien WHERE TenNhanVien LIKE ?");
+			pst.setString(1, "%" + name + "%");
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				list.add(new Emp(rs.getInt("MaNhanVien"), rs.getString("TenDangNhap"), rs.getString("TenNhanVien"),
+						rs.getString("MatKhau"), rs.getBoolean("VaiTro")));
+			}
+			ConnectDB.closeConnection(con);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 	public int createEmp(String empUsername, String empName, String password, boolean role) {
 		int result = 0;
 		try {

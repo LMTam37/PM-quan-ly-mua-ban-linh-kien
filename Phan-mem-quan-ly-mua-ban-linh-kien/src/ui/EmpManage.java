@@ -29,10 +29,10 @@ import entity.Emp;
 
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
 
-	private JPanel pnTitle, pnEmp, pnTableEmp;
-	private JLabel lblRole, lblTitle, lblUsername, lblEmpName, lblPassword;
+	private JPanel pnTitle, pnEmp, pnTableEmp, pnSearch;
+	private JLabel lblRole, lblTitle, lblUsername, lblEmpName, lblPassword, lblSearch;
 	private JTextField txtUsername, txtEmpName, txtEmpId;
-	private JButton btnAdd, btnRemove, btnUpdate, btnFind, btnClear, btnBack;
+	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
 	private JTable tableEmp;
 	private DefaultTableModel modelEmp;
 	private JComboBox cbRole;
@@ -40,6 +40,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	private JLabel lblEmpId;
 	private Emp curAccount;
 	private JPasswordField txtPassword;
+	private JTextField txtSearch;
 
 	public EmpManage(Emp account) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,12 +124,8 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		btnClear.setBounds(430, 132, 100, 21);
 		pnEmp.add(btnClear);
 
-		btnFind = new JButton("Tìm theo ID");
-		btnFind.setBounds(570, 132, 103, 21);
-		pnEmp.add(btnFind);
-
 		btnBack = new JButton("Thoát");
-		btnBack.setBounds(714, 132, 100, 21);
+		btnBack.setBounds(570, 132, 100, 21);
 		pnEmp.add(btnBack);
 
 		lblPassword = new JLabel("Mật khẩu");
@@ -140,11 +137,32 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		txtPassword.setBounds(123, 91, 178, 19);
 		pnEmp.add(txtPassword);
 
+		pnSearch = new JPanel();
+		pnSearch.setBorder(
+				new TitledBorder(null, "T\u00ECm ki\u1EBFm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnSearch.setBackground(Color.WHITE);
+		pnSearch.setBounds(0, 217, 1386, 50);
+		getContentPane().add(pnSearch);
+		pnSearch.setLayout(null);
+
+		lblSearch = new JLabel("Tìm theo tên");
+		lblSearch.setBounds(10, 22, 103, 13);
+		pnSearch.add(lblSearch);
+
+		txtSearch = new JTextField();
+		txtSearch.setBounds(123, 19, 178, 19);
+		pnSearch.add(txtSearch);
+		txtSearch.setColumns(10);
+
+		btnSearch = new JButton("Tìm");
+		btnSearch.setBounds(311, 18, 85, 21);
+		pnSearch.add(btnSearch);
+
 		pnTableEmp = new JPanel();
 		pnTableEmp.setBackground(new Color(255, 255, 255));
 		pnTableEmp.setBorder(
 				new TitledBorder(null, "Danh sách tài khoản", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnTableEmp.setBounds(0, 225, 1386, 438);
+		pnTableEmp.setBounds(0, 267, 1386, 396);
 		getContentPane().add(pnTableEmp);
 
 		String[] empColumnName = { "STT", "Tên đăng nhập", "Tên nhân viên", "Loại nhân viên" };
@@ -161,7 +179,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		btnClear.addActionListener(this);
 		btnRemove.addActionListener(this);
 		btnUpdate.addActionListener(this);
-		btnFind.addActionListener(this);
+		btnSearch.addActionListener(this);
 		tableEmp.addMouseListener(this);
 
 		loadAccountList();
@@ -186,8 +204,8 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 				} else {
 					role = true;
 				}
-				EmpManageDAO.getInstance().createEmp(txtUsername.getText(), txtEmpName.getText(), String.valueOf(txtPassword.getPassword()),
-						role);
+				EmpManageDAO.getInstance().createEmp(txtUsername.getText(), txtEmpName.getText(),
+						String.valueOf(txtPassword.getPassword()), role);
 				JOptionPane.showMessageDialog(null, "Tạo tài khoản mới thành công");
 			}
 			loadAccountList();
@@ -229,16 +247,11 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 					updateEmpPassword(row, username);
 				}
 			}
-		} else if (o.equals(btnFind)) {
-			int id = Integer.parseInt(txtEmpId.getText());
-			Emp emp = new Emp(id, "", "", "", true);
-			int row = list.indexOf(emp);
-			if (row != -1) {
-				tableEmp.getSelectionModel().setSelectionInterval(row, row);
-				tableEmp.scrollRectToVisible(tableEmp.getCellRect(row, row, rootPaneCheckingEnabled));
-			} else {
-				JOptionPane.showMessageDialog(null, "Không tồn tại nhân viên có id là " + id);
-			}
+		} else if (o.equals(btnSearch)) {
+			list = EmpManageDAO.getInstance().getListEmpBySearch(txtSearch.getText());
+			modelEmp.getDataVector().removeAllElements();
+			modelEmp.fireTableDataChanged();
+			load(list);
 		}
 	}
 
