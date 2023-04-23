@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.EmpManageDAO;
 import entity.Emp;
-import ui.subUI.createAccount;
 
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
 
