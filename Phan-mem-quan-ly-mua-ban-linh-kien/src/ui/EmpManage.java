@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -30,18 +31,16 @@ import ui.subUI.createAccount;
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
 
 	private JPanel pnTitle, pnEmp, pnTableEmp;
-	private JLabel lblRole, lblTitle, lblUsername, lblEmpName;
-	private JTextField txtUsername;
-	private JTextField txtEmpName;
+	private JLabel lblRole, lblTitle, lblUsername, lblEmpName, lblPassword;
+	private JTextField txtUsername, txtEmpName, txtEmpId;
+	private JButton btnAdd, btnRemove, btnUpdate, btnFind, btnClear, btnBack;
 	private JTable tableEmp;
 	private DefaultTableModel modelEmp;
-	private JButton btnAdd, btnRemove, btnUpdate, btnFind, btnClear, btnBack;
 	private JComboBox cbRole;
 	private ArrayList<Emp> list;
-	private JTextField txtEmpId;
 	private JLabel lblEmpId;
 	private Emp curAccount;
-	
+	private JPasswordField txtPassword;
 
 	public EmpManage(Emp account) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +50,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		getContentPane().setBackground(new Color(255, 255, 255));
 		getContentPane().setLayout(null);
 		curAccount = account;
-		
+
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
@@ -74,6 +73,8 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		pnEmp.add(lblEmpId);
 
 		txtEmpId = new JTextField();
+		txtEmpId.setEnabled(false);
+		txtEmpId.setEditable(false);
 		txtEmpId.setColumns(10);
 		txtEmpId.setBounds(123, 26, 178, 19);
 		pnEmp.add(txtEmpId);
@@ -97,11 +98,11 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		pnEmp.add(txtEmpName);
 
 		lblRole = new JLabel("Vai trò");
-		lblRole.setBounds(10, 94, 83, 13);
+		lblRole.setBounds(382, 94, 83, 13);
 		pnEmp.add(lblRole);
 
 		cbRole = new JComboBox();
-		cbRole.setBounds(123, 90, 93, 21);
+		cbRole.setBounds(495, 90, 93, 21);
 
 		cbRole.addItem("Nhân viên");
 		cbRole.addItem("Quản lý");
@@ -130,6 +131,15 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		btnBack = new JButton("Thoát");
 		btnBack.setBounds(714, 132, 100, 21);
 		pnEmp.add(btnBack);
+
+		lblPassword = new JLabel("Mật khẩu");
+		lblPassword.setBounds(10, 94, 103, 13);
+		pnEmp.add(lblPassword);
+
+		txtPassword = new JPasswordField();
+		txtPassword.setColumns(10);
+		txtPassword.setBounds(123, 91, 178, 19);
+		pnEmp.add(txtPassword);
 
 		pnTableEmp = new JPanel();
 		pnTableEmp.setBackground(new Color(255, 255, 255));
@@ -165,34 +175,23 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
-			createAccount dialog = new createAccount();
-			dialog.setVisible(true);
-			dialog.addComponentListener(new ComponentListener() {
-				
-				@Override
-				public void componentShown(ComponentEvent e) {
-					// TODO Auto-generated method stub
-					
+			if (isEmpty(txtUsername) || isEmpty(txtEmpName) || isEmpty(txtPassword)) {
+				JOptionPane.showMessageDialog(null, "Chưa nhập đủ thông tin");
+			} else if (txtPassword.getPassword().length < 8) {
+				JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất phải có 8 ký tự");
+				txtPassword.requestFocus();
+			} else {
+				boolean role = true;
+				if (cbRole.getSelectedIndex() == 1) {
+					role = false;
+				} else {
+					role = true;
 				}
-				
-				@Override
-				public void componentResized(ComponentEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void componentMoved(ComponentEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void componentHidden(ComponentEvent e) {
-					// TODO Auto-generated method stub
-					loadAccountList();
-				}
-			});
+				EmpManageDAO.getInstance().createEmp(txtUsername.getText(), txtEmpName.getText(), String.valueOf(txtPassword.getPassword()),
+						role);
+				JOptionPane.showMessageDialog(null, "Tạo tài khoản mới thành công");
+			}
+			loadAccountList();
 		} else if (o.equals(btnRemove)) {
 			int row = tableEmp.getSelectedRow();
 			if (row == -1) {
@@ -231,14 +230,14 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 					updateEmpPassword(row, username);
 				}
 			}
-		} else if(o.equals(btnFind)) {
+		} else if (o.equals(btnFind)) {
 			int id = Integer.parseInt(txtEmpId.getText());
 			Emp emp = new Emp(id, "", "", "", true);
 			int row = list.indexOf(emp);
-			if(row != -1) {				
+			if (row != -1) {
 				tableEmp.getSelectionModel().setSelectionInterval(row, row);
 				tableEmp.scrollRectToVisible(tableEmp.getCellRect(row, row, rootPaneCheckingEnabled));
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(null, "Không tồn tại nhân viên có id là " + id);
 			}
 		}
@@ -311,14 +310,22 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	private boolean isEmpty(JTextField txt) {
+		if (txt.getText().trim().equals("")) {
+			txt.requestFocus();
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int row = tableEmp.getSelectedRow();
-		String username = modelEmp.getValueAt(row, 1).toString();
 		Emp emp = list.get(row);
 		txtEmpId.setText(Integer.toString(emp.getEmpId()));
 		txtUsername.setText(emp.getUsername());
 		txtEmpName.setText(emp.getEmpName());
+		txtPassword.setText(emp.getPassword());
 	}
 
 	@Override
