@@ -34,17 +34,18 @@ public class ProductDAO {
 		return list;
 	}
 
-	public int addProduct(String productName, Date mfg, String mfger, int qty, BigDecimal price) {
+	public int addProduct(String productName, int categoryId, Date mfg, String mfger, int qty, BigDecimal price) {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "INSERT INTO LinhKien(TenLinhKien, NgaySanXuat, HangSanXuat, SoLuong, DonGia) VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO LinhKien(TenLinhKien, MaLoai,NgaySanXuat, HangSanXuat, SoLuong, DonGia) VALUES (?, ?, ?, ?, ?, ?)";
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, productName);
-			pst.setDate(2, mfg);
-			pst.setString(3, mfger);
-			pst.setInt(4, qty);
-			pst.setBigDecimal(5, price);
+			pst.setInt(2, categoryId);
+			pst.setDate(3, mfg);
+			pst.setString(4, mfger);
+			pst.setInt(5, qty);
+			pst.setBigDecimal(6, price);
 			result = pst.executeUpdate();
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {
@@ -53,18 +54,20 @@ public class ProductDAO {
 		return result;
 	}
 
-	public int updateProduct(int productId, String productName, Date mfg, String mfger, int qty, BigDecimal price) {
+	public int updateProduct(int productId, String productName, int categoryId, Date mfg, String mfger, int qty,
+			BigDecimal price) {
 		int rs = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
 			PreparedStatement pst = con.prepareStatement(
-					"Update LinhKien set TenLinhKien = ? , NgaySanXuat = ?,HangSanXuat = ? , SoLuong = ?, DonGia= ? where MaLinhKien = ?");
+					"Update LinhKien set TenLinhKien = ? , MaLoai = ?, NgaySanXuat = ?,HangSanXuat = ? , SoLuong = ?, DonGia= ? where MaLinhKien = ?");
 			pst.setString(1, productName);
-			pst.setDate(2, mfg);
-			pst.setString(3, mfger);
-			pst.setInt(4, qty);
-			pst.setBigDecimal(5, price);
-			pst.setInt(6, productId);
+			pst.setInt(2, categoryId);
+			pst.setDate(3, mfg);
+			pst.setString(4, mfger);
+			pst.setInt(5, qty);
+			pst.setBigDecimal(6, price);
+			pst.setInt(7, productId);
 			rs = pst.executeUpdate();
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {
@@ -96,8 +99,9 @@ public class ProductDAO {
 			pst.setInt(2, categoryId);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
-				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getString("TenLoai"), rs.getDate("NgaySanXuat"),
-						rs.getString("HangSanXuat"), rs.getInt("SoLuong"), rs.getBigDecimal("DonGia")));
+				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getString("TenLoai"),
+						rs.getDate("NgaySanXuat"), rs.getString("HangSanXuat"), rs.getInt("SoLuong"),
+						rs.getBigDecimal("DonGia")));
 			}
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {
