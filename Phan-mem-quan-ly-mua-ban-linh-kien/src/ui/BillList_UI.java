@@ -122,20 +122,29 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		cbProduct.setBounds(395, 23, 206, 21);
 		pnStatistic.add(cbProduct);
 
+		cbCategory.addItem("Tất cả");
 		cbCategory.addItem("CPU");
 		cbCategory.addItem("RAM");
 		cbCategory.addItem("VGA");
 		cbCategory.addItem("Mainboard");
 		cbCategory.addItem("Nguồn máy tính");
 		cbCategory.addItem("Ổ cứng");
-		cbCategory.addItem("Tất cả");
+		
+		ArrayList<Product> listProduct = ProductDAO.getInstance().getListProduct();
+		loadCbProduct(listProduct);
+		
 		cbCategory.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Product> list = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
-				for(Product curProduct : list) {
-					cbProduct.addItem(curProduct.getProductName());
+				System.out.println(cbCategory.getSelectedIndex());
+				if (cbCategory.getSelectedIndex() == cbCategory.getItemCount()) {
+					ArrayList<Product> listProduct = ProductDAO.getInstance().getListProduct();
+					loadCbProduct(listProduct);
+				} else {
+					ArrayList<Product> listProductByCategory = ProductDAO.getInstance()
+							.getListProductByCategory(cbCategory.getSelectedIndex() + 1);
+					loadCbProduct(listProductByCategory );
 				}
 			}
 		});
@@ -235,6 +244,12 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		for (BillDetail billDetail : list) {
 			modelBillDetail.addRow(new Object[] { Integer.toString(serial++), billDetail.getProductName(),
 					billDetail.getCategory(), billDetail.getQty(), billDetail.getPrice() });
+		}
+	}
+
+	private void loadCbProduct(ArrayList<Product> list) {
+		for (Product curProduct : list) {
+			cbProduct.addItem(curProduct.getProductName());
 		}
 	}
 

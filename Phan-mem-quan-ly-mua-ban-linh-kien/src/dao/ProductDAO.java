@@ -15,6 +15,24 @@ public class ProductDAO {
 		return new ProductDAO();
 	}
 
+	public ArrayList<Product> getListProduct() {
+		ArrayList<Product> list = new ArrayList<Product>();
+		try {
+			Connection con = ConnectDB.getConnection();
+			PreparedStatement pst = con.prepareStatement("SELECT * FROM LinhKienView");
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getString("TenLoai"),
+						rs.getDate("NgaySanXuat"), rs.getString("HangSanXuat"), rs.getInt("SoLuong"),
+						rs.getBigDecimal("DonGia")));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 	public ArrayList<Product> getListProductByCategory(int categoryID) {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
