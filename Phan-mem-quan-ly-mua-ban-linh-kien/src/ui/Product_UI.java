@@ -41,7 +41,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	private JScrollPane spProduct;
 	private ArrayList<Product> productList;
 	private Emp curAccount;
-	private JComboBox cbCategory;
+	private JComboBox<String> cbCategory;
 	private JLabel lblCategory;
 
 	public Product_UI(Emp account) {
@@ -152,7 +152,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		btnSearch.setBounds(249, 16, 85, 21);
 		pnSearch.add(btnSearch);
 
-		cbCategory = new JComboBox();
+		cbCategory = new JComboBox<String>();
 		cbCategory.addItem("CPU");
 		cbCategory.addItem("RAM");
 		cbCategory.addItem("VGA");

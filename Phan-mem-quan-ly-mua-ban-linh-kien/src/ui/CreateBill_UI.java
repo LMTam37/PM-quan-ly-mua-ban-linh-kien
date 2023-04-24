@@ -54,7 +54,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	private ArrayList<BillDetail> orderList = new ArrayList<BillDetail>();
 	private BigDecimal billSubtotal, billTotalDue;;
 	private JTextField txtPhoneNumber;
-	private JComboBox cbCategory;
+	private JComboBox<String> cbCategory;
 	private Emp curAccount;
 
 	public CreateBill_UI(Emp account) {
@@ -305,7 +305,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		lblCategory.setBounds(297, 69, 45, 13);
 		pnProductInfo.add(lblCategory);
 
-		cbCategory = new JComboBox();
+		cbCategory = new JComboBox<String>();
 		cbCategory.addItem("CPU");
 		cbCategory.addItem("RAM");
 		cbCategory.addItem("VGA");
