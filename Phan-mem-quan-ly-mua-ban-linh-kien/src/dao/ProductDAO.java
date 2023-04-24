@@ -15,7 +15,7 @@ public class ProductDAO {
 		return new ProductDAO();
 	}
 
-	public ArrayList<Product> getListProduct(int categoryID) {
+	public ArrayList<Product> getListProductByCategory(int categoryID) {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
 			Connection con = ConnectDB.getConnection();

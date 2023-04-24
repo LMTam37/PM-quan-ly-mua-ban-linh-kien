@@ -163,7 +163,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
+				productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
 				loadProductList();
 			}
 		});
@@ -311,7 +311,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	}
 
 	public void loadProductList() {
-		productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
+		productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
 		modelProduct.getDataVector().removeAllElements();
 		modelProduct.fireTableDataChanged();
 		load(productList);

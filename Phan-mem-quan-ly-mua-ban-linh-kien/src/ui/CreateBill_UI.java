@@ -316,7 +316,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
+				productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
 				loadTableProduct();
 			}
 		});
@@ -425,7 +425,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	}
 
 	public void setProductList() {
-		productList = ProductDAO.getInstance().getListProduct(cbCategory.getSelectedIndex() + 1);
+		productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
 		loadTableProduct();
 	}
 
