@@ -129,22 +129,20 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		cbCategory.addItem("Mainboard");
 		cbCategory.addItem("Nguồn máy tính");
 		cbCategory.addItem("Ổ cứng");
-		
-		ArrayList<Product> listProduct = ProductDAO.getInstance().getListProduct();
-		loadCbProduct(listProduct);
-		
+
+		loadCbProduct(ProductDAO.getInstance().getListProduct());
+
 		cbCategory.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(cbCategory.getSelectedIndex());
 				if (cbCategory.getSelectedIndex() == cbCategory.getItemCount()) {
 					ArrayList<Product> listProduct = ProductDAO.getInstance().getListProduct();
 					loadCbProduct(listProduct);
 				} else {
 					ArrayList<Product> listProductByCategory = ProductDAO.getInstance()
 							.getListProductByCategory(cbCategory.getSelectedIndex() + 1);
-					loadCbProduct(listProductByCategory );
+					loadCbProduct(listProductByCategory);
 				}
 			}
 		});
