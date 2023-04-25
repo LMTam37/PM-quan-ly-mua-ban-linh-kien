@@ -249,16 +249,12 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 			}
 		} else if (o.equals(btnSearch)) {
 			list = EmpManageDAO.getInstance().getListEmpBySearch(txtSearch.getText());
-			modelEmp.getDataVector().removeAllElements();
-			modelEmp.fireTableDataChanged();
 			load(list);
 		}
 	}
 
 	private void loadAccountList() {
 		list = EmpManageDAO.getInstance().getListEmp();
-		modelEmp.getDataVector().removeAllElements();
-		modelEmp.fireTableDataChanged();
 		load(list);
 	}
 
@@ -271,6 +267,8 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void load(ArrayList<Emp> list) {
+		modelEmp.getDataVector().removeAllElements();
+		modelEmp.fireTableDataChanged();
 		int index = 0;
 		for (Emp emp : list) {
 			index++;

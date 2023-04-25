@@ -395,8 +395,6 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 				} else {
 					orderList.remove(billDetail);
 				}
-				orderListModel.getDataVector().removeAllElements();
-				orderListModel.fireTableDataChanged();
 				loadOrder(orderList);
 			} else {
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần xóa");
@@ -430,12 +428,12 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	}
 
 	public void loadTableProduct() {
-		productListModel.getDataVector().removeAllElements();
-		productListModel.fireTableDataChanged();
 		loadProduct(productList);
 	}
 
 	private void loadProduct(ArrayList<Product> list) {
+		productListModel.getDataVector().removeAllElements();
+		productListModel.fireTableDataChanged();
 		int serial = 1;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 		DecimalFormat df = new DecimalFormat("#,###.##");
@@ -447,6 +445,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	}
 
 	private void loadOrder(ArrayList<BillDetail> list) {
+		orderListModel.getDataVector().removeAllElements();
+		orderListModel.fireTableDataChanged();
 		int serial = 1;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 		DecimalFormat df = new DecimalFormat("#,###.##");
@@ -486,8 +486,6 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		} else {
 			orderList.add(newBillDetail);
 		}
-		orderListModel.getDataVector().removeAllElements();
-		orderListModel.fireTableDataChanged();
 		loadOrder(orderList);
 	}
 

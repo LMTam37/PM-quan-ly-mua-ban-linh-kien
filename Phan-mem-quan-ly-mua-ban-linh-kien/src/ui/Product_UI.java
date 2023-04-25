@@ -239,8 +239,6 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		} else if (o.equals(btnSearch)) {
 			String productName = txtSearch.getText();
 			productList = ProductDAO.getInstance().getProductByName(productName, cbCategory.getSelectedIndex() + 1);
-			modelProduct.getDataVector().removeAllElements();
-			modelProduct.fireTableDataChanged();
 			load(productList);
 		} else if (o.equals(btnRemove)) {
 			int row = tableProduct.getSelectedRow();
@@ -312,12 +310,12 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 
 	public void loadProductList() {
 		productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
-		modelProduct.getDataVector().removeAllElements();
-		modelProduct.fireTableDataChanged();
 		load(productList);
 	}
 
 	private void load(ArrayList<Product> list) {
+		modelProduct.getDataVector().removeAllElements();
+		modelProduct.fireTableDataChanged();
 		int serial = 1;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 		for (Product product : list) {

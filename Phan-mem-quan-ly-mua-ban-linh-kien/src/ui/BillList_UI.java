@@ -236,12 +236,12 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 
 	private void setTableBillDetail(int billId) {
 		billDetailList = BillListDAO.getInstance().getListBillDetail(billId);
-		modelBillDetail.getDataVector().removeAllElements();
-		modelBillDetail.fireTableDataChanged();
 		loadTableBillDetail(billDetailList);
 	}
 
 	private void loadTableBillDetail(ArrayList<BillDetail> list) {
+		modelBillDetail.getDataVector().removeAllElements();
+		modelBillDetail.fireTableDataChanged();
 		int serial = 0;
 		for (BillDetail billDetail : list) {
 			modelBillDetail.addRow(new Object[] { Integer.toString(serial++), billDetail.getProductName(),
