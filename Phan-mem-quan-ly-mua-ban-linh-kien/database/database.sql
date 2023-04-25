@@ -250,4 +250,11 @@ AS
 	SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia 
 	FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @TenLinhKien + '%' AND LK.MaLoai = @MaLoai
 GO
-CREATE PROC GetHoaDonTheoSanPham
+CREATE PROC statisticByProduct @productId INT, @fromDate DATE, @toDate DATE
+AS
+	SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
+	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
+	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
+	WHERE MaLinhKien = @productId AND NgayMua BETWEEN @TuNgay AND @DenNgay
+GO
