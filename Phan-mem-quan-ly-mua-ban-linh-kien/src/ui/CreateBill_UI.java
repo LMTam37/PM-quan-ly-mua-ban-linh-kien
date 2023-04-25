@@ -190,7 +190,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		});
 		pnCustomerInfo.add(discountPercent);
 
-		btnPay = new JButton("Thanh toán");
+		btnPay = new JButton("Xuất hóa đơn");
 		btnPay.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnPay.setBounds(548, 95, 139, 21);
 		pnCustomerInfo.add(btnPay);
