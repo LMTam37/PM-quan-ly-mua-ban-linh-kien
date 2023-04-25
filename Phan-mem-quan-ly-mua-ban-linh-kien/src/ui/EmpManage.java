@@ -265,6 +265,8 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	private void clear() {
 		txtEmpName.setText("");
 		txtUsername.setText("");
+		txtEmpName.setText("");
+		txtPassword.setText("");
 		cbRole.setSelectedIndex(0);
 	}
 
