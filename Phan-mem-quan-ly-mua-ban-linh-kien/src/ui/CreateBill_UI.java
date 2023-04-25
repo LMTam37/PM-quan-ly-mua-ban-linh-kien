@@ -43,9 +43,9 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 	private JPanel pnHeader, pnBill, pnCustomerInfo, pnProduct, pnProductInfo, pnProductList, pnOrderList;
 	private JLabel lblTieuDe, lblBillid, lblBillDate, lblCustomeName, lblEmpName, lblTotal, lblDiscount, lblTotalDue,
-			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblQty, lblCategory, lblAddress, lblPhoneNumber;
+			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblCategory, lblAddress, lblPhoneNumber;
 	private JButton btnPay, btnBack, btnSearch, btnAdd, btnRemove;
-	private JSpinner discountPercent, qtySpinner;
+	private JSpinner discountPercent;
 	private JTextField txtBillid, txtBillDate, txtCustomerName, txtSubTotal, txtTotalDue, txtProductName, txtEmpName,
 			txtAddress;
 	private JTable orderListTable, productListTable;
@@ -192,12 +192,12 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 		btnPay = new JButton("Thanh toán");
 		btnPay.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnPay.setBounds(549, 111, 139, 21);
+		btnPay.setBounds(548, 95, 139, 21);
 		pnCustomerInfo.add(btnPay);
 
 		btnBack = new JButton("Thoát");
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnBack.setBounds(549, 141, 139, 21);
+		btnBack.setBounds(548, 135, 139, 21);
 		pnCustomerInfo.add(btnBack);
 
 		lblSubTotalCurrency = new JLabel("VND");
@@ -236,6 +236,18 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		txtAddress.setColumns(10);
 		txtAddress.setBounds(144, 80, 367, 19);
 		pnCustomerInfo.add(txtAddress);
+		
+				btnAdd = new JButton("Thêm");
+				btnAdd.setBounds(548, 15, 140, 21);
+				pnCustomerInfo.add(btnAdd);
+				btnAdd.setFont(new Font("Tahoma", Font.BOLD, 10));
+				
+						btnRemove = new JButton("Xóa");
+						btnRemove.setBounds(548, 55, 140, 21);
+						pnCustomerInfo.add(btnRemove);
+						btnRemove.setFont(new Font("Tahoma", Font.BOLD, 10));
+						btnRemove.addActionListener(this);
+				btnAdd.addActionListener(this);
 
 		pnOrderList = new JPanel();
 		pnOrderList.setBackground(new Color(255, 255, 255));
@@ -263,46 +275,26 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnProductInfo.setBorder(
 				new TitledBorder(null, "Thông tin sản phẩm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnProduct.add(pnProductInfo, BorderLayout.NORTH);
-		pnProductInfo.setPreferredSize(new Dimension(400, 110));
+		pnProductInfo.setPreferredSize(new Dimension(400, 60));
 		pnProductInfo.setLayout(null);
 
 		lblProductName = new JLabel("Tên linh kiện");
-		lblProductName.setBounds(52, 30, 82, 13);
+		lblProductName.setBounds(52, 25, 82, 13);
 		pnProductInfo.add(lblProductName);
-
-		lblQty = new JLabel("Số lượng");
-		lblQty.setBounds(52, 69, 65, 13);
-		pnProductInfo.add(lblQty);
 
 		txtProductName = new JTextField();
 		txtProductName.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtProductName.setBounds(144, 27, 140, 19);
+		txtProductName.setBounds(144, 22, 140, 19);
 		pnProductInfo.add(txtProductName);
 		txtProductName.setColumns(10);
 
-		qtySpinner = new JSpinner();
-		qtySpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
-		qtySpinner.setFont(new Font("Tahoma", Font.BOLD, 10));
-		qtySpinner.setBounds(144, 66, 56, 20);
-		pnProductInfo.add(qtySpinner);
-
 		btnSearch = new JButton("Tìm");
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnSearch.setBounds(501, 17, 140, 21);
+		btnSearch.setBounds(532, 22, 140, 21);
 		pnProductInfo.add(btnSearch);
 
-		btnAdd = new JButton("Thêm");
-		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnAdd.setBounds(501, 48, 140, 21);
-		pnProductInfo.add(btnAdd);
-
-		btnRemove = new JButton("Xóa");
-		btnRemove.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnRemove.setBounds(501, 79, 140, 21);
-		pnProductInfo.add(btnRemove);
-
 		lblCategory = new JLabel("Loại");
-		lblCategory.setBounds(297, 69, 45, 13);
+		lblCategory.setBounds(322, 25, 45, 13);
 		pnProductInfo.add(lblCategory);
 
 		cbCategory = new JComboBox<String>();
@@ -321,7 +313,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 			}
 		});
 
-		cbCategory.setBounds(352, 65, 120, 21);
+		cbCategory.setBounds(377, 22, 120, 21);
 		pnProductInfo.add(cbCategory);
 
 		pnProductList = new JPanel();
@@ -339,8 +331,6 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 		btnPay.addActionListener(this);
 		btnBack.addActionListener(this);
-		btnAdd.addActionListener(this);
-		btnRemove.addActionListener(this);
 		btnSearch.addActionListener(this);
 		productListTable.addMouseListener(new MouseListener() {
 
