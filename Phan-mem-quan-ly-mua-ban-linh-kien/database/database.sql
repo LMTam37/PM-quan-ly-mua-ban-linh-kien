@@ -249,3 +249,5 @@ CREATE PROC GetLinhKienByMaLoaiAndName @TenLinhKien NVARCHAR(255), @MaLoai INT
 AS
 	SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia 
 	FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @TenLinhKien + '%' AND LK.MaLoai = @MaLoai
+GO
+CREATE PROC GetHoaDonTheoSanPham

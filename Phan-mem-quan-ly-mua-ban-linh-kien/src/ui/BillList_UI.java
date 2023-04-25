@@ -136,12 +136,12 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (cbCategory.getSelectedIndex() == cbCategory.getItemCount()) {
+				if (cbCategory.getSelectedIndex() == 0) {
 					ArrayList<Product> listProduct = ProductDAO.getInstance().getListProduct();
 					loadCbProduct(listProduct);
 				} else {
 					ArrayList<Product> listProductByCategory = ProductDAO.getInstance()
-							.getListProductByCategory(cbCategory.getSelectedIndex() + 1);
+							.getListProductByCategory(cbCategory.getSelectedIndex());
 					loadCbProduct(listProductByCategory);
 				}
 			}
@@ -246,6 +246,8 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	}
 
 	private void loadCbProduct(ArrayList<Product> list) {
+		cbProduct.removeAllItems();
+		cbProduct.addItem("Tất cả");
 		for (Product curProduct : list) {
 			cbProduct.addItem(curProduct.getProductName());
 		}
