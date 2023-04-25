@@ -41,9 +41,14 @@ import javax.swing.JComboBox;
 
 public class CreateBill_UI extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel pnHeader, pnBill, pnCustomerInfo, pnProduct, pnProductInfo, pnProductList, pnOrderList;
 	private JLabel lblTieuDe, lblBillid, lblBillDate, lblCustomeName, lblEmpName, lblTotal, lblDiscount, lblTotalDue,
-			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblCategory, lblAddress, lblPhoneNumber;
+			lblSubTotalCurrency, lblTotalDueCurrency, lblPercent, lblProductName, lblCategory, lblAddress,
+			lblPhoneNumber;
 	private JButton btnPay, btnBack, btnSearch, btnAdd, btnRemove;
 	private JSpinner discountPercent;
 	private JTextField txtBillid, txtBillDate, txtCustomerName, txtSubTotal, txtTotalDue, txtProductName, txtEmpName,
@@ -215,7 +220,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		lblPercent.setBounds(425, 119, 19, 13);
 		pnCustomerInfo.add(lblPercent);
 
-		 lblPhoneNumber = new JLabel("Số điện thoại");
+		lblPhoneNumber = new JLabel("Số điện thoại");
 		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblPhoneNumber.setBounds(290, 55, 85, 13);
 		pnCustomerInfo.add(lblPhoneNumber);
@@ -236,18 +241,18 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		txtAddress.setColumns(10);
 		txtAddress.setBounds(144, 80, 367, 19);
 		pnCustomerInfo.add(txtAddress);
-		
-				btnAdd = new JButton("Thêm");
-				btnAdd.setBounds(548, 15, 140, 21);
-				pnCustomerInfo.add(btnAdd);
-				btnAdd.setFont(new Font("Tahoma", Font.BOLD, 10));
-				
-						btnRemove = new JButton("Xóa");
-						btnRemove.setBounds(548, 55, 140, 21);
-						pnCustomerInfo.add(btnRemove);
-						btnRemove.setFont(new Font("Tahoma", Font.BOLD, 10));
-						btnRemove.addActionListener(this);
-				btnAdd.addActionListener(this);
+
+		btnAdd = new JButton("Thêm");
+		btnAdd.setBounds(548, 15, 140, 21);
+		pnCustomerInfo.add(btnAdd);
+		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 10));
+
+		btnRemove = new JButton("Xóa");
+		btnRemove.setBounds(548, 55, 140, 21);
+		pnCustomerInfo.add(btnRemove);
+		btnRemove.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnRemove.addActionListener(this);
+		btnAdd.addActionListener(this);
 
 		pnOrderList = new JPanel();
 		pnOrderList.setBackground(new Color(255, 255, 255));
@@ -394,7 +399,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 					cbCategory.getSelectedIndex() + 1);
 			loadTableProduct();
 		} else if (o.equals(btnPay)) {
-			if (validateName() && validPhoneNumber() && validEmpty(txtCustomerName, lblCustomeName) && validEmpty(txtPhoneNumber, lblPhoneNumber) && validEmpty(txtAddress, lblAddress)) {
+			if (validateName() && validPhoneNumber() && validEmpty(txtCustomerName, lblCustomeName)
+					&& validEmpty(txtPhoneNumber, lblPhoneNumber) && validEmpty(txtAddress, lblAddress)) {
 				int billId = Integer.parseInt(txtBillid.getText());
 				CreateBillDAO.getInstance().payBill(billId, curAccount.getEmpId(),
 						Integer.parseInt(discountPercent.getValue().toString()), billTotalDue,
@@ -438,7 +444,6 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		orderListModel.getDataVector().removeAllElements();
 		orderListModel.fireTableDataChanged();
 		int serial = 1;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 		DecimalFormat df = new DecimalFormat("#,###.##");
 		BigDecimal subTotal = new BigDecimal(0);
 		for (BillDetail billDetail : list) {
@@ -486,7 +491,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		JOptionPane.showMessageDialog(null, "Tên khách hàng nhập vào phải theo mẫu ^([A-Z][a-z]* ?)+$");
 		return false;
 	}
-	
+
 	public boolean validPhoneNumber() {
 		if (txtPhoneNumber.getText().matches("^[0]\\d{9}")) {
 			return true;
@@ -494,9 +499,9 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		JOptionPane.showMessageDialog(null, "Số điện thoại phải có 10 số và số đầu tiên phải là số 0");
 		return false;
 	}
-	
+
 	public boolean validEmpty(JTextField txt, JLabel lbl) {
-		if(!txt.getText().trim().matches("^.{0}$")) {
+		if (!txt.getText().trim().matches("^.{0}$")) {
 			return true;
 		}
 		JOptionPane.showMessageDialog(null, lbl.getText() + " không được để trống");

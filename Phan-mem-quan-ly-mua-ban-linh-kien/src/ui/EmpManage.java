@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -29,13 +27,17 @@ import entity.Emp;
 
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel pnTitle, pnEmp, pnTableEmp, pnSearch;
 	private JLabel lblRole, lblTitle, lblUsername, lblEmpName, lblPassword, lblSearch;
 	private JTextField txtUsername, txtEmpName, txtEmpId;
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
 	private JTable tableEmp;
 	private DefaultTableModel modelEmp;
-	private JComboBox cbRole;
+	private JComboBox<String> cbRole;
 	private ArrayList<Emp> list;
 	private JLabel lblEmpId;
 	private Emp curAccount;
@@ -101,7 +103,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		lblRole.setBounds(382, 94, 83, 13);
 		pnEmp.add(lblRole);
 
-		cbRole = new JComboBox();
+		cbRole = new JComboBox<String>();
 		cbRole.setBounds(495, 90, 93, 21);
 
 		cbRole.addItem("Nhân viên");

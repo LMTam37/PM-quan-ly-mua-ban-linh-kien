@@ -32,6 +32,7 @@ import ui.subUI.createProduct;
 import javax.swing.JComboBox;
 
 public class Product_UI extends JFrame implements ActionListener, MouseListener {
+	private static final long serialVersionUID = 1L;
 	private JPanel pnTitle, pnProductManage, pnSearch, pnTableProduct;
 	private JLabel lblNewLabel, lblProductId, lblTenLinhKien, lblMFG, lblMFGer, lblSearch;
 	private JTextField txtProductId, txtProductName, txtMFG, txtMFGer, txtSearch;

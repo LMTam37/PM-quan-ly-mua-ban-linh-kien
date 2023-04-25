@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,24 +9,17 @@ import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
-import org.jdatepicker.JDatePicker;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -38,11 +30,12 @@ import entity.BillDetail;
 import entity.Emp;
 import entity.Product;
 
-import javax.swing.JComboBox;
-import javax.swing.JScrollBar;
-
 public class BillList_UI extends JFrame implements ActionListener, MouseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1363319712600467037L;
 	private JPanel pnTitle, pnStatistic, pnBillList, pnBillDetail;
 	private JLabel lblTitle, lblToDate, lblDateFrom, lblCategory, lblProduct;
 	private JTable tableBillList, tableBillDetail;
@@ -204,13 +197,13 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 				billList = BillListDAO.getInstance().getListBillByDate(new Date(dcFromDate.getDate().getTime()),
 						new Date(dcToDate.getDate().getTime()));
 				loadTableBill(billList);
-			}else if(cbProduct.getSelectedIndex() == 0) {
-				billList = BillListDAO.getInstance().statisticByCategory(cbCategory.getSelectedIndex(),new Date(dcFromDate.getDate().getTime()),
-						new Date(dcToDate.getDate().getTime()));
+			} else if (cbProduct.getSelectedIndex() == 0) {
+				billList = BillListDAO.getInstance().statisticByCategory(cbCategory.getSelectedIndex(),
+						new Date(dcFromDate.getDate().getTime()), new Date(dcToDate.getDate().getTime()));
 				loadTableBill(billList);
-			}else {
-				billList = BillListDAO.getInstance().statisticByProduct(cbProduct.getSelectedIndex(),new Date(dcFromDate.getDate().getTime()),
-						new Date(dcToDate.getDate().getTime()));
+			} else {
+				billList = BillListDAO.getInstance().statisticByProduct(cbProduct.getSelectedIndex(),
+						new Date(dcFromDate.getDate().getTime()), new Date(dcToDate.getDate().getTime()));
 				loadTableBill(billList);
 			}
 		}
