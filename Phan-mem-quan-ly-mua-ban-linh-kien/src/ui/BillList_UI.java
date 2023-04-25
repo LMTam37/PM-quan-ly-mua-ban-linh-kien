@@ -211,7 +211,6 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 			}else {
 				billList = BillListDAO.getInstance().statisticByProduct(cbProduct.getSelectedIndex(),new Date(dcFromDate.getDate().getTime()),
 						new Date(dcToDate.getDate().getTime()));
-				System.out.println(cbProduct.getSelectedIndex());
 				loadTableBill(billList);
 			}
 		}
