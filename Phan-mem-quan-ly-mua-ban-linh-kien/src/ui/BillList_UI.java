@@ -200,13 +200,14 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnStatistic)) {
-			if (dcFromDate.getDate() == null || dcToDate.getDate() == null) {
-				JOptionPane.showMessageDialog(null, "Hãy chọn ngày thống kế");
-			} else {
+			if (cbCategory.getSelectedIndex() == 0 && cbProduct.getSelectedIndex() == 0) {
 				billList = BillListDAO.getInstance().getListBillByDate(new Date(dcFromDate.getDate().getTime()),
 						new Date(dcToDate.getDate().getTime()));
-				modelBillList.getDataVector().removeAllElements();
-				modelBillList.fireTableDataChanged();
+				loadTableBill(billList);
+			}else if(cbProduct.getSelectedIndex() == 0) {
+				billList = BillListDAO.getInstance().statisticByCategory(cbCategory.getSelectedIndex(),new Date(dcFromDate.getDate().getTime()),
+						new Date(dcToDate.getDate().getTime()));
+				System.out.println(billList);
 				loadTableBill(billList);
 			}
 		}
@@ -214,12 +215,12 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 
 	private void setTableBillList() {
 		billList = BillListDAO.getInstance().getListBill();
-		modelBillList.getDataVector().removeAllElements();
-		modelBillList.fireTableDataChanged();
 		loadTableBill(billList);
 	}
 
 	private void loadTableBill(ArrayList<Bill> list) {
+		modelBillList.getDataVector().removeAllElements();
+		modelBillList.fireTableDataChanged();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		DecimalFormat df = new DecimalFormat("#,###.##");
 		int serial = 0;

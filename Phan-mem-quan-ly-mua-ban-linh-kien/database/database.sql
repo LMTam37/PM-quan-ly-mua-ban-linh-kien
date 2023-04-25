@@ -258,3 +258,12 @@ AS
 	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
 	WHERE MaLinhKien = @productId AND NgayMua BETWEEN @TuNgay AND @DenNgay
 GO
+CREATE PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
+AS
+	SELECT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
+	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
+	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
+	JOIN LinhKien LK ON LK.MaLinhKien = CTDH.MaLinhKien
+	WHERE Maloai = @categoryId AND NgayMua BETWEEN @fromDate AND @toDate
+GO

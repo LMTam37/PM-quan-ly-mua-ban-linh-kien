@@ -66,6 +66,61 @@ public class BillListDAO {
 		return list;
 	}
 
+	public ArrayList<Bill> statisticByProduct(int productId,Date fromDate, Date toDate) {
+		ArrayList<Bill> list = new ArrayList<Bill>();
+		try {
+			Connection con = ConnectDB.getConnection();
+			String sql = "EXEC statisticByProduct ?, ?, ?";
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, productId); 
+			pst.setDate(2, fromDate);
+			pst.setDate(3, toDate);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				int billId = rs.getInt("MaDon");
+				String customerName = rs.getString("TenKhachHang");
+				Date purchaseDate = rs.getDate("NgayMua");
+				String empName = rs.getNString("TenNhanVien");
+				int discount = rs.getInt("GiamGia");
+				BigDecimal total = rs.getBigDecimal("ThanhTien");
+				list.add(new Bill(billId, customerName, purchaseDate, empName, discount, total));
+			}
+			ConnectDB.closeConnection(con);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+	public ArrayList<Bill> statisticByCategory(int categoryId,Date fromDate, Date toDate) {
+		ArrayList<Bill> list = new ArrayList<Bill>();
+		try {
+			Connection con = ConnectDB.getConnection();
+			String sql = "EXEC statisticByCategory ?, ?, ?";
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, categoryId); 
+			pst.setDate(2, fromDate);
+			pst.setDate(3, toDate);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				int billId = rs.getInt("MaDon");
+				String customerName = rs.getString("TenKhachHang");
+				Date purchaseDate = rs.getDate("NgayMua");
+				String empName = rs.getNString("TenNhanVien");
+				int discount = rs.getInt("GiamGia");
+				BigDecimal total = rs.getBigDecimal("ThanhTien");
+				list.add(new Bill(billId, customerName, purchaseDate, empName, discount, total));
+			}
+			ConnectDB.closeConnection(con);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+	
 	public ArrayList<Bill> getListBillByProduct(int productId, Date fromDate, Date toDate) {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
