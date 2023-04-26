@@ -40,7 +40,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	private static final long serialVersionUID = 1L;
 	private JPanel pnTitle, pnProductManage, pnSearch, pnTableProduct;
 	private JLabel lblNewLabel, lblProductId, lblProductName, lblMFG, lblMFGer, lblSearch, lblQty, lblPrice,
-			lblCategory;
+			lblCategory, lblCategorySearch;
 	private JTextField txtProductId, txtProductName, txtMFGer, txtSearch;
 	private JDateChooser dcMFG;
 	private JSpinner txtQty, txtPrice;
@@ -49,7 +49,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
 	private JScrollPane spProduct;
 	private ArrayList<Product> productList;
-	private JComboBox<String> cbCategory;
+	private JComboBox<String> cbCategory, cbCategorySearch;
 	private Emp curAccount;
 
 	public Product_UI(Emp account) {
@@ -86,7 +86,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		txtProductId = new JTextField();
 		txtProductId.setEditable(false);
 		txtProductId.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtProductId.setBounds(120, 17, 193, 19);
+		txtProductId.setBounds(120, 17, 170, 19);
 		pnProductManage.add(txtProductId);
 		txtProductId.setColumns(10);
 
@@ -96,26 +96,26 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 
 		txtProductName = new JTextField();
 		txtProductName.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtProductName.setBounds(120, 49, 193, 19);
+		txtProductName.setBounds(120, 49, 170, 19);
 		pnProductManage.add(txtProductName);
 		txtProductName.setColumns(10);
 
 		lblMFG = new JLabel("Ngày sản xuất");
-		lblMFG.setBounds(370, 23, 100, 13);
+		lblMFG.setBounds(320, 23, 100, 13);
 		pnProductManage.add(lblMFG);
 
 		dcMFG = new JDateChooser();
 		dcMFG.setFont(new Font("Tahoma", Font.BOLD, 10));
-		dcMFG.setBounds(480, 20, 193, 19);
+		dcMFG.setBounds(430, 20, 170, 19);
 		pnProductManage.add(dcMFG);
 
 		lblMFGer = new JLabel("Hàng sản xuất");
-		lblMFGer.setBounds(730, 23, 100, 13);
+		lblMFGer.setBounds(630, 23, 100, 13);
 		pnProductManage.add(lblMFGer);
 
 		txtMFGer = new JTextField();
 		txtMFGer.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtMFGer.setBounds(840, 20, 193, 19);
+		txtMFGer.setBounds(740, 20, 170, 19);
 		pnProductManage.add(txtMFGer);
 		txtMFGer.setColumns(10);
 
@@ -140,24 +140,38 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnProductManage.add(btnBack);
 
 		lblQty = new JLabel("Số lượng");
-		lblQty.setBounds(370, 52, 100, 13);
+		lblQty.setBounds(630, 52, 100, 13);
 		pnProductManage.add(lblQty);
 
 		txtQty = new JSpinner();
 		txtQty.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		txtQty.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtQty.setBounds(480, 49, 193, 19);
+		txtQty.setBounds(740, 49, 170, 19);
 		pnProductManage.add(txtQty);
 
 		lblPrice = new JLabel("Đơn giá");
-		lblPrice.setBounds(730, 49, 100, 13);
+		lblPrice.setBounds(940, 52, 100, 13);
 		pnProductManage.add(lblPrice);
 
 		txtPrice = new JSpinner();
 		txtPrice.setModel(new SpinnerNumberModel(0d, 0d, null, 0.01d));
 		txtPrice.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtPrice.setBounds(840, 46, 193, 19);
+		txtPrice.setBounds(1050, 49, 170, 19);
 		pnProductManage.add(txtPrice);
+
+		lblCategory = new JLabel("Loại");
+		lblCategory.setBounds(320, 52, 100, 13);
+		pnProductManage.add(lblCategory);
+
+		cbCategory = new JComboBox<String>();
+		cbCategory.addItem("CPU");
+		cbCategory.addItem("RAM");
+		cbCategory.addItem("VGA");
+		cbCategory.addItem("Mainboard");
+		cbCategory.addItem("Nguồn máy tính");
+		cbCategory.addItem("Ổ cứng");
+		cbCategory.setBounds(430, 49, 170, 21);
+		pnProductManage.add(cbCategory);
 
 		pnSearch = new JPanel();
 		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -176,31 +190,32 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		txtSearch.setColumns(10);
 
 		btnSearch = new JButton("Tìm");
-		btnSearch.setBounds(249, 16, 85, 21);
+		btnSearch.setBounds(458, 16, 85, 21);
 		pnSearch.add(btnSearch);
 
-		cbCategory = new JComboBox<String>();
-		cbCategory.addItem("CPU");
-		cbCategory.addItem("RAM");
-		cbCategory.addItem("VGA");
-		cbCategory.addItem("Mainboard");
-		cbCategory.addItem("Nguồn máy tính");
-		cbCategory.addItem("Ổ cứng");
-		cbCategory.addActionListener(new ActionListener() {
+		cbCategorySearch = new JComboBox<String>();
+		cbCategorySearch.addItem("CPU");
+		cbCategorySearch.addItem("RAM");
+		cbCategorySearch.addItem("VGA");
+		cbCategorySearch.addItem("Mainboard");
+		cbCategorySearch.addItem("Nguồn máy tính");
+		cbCategorySearch.addItem("Ổ cứng");
+		cbCategorySearch.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
+				productList = ProductDAO.getInstance()
+						.getListProductByCategory(cbCategorySearch.getSelectedIndex() + 1);
 				loadProductList();
 			}
 		});
 
-		cbCategory.setBounds(435, 17, 120, 21);
-		pnSearch.add(cbCategory);
+		cbCategorySearch.setBounds(314, 15, 120, 21);
+		pnSearch.add(cbCategorySearch);
 
-		lblCategory = new JLabel("Loại");
-		lblCategory.setBounds(380, 21, 45, 13);
-		pnSearch.add(lblCategory);
+		lblCategorySearch = new JLabel("Loại");
+		lblCategorySearch.setBounds(259, 19, 45, 13);
+		pnSearch.add(lblCategorySearch);
 
 		pnTableProduct = new JPanel();
 		pnTableProduct.setBounds(0, 232, 1386, 431);
@@ -236,7 +251,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
-			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
+			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategorySearch.getSelectedIndex() + 1,
 					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) txtQty.getValue(),
 					new BigDecimal(txtPrice.getValue().toString()));
 			JOptionPane.showMessageDialog(null, "Tạo linh kiện thành công");
@@ -244,7 +259,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			clear();
 		} else if (o.equals(btnSearch)) {
 			String productName = txtSearch.getText();
-			productList = ProductDAO.getInstance().getProductByName(productName, cbCategory.getSelectedIndex() + 1);
+			productList = ProductDAO.getInstance().getProductByName(productName,
+					cbCategorySearch.getSelectedIndex() + 1);
 			load(productList);
 		} else if (o.equals(btnRemove)) {
 			int row = tableProduct.getSelectedRow();
@@ -315,7 +331,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	}
 
 	public void loadProductList() {
-		productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
+		productList = ProductDAO.getInstance().getListProductByCategory(cbCategorySearch.getSelectedIndex() + 1);
 		load(productList);
 	}
 
