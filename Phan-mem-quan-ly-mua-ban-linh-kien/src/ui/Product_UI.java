@@ -194,6 +194,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnSearch.add(btnSearch);
 
 		cbCategorySearch = new JComboBox<String>();
+		cbCategorySearch.addItem("Tất cả");
 		cbCategorySearch.addItem("CPU");
 		cbCategorySearch.addItem("RAM");
 		cbCategorySearch.addItem("VGA");
@@ -204,9 +205,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				productList = ProductDAO.getInstance()
-						.getListProductByCategory(cbCategorySearch.getSelectedIndex() + 1);
-				loadProductList();
+				instanceLoadList();
 			}
 		});
 
@@ -241,7 +240,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		btnSearch.addActionListener(this);
 		tableProduct.addMouseListener(this);
 
-		loadProductList();
+		loadAllProductList();
 	}
 
 	@Override
@@ -254,14 +253,13 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
 					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
 					new BigDecimal(spinnerPrice.getValue().toString()));
-			loadProductList();
+			instanceLoadList();
 			JOptionPane.showMessageDialog(null, "Tạo linh kiện thành công");
 		} else if (o.equals(btnClear)) {
 			clear();
 		} else if (o.equals(btnSearch)) {
 			String productName = txtSearch.getText();
-			productList = ProductDAO.getInstance().getProductByName(productName,
-					cbCategorySearch.getSelectedIndex() + 1);
+			productList = ProductDAO.getInstance().getProductByName(productName, cbCategorySearch.getSelectedIndex());
 			load(productList);
 		} else if (o.equals(btnRemove)) {
 			int row = tableProduct.getSelectedRow();
@@ -269,7 +267,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn linh kiện cần xóa");
 			} else {
 				String productName = modelProduct.getValueAt(row, 2).toString();
-				String notifyMsg = "Bạn có chắc xóa nhân viên " + productName;
+				String notifyMsg = "Bạn có chắc xóa linh kiện " + productName;
 				int select = JOptionPane.showConfirmDialog(null, notifyMsg, "Thông báo", JOptionPane.YES_NO_OPTION);
 				if (select == JOptionPane.YES_OPTION) {
 					int result = ProductDAO.getInstance()
@@ -292,14 +290,27 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 						txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
 						new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
 						new BigDecimal(spinnerPrice.getValue().toString()));
-				loadProductList();
+				instanceLoadList();
 				JOptionPane.showMessageDialog(null, "Cập nhật linh kiện thành công");
 			}
 		}
 	}
 
+	public void instanceLoadList() {
+		if (cbCategorySearch.getSelectedIndex() == 0) {
+			loadAllProductList();
+		} else {
+			loadProductList();
+		}
+	}
+
 	public void loadProductList() {
-		productList = ProductDAO.getInstance().getListProductByCategory(cbCategorySearch.getSelectedIndex() + 1);
+		productList = ProductDAO.getInstance().getListProductByCategory(cbCategorySearch.getSelectedIndex());
+		load(productList);
+	}
+
+	private void loadAllProductList() {
+		productList = ProductDAO.getInstance().getListProduct();
 		load(productList);
 	}
 
