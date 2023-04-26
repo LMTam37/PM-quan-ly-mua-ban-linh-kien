@@ -43,7 +43,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			lblCategory, lblCategorySearch;
 	private JTextField txtProductId, txtProductName, txtMFGer, txtSearch;
 	private JDateChooser dcMFG;
-	private JSpinner txtQty, txtPrice;
+	private JSpinner spinnerQty, spinnerPrice;
 	private JTable tableProduct;
 	private DefaultTableModel modelProduct;
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
@@ -143,21 +143,21 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		lblQty.setBounds(630, 52, 100, 13);
 		pnProductManage.add(lblQty);
 
-		txtQty = new JSpinner();
-		txtQty.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
-		txtQty.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtQty.setBounds(740, 49, 170, 19);
-		pnProductManage.add(txtQty);
+		spinnerQty = new JSpinner();
+		spinnerQty.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+		spinnerQty.setFont(new Font("Tahoma", Font.BOLD, 10));
+		spinnerQty.setBounds(740, 49, 170, 19);
+		pnProductManage.add(spinnerQty);
 
 		lblPrice = new JLabel("Đơn giá");
 		lblPrice.setBounds(940, 52, 100, 13);
 		pnProductManage.add(lblPrice);
 
-		txtPrice = new JSpinner();
-		txtPrice.setModel(new SpinnerNumberModel(0d, 0d, null, 0.01d));
-		txtPrice.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtPrice.setBounds(1050, 49, 170, 19);
-		pnProductManage.add(txtPrice);
+		spinnerPrice = new JSpinner();
+		spinnerPrice.setModel(new SpinnerNumberModel(0d, 0d, null, 0.01d));
+		spinnerPrice.setFont(new Font("Tahoma", Font.BOLD, 10));
+		spinnerPrice.setBounds(1050, 49, 170, 19);
+		pnProductManage.add(spinnerPrice);
 
 		lblCategory = new JLabel("Loại");
 		lblCategory.setBounds(320, 52, 100, 13);
@@ -251,9 +251,10 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
-			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategorySearch.getSelectedIndex() + 1,
-					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) txtQty.getValue(),
-					new BigDecimal(txtPrice.getValue().toString()));
+			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
+					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
+					new BigDecimal(spinnerPrice.getValue().toString()));
+			loadProductList();
 			JOptionPane.showMessageDialog(null, "Tạo linh kiện thành công");
 		} else if (o.equals(btnClear)) {
 			clear();
@@ -285,47 +286,14 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		} else if (o.equals(btnUpdate)) {
 			int row = tableProduct.getSelectedRow();
 			if (row == -1) {
-				JOptionPane.showMessageDialog(null, "Bạn cần chọn linh kiện để cập nhật trước");
+				JOptionPane.showMessageDialog(null, "Bạn chưa chọn linh kiện cần cập nhật");
 			} else {
-				try {
-					int productId = Integer.parseInt(modelProduct.getValueAt(row, 1).toString());
-					String productName = modelProduct.getValueAt(row, 2).toString();
-					String mfg = modelProduct.getValueAt(row, 3).toString();
-					java.util.Date date = new SimpleDateFormat("dd/MM/yyyy").parse(mfg);
-					String mfger = modelProduct.getValueAt(row, 4).toString();
-					int qty = Integer.parseInt(modelProduct.getValueAt(row, 5).toString());
-					BigDecimal price = BigDecimal
-							.valueOf(Double.parseDouble(modelProduct.getValueAt(row, 6).toString()));
-					createProduct createProductDialog = new createProduct(productId, productName, date, mfger, qty,
-							price);
-					createProductDialog.setVisible(true);
-					createProductDialog.addComponentListener(new ComponentListener() {
-						public void componentHidden(ComponentEvent e) {
-							loadProductList();
-						}
-
-						@Override
-						public void componentResized(ComponentEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void componentMoved(ComponentEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void componentShown(ComponentEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				ProductDAO.getInstance().updateProduct(Integer.parseInt(txtProductId.getText()),
+						txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
+						new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
+						new BigDecimal(spinnerPrice.getValue().toString()));
+				loadProductList();
+				JOptionPane.showMessageDialog(null, "Cập nhật linh kiện thành công");
 			}
 		}
 	}
@@ -351,8 +319,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		txtProductName.setText("");
 		dcMFG.setDate(null);
 		txtMFGer.setText("");
-		txtQty.setValue(Integer.parseInt("0"));
-		txtPrice.setValue(Integer.parseInt("0"));
+		spinnerQty.setValue(Integer.parseInt("0"));
+		spinnerPrice.setValue(Integer.parseInt("0"));
 	}
 
 	@Override
@@ -363,8 +331,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		txtProductName.setText(tempProduct.getProductName());
 		dcMFG.setDate(tempProduct.getMfg());
 		txtMFGer.setText(tempProduct.getMfger());
-		txtQty.setValue(tempProduct.getQty());
-		txtPrice.setValue(tempProduct.getPrice());
+		spinnerQty.setValue(tempProduct.getQty());
+		spinnerPrice.setValue(tempProduct.getPrice());
 	}
 
 	@Override
