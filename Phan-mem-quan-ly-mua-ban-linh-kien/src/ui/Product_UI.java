@@ -10,6 +10,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,10 +21,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import com.toedter.calendar.JDateChooser;
 
 import dao.ProductDAO;
 import entity.Emp;
@@ -34,16 +39,18 @@ import javax.swing.JComboBox;
 public class Product_UI extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel pnTitle, pnProductManage, pnSearch, pnTableProduct;
-	private JLabel lblNewLabel, lblProductId, lblTenLinhKien, lblMFG, lblMFGer, lblSearch;
-	private JTextField txtProductId, txtProductName, txtMFG, txtMFGer, txtSearch;
+	private JLabel lblNewLabel, lblProductId, lblProductName, lblMFG, lblMFGer, lblSearch, lblQty, lblPrice,
+			lblCategory;
+	private JTextField txtProductId, txtProductName, txtMFGer, txtSearch;
+	private JDateChooser dcMFG;
+	private JSpinner txtQty, txtPrice;
 	private JTable tableProduct;
 	private DefaultTableModel modelProduct;
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
 	private JScrollPane spProduct;
 	private ArrayList<Product> productList;
-	private Emp curAccount;
 	private JComboBox<String> cbCategory;
-	private JLabel lblCategory;
+	private Emp curAccount;
 
 	public Product_UI(Emp account) {
 		getContentPane().setBackground(new Color(255, 255, 255));
@@ -73,43 +80,42 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnProductManage.setLayout(null);
 
 		lblProductId = new JLabel("Mã linh kiện");
-		lblProductId.setBounds(10, 20, 74, 13);
+		lblProductId.setBounds(10, 20, 100, 13);
 		pnProductManage.add(lblProductId);
 
 		txtProductId = new JTextField();
 		txtProductId.setEditable(false);
 		txtProductId.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtProductId.setBounds(105, 17, 193, 19);
+		txtProductId.setBounds(120, 17, 193, 19);
 		pnProductManage.add(txtProductId);
 		txtProductId.setColumns(10);
 
-		lblTenLinhKien = new JLabel("Tên linh kiện");
-		lblTenLinhKien.setBounds(10, 43, 74, 13);
-		pnProductManage.add(lblTenLinhKien);
+		lblProductName = new JLabel("Tên linh kiện");
+		lblProductName.setBounds(10, 52, 100, 13);
+		pnProductManage.add(lblProductName);
 
 		txtProductName = new JTextField();
 		txtProductName.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtProductName.setBounds(105, 40, 193, 19);
+		txtProductName.setBounds(120, 49, 193, 19);
 		pnProductManage.add(txtProductName);
 		txtProductName.setColumns(10);
 
 		lblMFG = new JLabel("Ngày sản xuất");
-		lblMFG.setBounds(373, 23, 100, 13);
+		lblMFG.setBounds(370, 23, 100, 13);
 		pnProductManage.add(lblMFG);
 
-		txtMFG = new JTextField();
-		txtMFG.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtMFG.setBounds(483, 20, 193, 19);
-		pnProductManage.add(txtMFG);
-		txtMFG.setColumns(10);
+		dcMFG = new JDateChooser();
+		dcMFG.setFont(new Font("Tahoma", Font.BOLD, 10));
+		dcMFG.setBounds(480, 20, 193, 19);
+		pnProductManage.add(dcMFG);
 
 		lblMFGer = new JLabel("Hàng sản xuất");
-		lblMFGer.setBounds(373, 46, 100, 13);
+		lblMFGer.setBounds(730, 23, 100, 13);
 		pnProductManage.add(lblMFGer);
 
 		txtMFGer = new JTextField();
 		txtMFGer.setFont(new Font("Tahoma", Font.BOLD, 10));
-		txtMFGer.setBounds(483, 46, 193, 19);
+		txtMFGer.setBounds(840, 20, 193, 19);
 		pnProductManage.add(txtMFGer);
 		txtMFGer.setColumns(10);
 
@@ -132,6 +138,26 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		btnBack = new JButton("Thoát");
 		btnBack.setBounds(530, 86, 100, 21);
 		pnProductManage.add(btnBack);
+
+		lblQty = new JLabel("Số lượng");
+		lblQty.setBounds(370, 52, 100, 13);
+		pnProductManage.add(lblQty);
+
+		txtQty = new JSpinner();
+		txtQty.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+		txtQty.setFont(new Font("Tahoma", Font.BOLD, 10));
+		txtQty.setBounds(480, 49, 193, 19);
+		pnProductManage.add(txtQty);
+
+		lblPrice = new JLabel("Đơn giá");
+		lblPrice.setBounds(730, 49, 100, 13);
+		pnProductManage.add(lblPrice);
+
+		txtPrice = new JSpinner();
+		txtPrice.setModel(new SpinnerNumberModel(0d, 0d, null, 0.01d));
+		txtPrice.setFont(new Font("Tahoma", Font.BOLD, 10));
+		txtPrice.setBounds(840, 46, 193, 19);
+		pnProductManage.add(txtPrice);
 
 		pnSearch = new JPanel();
 		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -210,31 +236,10 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
-			createProduct createProductDialog = new createProduct();
-			createProductDialog.setVisible(true);
-			createProductDialog.addComponentListener(new ComponentListener() {
-				public void componentHidden(ComponentEvent e) {
-					loadProductList();
-				}
-
-				@Override
-				public void componentResized(ComponentEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void componentMoved(ComponentEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void componentShown(ComponentEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
+			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
+					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) txtQty.getValue(),
+					new BigDecimal(txtPrice.getValue().toString()));
+			JOptionPane.showMessageDialog(null, "Tạo linh kiện thành công");
 		} else if (o.equals(btnClear)) {
 			clear();
 		} else if (o.equals(btnSearch)) {
@@ -328,17 +333,22 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	public void clear() {
 		txtProductId.setText("");
 		txtProductName.setText("");
-		txtMFG.setText("");
+		dcMFG.setDate(null);
 		txtMFGer.setText("");
+		txtQty.setValue(Integer.parseInt("0"));
+		txtPrice.setValue(Integer.parseInt("0"));
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int row = tableProduct.getSelectedRow();
-		txtProductId.setText(tableProduct.getValueAt(row, 1).toString());
-		txtProductName.setText(tableProduct.getValueAt(row, 2).toString());
-		txtMFG.setText(tableProduct.getValueAt(row, 3).toString());
-		txtMFGer.setText(tableProduct.getValueAt(row, 4).toString());
+		Product tempProduct = productList.get(Integer.parseInt(tableProduct.getValueAt(row, 0).toString()) - 1);
+		txtProductId.setText(Integer.toString(tempProduct.getProductId()));
+		txtProductName.setText(tempProduct.getProductName());
+		dcMFG.setDate(tempProduct.getMfg());
+		txtMFGer.setText(tempProduct.getMfger());
+		txtQty.setValue(tempProduct.getQty());
+		txtPrice.setValue(tempProduct.getPrice());
 	}
 
 	@Override
