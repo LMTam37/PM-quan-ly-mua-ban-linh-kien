@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ import entity.Bill;
 import entity.BillDetail;
 import entity.Emp;
 import entity.Product;
+import javax.swing.JTextField;
 
 public class BillList_UI extends JFrame implements ActionListener, MouseListener {
 
@@ -36,8 +38,8 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	 * 
 	 */
 	private static final long serialVersionUID = -1363319712600467037L;
-	private JPanel pnTitle, pnStatistic, pnBillList, pnBillDetail;
-	private JLabel lblTitle, lblToDate, lblDateFrom, lblCategory, lblProduct;
+	private JPanel pnTitle, pnStatistic, pnBillList, pnBillDetail, pnStatisticIncome;
+	private JLabel lblTitle, lblToDate, lblDateFrom, lblCategory, lblProduct, lblIncome;
 	private JTable tableBillList, tableBillDetail;
 	private DefaultTableModel modelBillList, modelBillDetail;
 	private JComboBox<String> cbCategory, cbProduct;
@@ -46,6 +48,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	private ArrayList<Bill> billList;
 	private ArrayList<BillDetail> billDetailList;
 	private Emp curAccount;
+	private JTextField txtIncome;
 
 	public BillList_UI(Emp account) {
 		getContentPane().setBackground(new Color(255, 255, 255));
@@ -144,7 +147,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnBillList.setBackground(new Color(255, 255, 255));
 		pnBillList.setBorder(
 				new TitledBorder(null, "Danh sách hóa đơn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnBillList.setBounds(0, 167, 1386, 227);
+		pnBillList.setBounds(0, 167, 1386, 233);
 		getContentPane().add(pnBillList);
 		pnBillList.setLayout(null);
 
@@ -155,7 +158,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 
 		JScrollPane spBillList = new JScrollPane(tableBillList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		spBillList.setBounds(10, 20, 1376, 196);
+		spBillList.setBounds(10, 20, 1376, 203);
 		spBillList.getViewport().setBackground(Color.WHITE);
 		pnBillList.add(spBillList);
 
@@ -166,7 +169,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnBillDetail.setLayout(null);
 		pnBillDetail.setBorder(
 				new TitledBorder(null, "Chi tiết hoa đơn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnBillDetail.setBounds(0, 404, 1386, 259);
+		pnBillDetail.setBounds(0, 410, 1386, 213);
 		getContentPane().add(pnBillDetail);
 
 		String[] billDetailColumnName = { "STT", "Tên linh kiện", "Tên loại", "Số lượng", "Đơn giá" };
@@ -174,9 +177,24 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		tableBillDetail = new JTable(modelBillDetail);
 		JScrollPane spBillDetail = new JScrollPane(tableBillDetail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		spBillDetail.setBounds(10, 23, 1366, 226);
+		spBillDetail.setBounds(10, 23, 1366, 180);
 		spBillDetail.getViewport().setBackground(Color.WHITE);
 		pnBillDetail.add(spBillDetail);
+
+		pnStatisticIncome = new JPanel();
+		pnStatisticIncome.setBackground(new Color(255, 255, 255));
+		pnStatisticIncome.setBounds(0, 623, 1386, 40);
+		getContentPane().add(pnStatisticIncome);
+		pnStatisticIncome.setLayout(null);
+
+		lblIncome = new JLabel("Tổng doanh thu");
+		lblIncome.setBounds(541, 11, 125, 19);
+		pnStatisticIncome.add(lblIncome);
+
+		txtIncome = new JTextField();
+		txtIncome.setBounds(676, 11, 204, 19);
+		pnStatisticIncome.add(txtIncome);
+		txtIncome.setColumns(10);
 
 		btnStatistic.addActionListener(this);
 		btnBack.addActionListener(this);
@@ -225,6 +243,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 					bill.getCustomerName(), sdf.format(bill.getPurchaseDate()), bill.getEmpName(), bill.getDiscount(),
 					df.format(bill.getTotal()) });
 		}
+		txtIncome.setText(df.format(getTotalIncome()));
 	}
 
 	private void setTableBillDetail(int billId) {
@@ -248,6 +267,14 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		for (Product curProduct : list) {
 			cbProduct.addItem(curProduct.getProductName());
 		}
+	}
+
+	private BigDecimal getTotalIncome() {
+		BigDecimal total = new BigDecimal(0);
+		for (Bill curBill : billList) {
+			total = total.add(curBill.getTotal());
+		}
+		return total;
 	}
 
 	@Override
