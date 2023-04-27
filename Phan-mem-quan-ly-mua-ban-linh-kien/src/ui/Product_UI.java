@@ -341,6 +341,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		txtProductId.setText(Integer.toString(tempProduct.getProductId()));
 		txtProductName.setText(tempProduct.getProductName());
 		dcMFG.setDate(tempProduct.getMfg());
+		cbCategory.setSelectedItem(tempProduct.getCategory());
 		txtMFGer.setText(tempProduct.getMfger());
 		spinnerQty.setValue(tempProduct.getQty());
 		spinnerPrice.setValue(tempProduct.getPrice());

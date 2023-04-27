@@ -12,20 +12,22 @@ public class Product {
 	private int qty;
 	private BigDecimal price;
 
-	public Product(int productId, String productName, String category, Date mfg, String mfger, int qty,
-			BigDecimal price) {
+	public Product(String productName, String category, Date mfg, String mfger, int qty, BigDecimal price) {
 		super();
-		this.productId = productId;
 		this.productName = productName;
+		this.category = category;
 		this.mfg = mfg;
 		this.mfger = mfger;
 		this.qty = qty;
 		this.price = price;
 	}
 
-	public Product(String productName, String category, Date mfg, String mfger, int qty, BigDecimal price) {
+	public Product(int productId, String productName, String category, Date mfg, String mfger, int qty,
+			BigDecimal price) {
 		super();
+		this.productId = productId;
 		this.productName = productName;
+		this.category = category;
 		this.mfg = mfg;
 		this.mfger = mfger;
 		this.qty = qty;
@@ -86,6 +88,12 @@ public class Product {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [productId=" + productId + ", productName=" + productName + ", category=" + category + ", mfg="
+				+ mfg + ", mfger=" + mfger + ", qty=" + qty + ", price=" + price + "]";
 	}
 
 }
