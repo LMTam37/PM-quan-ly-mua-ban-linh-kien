@@ -33,7 +33,6 @@ import com.toedter.calendar.JDateChooser;
 import dao.ProductDAO;
 import entity.Emp;
 import entity.Product;
-import ui.subUI.createProduct;
 import javax.swing.JComboBox;
 
 public class Product_UI extends JFrame implements ActionListener, MouseListener {
