@@ -87,46 +87,16 @@ public class EmpManageDAO {
 		return result;
 	}
 
-	public int updateEmpName(int empId, String newEmpname) {
+	public int updateEmp(int empId,String username, String empName, String password, boolean role) {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "UPDATE NhanVien SET TenNhanVien = ? WHERE MaNhanVien = ?";
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, newEmpname);
-			pst.setInt(2, empId);
-			result = pst.executeUpdate();
-			ConnectDB.closeConnection(con);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public int updateEmpUsername(int empId, String newUsername) {
-		int result = 0;
-		try {
-			Connection con = ConnectDB.getConnection();
-			String sql = "UPDATE NhanVien SET TenDangNhap = ? WHERE MaNhanVien = ?";
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, newUsername);
-			pst.setInt(2, empId);
-			result = pst.executeUpdate();
-			ConnectDB.closeConnection(con);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public int updateEmpPassword(int empId, String newPassword) {
-		int result = 0;
-		try {
-			Connection con = ConnectDB.getConnection();
-			String sql = "UPDATE NhanVien SET MatKhau = ? WHERE MaNhanVien = ?";
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, newPassword);
-			pst.setInt(2, empId);
+			PreparedStatement pst = con.prepareStatement("UPDATE NhanVien SET TenNhanVien = ?, TenDangNhap = ?, MatKhau = ?, VaiTro = ? WHERE MaNhanVien = ?");
+			pst.setString(1, empName);
+			pst.setString(2, username);
+			pst.setString(3, password);
+			pst.setBoolean(4, role);
+			pst.setInt(5, empId);
 			result = pst.executeUpdate();
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {

@@ -23,6 +23,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.EmpManageDAO;
+import dao.ProductDAO;
 import entity.Emp;
 
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
@@ -234,20 +235,19 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 			clear();
 		} else if (o.equals(btnUpdate)) {
 			int row = tableEmp.getSelectedRow();
-			String username = modelEmp.getValueAt(row, 1).toString();
+			boolean role;
+			if (cbRole.getSelectedIndex() == 0) {
+				role = true;
+			} else {
+				role = false;
+			}
 			if (row == -1) {
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhân viên cần cập nhật ");
 			} else {
-				Object response = JOptionPane.showInputDialog(null, "Chọn thông tin bạn muốn cập nhật", "Thông báo",
-						JOptionPane.QUESTION_MESSAGE, null,
-						new String[] { "Tên đăng nhập", "Tên nhân viên", "Mật khẩu" }, "Tên đăng nhập");
-				if (response.equals("Tên đăng nhập")) {
-					updateEmpUsername(row, username);
-				} else if (response.equals("Tên nhân viên")) {
-					updateEmpName(row, username);
-				} else if (response.equals("Mật khẩu")) {
-					updateEmpPassword(row, username);
-				}
+				EmpManageDAO.getInstance().updateEmp(Integer.parseInt(txtEmpId.getText()), txtUsername.getText(),
+						txtEmpName.getText(), new String(txtPassword.getPassword()), role);
+				JOptionPane.showMessageDialog(null, "Cập nhật nhân viên thành công");
+				loadAccountList();
 			}
 		} else if (o.equals(btnSearch)) {
 			list = EmpManageDAO.getInstance().getListEmpBySearch(txtSearch.getText());
@@ -285,45 +285,6 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
-	private void updateEmpName(int row, String username) {
-		String notifyMsg = "Nhập vào tên mới cho nhân viên " + username;
-		String input = JOptionPane.showInputDialog(null, notifyMsg);
-		if (input.trim().equals("")) {
-			JOptionPane.showMessageDialog(null, "Tên cần cập nhật không được để trống");
-		} else {
-			EmpManageDAO.getInstance().updateEmpName(list.get(row).getEmpId(), input);
-			notifyMsg = "Cập nhật thành công tên mới của " + username + " là " + input;
-			JOptionPane.showMessageDialog(null, notifyMsg);
-			modelEmp.setValueAt(input, row, 2);
-		}
-	}
-
-	private void updateEmpUsername(int row, String username) {
-		String notifyMsg = "Nhập vào tên mới cho nhân viên " + username;
-		String input = JOptionPane.showInputDialog(null, notifyMsg);
-		if (input.trim().equals("")) {
-			JOptionPane.showMessageDialog(null, "Tên đăng nhập cần cập nhật không được để trống");
-		} else {
-			EmpManageDAO.getInstance().updateEmpUsername(list.get(row).getEmpId(), input);
-			notifyMsg = "Cập nhật thành công Tên đăng nhập mới của " + username + " là " + input;
-			JOptionPane.showMessageDialog(null, notifyMsg);
-			modelEmp.setValueAt(input, row, 1);
-		}
-
-	}
-
-	private void updateEmpPassword(int row, String username) {
-		String notifyMsg = "Nhập vào mật khẩu mới cho nhân viên " + username;
-		String input = JOptionPane.showInputDialog(null, notifyMsg);
-		if (input.trim().equals("")) {
-			JOptionPane.showMessageDialog(null, "Mật khẩu cần cập nhật không được để trống");
-		} else {
-			EmpManageDAO.getInstance().updateEmpPassword(list.get(row).getEmpId(), input);
-			notifyMsg = "Cập nhật thành công mật khẩu mới cho " + username;
-			JOptionPane.showMessageDialog(null, notifyMsg);
-		}
-	}
-
 	private boolean isEmpty(JTextField txt) {
 		if (txt.getText().trim().equals("")) {
 			txt.requestFocus();
@@ -336,10 +297,17 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		int row = tableEmp.getSelectedRow();
 		Emp emp = list.get(row);
+		int role;
+		if (emp.isRole()) {
+			role = 0;
+		} else {
+			role = 1;
+		}
 		txtEmpId.setText(Integer.toString(emp.getEmpId()));
 		txtUsername.setText(emp.getUsername());
 		txtEmpName.setText(emp.getEmpName());
 		txtPassword.setText(emp.getPassword());
+		cbRole.setSelectedIndex(role);
 	}
 
 	@Override
