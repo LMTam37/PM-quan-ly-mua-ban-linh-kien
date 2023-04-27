@@ -221,8 +221,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		getContentPane().add(pnTableProduct);
 		pnTableProduct.setLayout(new BorderLayout(0, 0));
 
-		String[] productColumnName = { "STT", "Mã linh kiện", "Tên linh kiện", "Ngày sản xuất", "Hãng sản xuất",
-				"Số lượng", "Đơn giả" };
+		String[] productColumnName = { "STT", "Mã linh kiện", "Tên linh kiện", "Loại linh kiện", "Ngày sản xuất",
+				"Hãng sản xuất", "Số lượng", "Đơn giả" };
 		modelProduct = new DefaultTableModel(productColumnName, 0);
 		tableProduct = new JTable(modelProduct);
 		spProduct = new JScrollPane(tableProduct, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -319,9 +319,10 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		modelProduct.fireTableDataChanged();
 		int serial = 1;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
-		for (Product product : list) {
-			modelProduct.addRow(new Object[] { serial++, product.getProductId(), product.getProductName(),
-					sdf.format(product.getMfg()), product.getMfger(), product.getQty(), product.getPrice() });
+		for (Product curProduct : list) {
+			modelProduct.addRow(new Object[] { serial++, curProduct.getProductId(), curProduct.getProductName(),
+					curProduct.getCategory(), sdf.format(curProduct.getMfg()), curProduct.getMfger(),
+					curProduct.getQty(), curProduct.getPrice() });
 		}
 	}
 
