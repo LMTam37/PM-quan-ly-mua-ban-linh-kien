@@ -18,6 +18,7 @@ public class Bill {
 		this.discount = discount;
 		this.total = total;
 	}
+
 	public Bill(String customerName, Date purchaseDate, String empName, int discount, BigDecimal total) {
 		super();
 		this.customerName = customerName;
@@ -26,6 +27,7 @@ public class Bill {
 		this.discount = discount;
 		this.total = total;
 	}
+
 	public int getBillId() {
 		return billId;
 	}
@@ -73,5 +75,4 @@ public class Bill {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
-
 }

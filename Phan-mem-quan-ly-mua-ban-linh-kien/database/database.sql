@@ -252,7 +252,7 @@ AS
 GO
 CREATE PROC statisticByProduct @productId INT, @fromDate DATE, @toDate DATE
 AS
-	SELECT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+	SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
 	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
@@ -260,7 +260,7 @@ AS
 GO
 CREATE PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
 AS
-	SELECT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+	SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
 	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon

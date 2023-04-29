@@ -205,7 +205,6 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnStatistic)) {
-			Product curProduct = listProduct.get(cbProduct.getSelectedIndex() - 1);
 			if (cbCategory.getSelectedIndex() == 0 && cbProduct.getSelectedIndex() == 0) {
 				billList = BillListDAO.getInstance().getListBillByDate(new Date(dcFromDate.getDate().getTime()),
 						new Date(dcToDate.getDate().getTime()));
@@ -215,6 +214,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 						new Date(dcFromDate.getDate().getTime()), new Date(dcToDate.getDate().getTime()));
 				loadTableBill(billList);
 			} else {
+				Product curProduct = listProduct.get(cbProduct.getSelectedIndex() - 1);
 				billList = BillListDAO.getInstance().statisticByProduct(curProduct.getProductId(),
 						new Date(dcFromDate.getDate().getTime()), new Date(dcToDate.getDate().getTime()));
 				loadTableBill(billList);
@@ -277,7 +277,6 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		int row = tableBillList.getSelectedRow();
 		int empId = Integer.parseInt((String) tableBillList.getValueAt(row, 1));
 		setTableBillDetail(empId);
-		System.out.println("click");
 	}
 
 	@Override
