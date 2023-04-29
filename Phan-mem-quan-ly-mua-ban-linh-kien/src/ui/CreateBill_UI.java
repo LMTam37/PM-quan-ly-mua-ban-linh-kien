@@ -15,7 +15,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Vector;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,9 +35,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
+import dao.CategoryDAO;
 import dao.CreateBillDAO;
 import dao.ProductDAO;
 import entity.BillDetail;
+import entity.Category;
 import entity.Emp;
 import entity.Product;
 import javax.swing.JComboBox;
@@ -302,13 +307,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		lblCategory.setBounds(322, 25, 45, 13);
 		pnProductInfo.add(lblCategory);
 
-		cbCategory = new JComboBox<String>();
-		cbCategory.addItem("CPU");
-		cbCategory.addItem("RAM");
-		cbCategory.addItem("VGA");
-		cbCategory.addItem("Mainboard");
-		cbCategory.addItem("Nguồn máy tính");
-		cbCategory.addItem("Ổ cứng");
+		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
 		cbCategory.addActionListener(new ActionListener() {
 
 			@Override

@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import dao.CategoryDAO;
 import dao.ProductDAO;
 import entity.Emp;
 import entity.Product;
@@ -162,13 +164,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		lblCategory.setBounds(320, 52, 100, 13);
 		pnProductManage.add(lblCategory);
 
-		cbCategory = new JComboBox<String>();
-		cbCategory.addItem("CPU");
-		cbCategory.addItem("RAM");
-		cbCategory.addItem("VGA");
-		cbCategory.addItem("Mainboard");
-		cbCategory.addItem("Nguồn máy tính");
-		cbCategory.addItem("Ổ cứng");
+		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
+		cbCategory.removeItemAt(0);
 		cbCategory.setBounds(430, 49, 170, 21);
 		pnProductManage.add(cbCategory);
 
@@ -192,14 +189,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		btnSearch.setBounds(458, 16, 85, 21);
 		pnSearch.add(btnSearch);
 
-		cbCategorySearch = new JComboBox<String>();
-		cbCategorySearch.addItem("Tất cả");
-		cbCategorySearch.addItem("CPU");
-		cbCategorySearch.addItem("RAM");
-		cbCategorySearch.addItem("VGA");
-		cbCategorySearch.addItem("Mainboard");
-		cbCategorySearch.addItem("Nguồn máy tính");
-		cbCategorySearch.addItem("Ổ cứng");
+		cbCategorySearch = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
+
 		cbCategorySearch.addActionListener(new ActionListener() {
 
 			@Override

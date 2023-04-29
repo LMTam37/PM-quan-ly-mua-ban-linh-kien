@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import dao.BillListDAO;
+import dao.CategoryDAO;
 import dao.ProductDAO;
 import entity.Bill;
 import entity.BillDetail;
@@ -106,7 +108,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		lblCategory.setBounds(58, 27, 74, 13);
 		pnStatistic.add(lblCategory);
 
-		cbCategory = new JComboBox<String>();
+		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
 		cbCategory.setBounds(142, 23, 126, 21);
 		pnStatistic.add(cbCategory);
 
@@ -117,14 +119,6 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		cbProduct = new JComboBox<String>();
 		cbProduct.setBounds(395, 23, 206, 21);
 		pnStatistic.add(cbProduct);
-
-		cbCategory.addItem("Tất cả");
-		cbCategory.addItem("CPU");
-		cbCategory.addItem("RAM");
-		cbCategory.addItem("VGA");
-		cbCategory.addItem("Mainboard");
-		cbCategory.addItem("Nguồn máy tính");
-		cbCategory.addItem("Ổ cứng");
 
 		loadCbProduct(ProductDAO.getInstance().getListProduct());
 
