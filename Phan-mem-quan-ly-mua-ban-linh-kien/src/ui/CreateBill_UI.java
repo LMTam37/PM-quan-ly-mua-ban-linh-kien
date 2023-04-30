@@ -312,8 +312,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
-				loadTableProduct();
+				instanceLoadList();
 			}
 		});
 
@@ -366,8 +365,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				addProduct();
 			}
-		});
-		setProductList();
+		});loadAllProductList();
 		useBill();
 	}
 
@@ -415,11 +413,6 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 			}
 		}
 
-	}
-
-	public void setProductList() {
-		productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex() + 1);
-		loadTableProduct();
 	}
 
 	public void loadTableProduct() {
@@ -505,5 +498,23 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		}
 		JOptionPane.showMessageDialog(null, lbl.getText() + " không được để trống");
 		return false;
+	}
+
+	public void instanceLoadList() {
+		if (cbCategory.getSelectedIndex() == 0) {
+			loadAllProductList();
+		} else {
+			loadProductList();
+		}
+	}
+
+	public void loadProductList() {
+		productList = ProductDAO.getInstance().getListProductByCategory(cbCategory.getSelectedIndex());
+		loadProduct(productList);
+	}
+
+	private void loadAllProductList() {
+		productList = ProductDAO.getInstance().getListProduct();
+		loadProduct(productList);
 	}
 }
