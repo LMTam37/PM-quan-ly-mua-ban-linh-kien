@@ -111,7 +111,6 @@ public class BillListDAO {
 				int discount = rs.getInt("GiamGia");
 				BigDecimal total = rs.getBigDecimal("ThanhTien");
 				list.add(new Bill(billId, customerName, purchaseDate, empName, discount, total));
-				System.out.println(new Bill(billId, customerName, purchaseDate, empName, discount, total));
 			}
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {

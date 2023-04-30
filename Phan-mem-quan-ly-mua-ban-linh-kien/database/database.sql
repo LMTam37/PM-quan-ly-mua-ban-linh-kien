@@ -185,7 +185,7 @@ CREATE PROC GetHoaDonTheoNgay @TuNgay DATE, @DenNgay DATE
 AS
 	SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
-	WHERE NgayMua BETWEEN @TuNgay AND @DenNgay
+	WHERE NgayMua >= @TuNgay AND NgayMua < DATEADD(DAY, 1, @DenNgay)
 GO
 CREATE PROC TaoDonHangMoi
 AS
@@ -256,14 +256,14 @@ AS
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
 	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
-	WHERE MaLinhKien = @productId AND NgayMua BETWEEN @fromDate AND @toDate
+	WHERE MaLinhKien = @productId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
 CREATE PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
 AS
-	SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
+	SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
 	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
 	JOIN LinhKien LK ON LK.MaLinhKien = CTDH.MaLinhKien
-	WHERE Maloai = @categoryId AND NgayMua BETWEEN @fromDate AND @toDate
+	WHERE Maloai = @categoryId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
