@@ -20,7 +20,7 @@ public class BillListDAO {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "SELECT * FROM HoaDonView";
+			String sql = "SELECT * FROM BillView";
 			PreparedStatement pst = con.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
@@ -44,7 +44,7 @@ public class BillListDAO {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "EXEC GetHoaDonTheoNgay ?,?";
+			String sql = "EXEC GetBillByDate ?, ?";
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setDate(1, fromDate);
 			pst.setDate(2, toDate);
@@ -66,13 +66,13 @@ public class BillListDAO {
 		return list;
 	}
 
-	public ArrayList<Bill> statisticByProduct(int productId,Date fromDate, Date toDate) {
+	public ArrayList<Bill> statisticByProduct(int productId, Date fromDate, Date toDate) {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
 			Connection con = ConnectDB.getConnection();
 			String sql = "EXEC statisticByProduct ?, ?, ?";
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, productId); 
+			pst.setInt(1, productId);
 			pst.setDate(2, fromDate);
 			pst.setDate(3, toDate);
 			ResultSet rs = pst.executeQuery();
@@ -93,13 +93,14 @@ public class BillListDAO {
 		return list;
 
 	}
-	public ArrayList<Bill> statisticByCategory(int categoryId,Date fromDate, Date toDate) {
+
+	public ArrayList<Bill> statisticByCategory(int categoryId, Date fromDate, Date toDate) {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
 			Connection con = ConnectDB.getConnection();
 			String sql = "EXEC statisticByCategory ?, ?, ?";
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, categoryId); 
+			pst.setInt(1, categoryId);
 			pst.setDate(2, fromDate);
 			pst.setDate(3, toDate);
 			ResultSet rs = pst.executeQuery();
@@ -120,7 +121,7 @@ public class BillListDAO {
 		return list;
 
 	}
-	
+
 	public ArrayList<Bill> getListBillByProduct(int productId, Date fromDate, Date toDate) {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
@@ -151,7 +152,7 @@ public class BillListDAO {
 		ArrayList<BillDetail> list = new ArrayList<BillDetail>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "EXEC GetChiTietHoaDon ?";
+			String sql = "EXEC GetBillDetail ?";
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setInt(1, billId);
 			ResultSet rs = pst.executeQuery();

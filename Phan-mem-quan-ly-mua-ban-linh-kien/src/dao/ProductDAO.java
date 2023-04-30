@@ -19,7 +19,7 @@ public class ProductDAO {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("SELECT * FROM LinhKienView");
+			PreparedStatement pst = con.prepareStatement("SELECT * FROM ProductView");
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
 				list.add(new Product(rs.getInt("MaLinhKien"), rs.getString("TenLinhKien"), rs.getString("TenLoai"),
@@ -37,7 +37,7 @@ public class ProductDAO {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("EXEC GetLinhKienByMaLoai ?");
+			PreparedStatement pst = con.prepareStatement("EXEC GetProductByCategory ?");
 			pst.setInt(1, categoryID);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
@@ -112,7 +112,7 @@ public class ProductDAO {
 		ArrayList<Product> list = new ArrayList<Product>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("GetLinhKienByMaLoaiAndName ?, ?");
+			PreparedStatement pst = con.prepareStatement("EXEC GetProductByName ?, ?");
 			pst.setString(1, productName);
 			pst.setInt(2, categoryId);
 			ResultSet rs = pst.executeQuery();

@@ -166,28 +166,28 @@ VALUES
 	(6,43,1),
 	(6,51,1)
 GO
-CREATE VIEW HoaDonView AS 
+CREATE VIEW BillView AS 
 SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
 FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 GO
-CREATE VIEW LinhKienView AS
+CREATE VIEW ProductView AS
 SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia
 FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai
 GO
-CREATE PROC GetChiTietHoaDon @MaDon INT
+CREATE PROC GetBillDetail @billID INT
 AS
 	SELECT MaChiTietDon, MaDon, TenLinhKien, TenLoai, CTD.SoLuong, DonGia 
 	FROM ChiTietDonHang CTD JOIN LinhKien LK ON CTD.MaLinhKien = LK.MaLinhKien
 	JOIN LoaiLinhKien LLK ON LLK.MaLoai = LK.MaLoai
-	WHERE MaDon = @Madon
+	WHERE MaDon = @billID
 GO
-CREATE PROC GetHoaDonTheoNgay @TuNgay DATE, @DenNgay DATE
+CREATE PROC GetBillByDate @startDay DATE, @endDay DATE
 AS
 	SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
 	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
-	WHERE NgayMua >= @TuNgay AND NgayMua < DATEADD(DAY, 1, @DenNgay)
+	WHERE NgayMua >= @startDay AND NgayMua < DATEADD(DAY, 1, @endDay)
 GO
-CREATE PROC TaoDonHangMoi
+CREATE PROC addNewBill
 AS
 BEGIN
 	IF NOT EXISTS (SELECT * FROM DonHang WHERE ThanhTien = 0)
@@ -195,13 +195,13 @@ BEGIN
 		VALUES (null,GETDATE(),null,0,0)
 END
 GO
-CREATE TRIGGER TaoKhachHangMoi ON DonHang
+CREATE TRIGGER addNewCustomer ON DonHang
 FOR INSERT
 AS
 	INSERT INTO KhachHang(TenKhachHang, SoDienThoai, DiaChi)
 	VALUES (null, null, null)
 GO
-CREATE TRIGGER ThemKhachHangVaoDonHang ON KhachHang
+CREATE TRIGGER addCustomerToBill ON KhachHang
 FOR INSERT
 AS
 	DECLARE @MaKhachHang INT
@@ -209,46 +209,46 @@ AS
 	UPDATE DonHang SET MaKhachHang = @MaKhachHang
 	WHERE ThanhTien = 0
 GO
-CREATE PROC GetDonHangMoi
+CREATE PROC GetNewBill
 AS
 	SELECT MaDon FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang
 	WHERE ThanhTien = 0
 GO
-CREATE PROC UpdateDateDonHang
+CREATE PROC UpdateBillDate
 AS
 	UPDATE DonHang SET NgayMua = GETDATE() WHERE ThanhTien = 0
 GO
-CREATE PROC ThanhToanHoaDon @MaDon INT, @MaNhanVien INT, @GiamGia INT, @ThanhTien MONEY, @TenKhachHang NVARCHAR(50), @SDT NVARCHAR(10), @DiaChi NVARCHAR(100)
+CREATE PROC PayBill @BillID INT, @EmpID INT, @Discount INT, @Total MONEY, @CustomerName NVARCHAR(50), @PhoneNumber NVARCHAR(10), @Address NVARCHAR(100)
 AS
 	DEClARE @MaKhachHang NVARCHAR(50)
-	SELECT @MaKhachHang = MaKhachHang FROM DonHang WHERE MaDon = @MaDon
+	SELECT @MaKhachHang = MaKhachHang FROM DonHang WHERE MaDon = @BillID
 
 	UPDATE KhachHang 
-	SET TenKhachHang = @TenKhachHang, SoDienThoai = @SDT, DiaChi = @DiaChi
+	SET TenKhachHang = @CustomerName, SoDienThoai = @PhoneNumber, DiaChi = @Address
 	WHERE @MaKhachHang = MaKhachHang
 
  	UPDATE DonHang
-	SET MaNhanVien = @MaNhanVien, GiamGia = @GiamGia, ThanhTien = @ThanhTien
-	WHERE MaDon = @MaDon
+	SET MaNhanVien = @EmpID, GiamGia = @Discount, ThanhTien = @Total
+	WHERE MaDon = @BillID
 GO
-CREATE PROC ThanhToanChiTietHoaDon @MaDon INT, @MaLinhKien INT, @SoLuong INT
+CREATE PROC PayBillDetail @BillID INT, @ProductID INT, @Qty INT
 AS
 	INSERT INTO ChiTietDonHang (MaDon,MaLinhKien,SoLuong)
-	VALUES (@MaDon, @MaLinhKien, @SoLuong)
+	VALUES (@BillID, @ProductID, @Qty)
 GO
 CREATE PROC Login @username NVARCHAR(50), @password NVARCHAR(50)
 AS
 	SELECT * FROM NhanVien WHERE TenDangNhap = @username AND MatKhau = @password
 GO
-CREATE PROC GetLinhKienByMaLoai @MaLoai INT
+CREATE PROC GetProductByCategory @CategoryID INT
 AS
 	SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai
-	WHERE LLK.MaLoai = @MaLoai
+	WHERE LLK.MaLoai = @CategoryID
 GO
-CREATE PROC GetLinhKienByMaLoaiAndName @TenLinhKien NVARCHAR(255), @MaLoai INT
+CREATE PROC GetProductByName @ProductName NVARCHAR(255), @CategoryID INT
 AS
 	SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia 
-	FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @TenLinhKien + '%' AND LK.MaLoai = @MaLoai
+	FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @ProductName + '%' AND LK.MaLoai = @CategoryID
 GO
 CREATE PROC statisticByProduct @productId INT, @fromDate DATE, @toDate DATE
 AS

@@ -22,7 +22,7 @@ public class CreateBillDAO {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("EXEC TaoDonHangMoi");
+			PreparedStatement pst = con.prepareStatement("EXEC addNewBill");
 			result = pst.executeUpdate();
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {
@@ -36,9 +36,9 @@ public class CreateBillDAO {
 		int billId = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("EXEC UpdateDateDonHang");
+			PreparedStatement pst = con.prepareStatement("EXEC UpdateBillDate");
 			billId = pst.executeUpdate();
-			pst = con.prepareStatement("EXEC GetDonHangMoi");
+			pst = con.prepareStatement("EXEC GetNewBill");
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
 				billId = rs.getInt("MaDon");
@@ -56,7 +56,7 @@ public class CreateBillDAO {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("EXEC ThanhToanHoaDon ?, ?, ?, ?, ?, ?, ?");
+			PreparedStatement pst = con.prepareStatement("EXEC PayBill ?, ?, ?, ?, ?, ?, ?");
 			pst.setInt(1, billId);
 			pst.setInt(2, empId);
 			pst.setInt(3, discount);
@@ -77,7 +77,7 @@ public class CreateBillDAO {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("EXEC ThanhToanChiTietHoaDon ?, ?, ?");
+			PreparedStatement pst = con.prepareStatement("EXEC PayBillDetail ?, ?, ?");
 			pst.setInt(1, billId);
 			pst.setInt(2, billDetail.getProductId());
 			pst.setInt(3, billDetail.getQty());
