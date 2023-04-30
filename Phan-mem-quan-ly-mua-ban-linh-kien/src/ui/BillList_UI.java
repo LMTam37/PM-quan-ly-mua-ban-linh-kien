@@ -249,10 +249,11 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	private void loadTableBillDetail(ArrayList<BillDetail> list) {
 		modelBillDetail.getDataVector().removeAllElements();
 		modelBillDetail.fireTableDataChanged();
+		DecimalFormat df = new DecimalFormat("#,###.##");
 		int serial = 1;
 		for (BillDetail billDetail : list) {
 			modelBillDetail.addRow(new Object[] { Integer.toString(serial++), billDetail.getProductName(),
-					billDetail.getCategory(), billDetail.getQty(), billDetail.getPrice() });
+					billDetail.getCategory(), billDetail.getQty(), df.format(billDetail.getPrice()) });
 		}
 	}
 

@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -308,11 +309,12 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		modelProduct.getDataVector().removeAllElements();
 		modelProduct.fireTableDataChanged();
 		int serial = 1;
+		DecimalFormat df = new DecimalFormat("#,###.##");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 		for (Product curProduct : list) {
 			modelProduct.addRow(new Object[] { serial++, curProduct.getProductId(), curProduct.getProductName(),
 					curProduct.getCategory(), sdf.format(curProduct.getMfg()), curProduct.getMfger(),
-					curProduct.getQty(), curProduct.getPrice() });
+					curProduct.getQty(), df.format(curProduct.getPrice()) });
 		}
 	}
 
