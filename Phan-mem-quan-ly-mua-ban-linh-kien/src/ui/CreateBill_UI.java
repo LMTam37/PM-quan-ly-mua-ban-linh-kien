@@ -395,7 +395,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 			}
 		} else if (o.equals(btnSearch)) {
 			productList = ProductDAO.getInstance().getProductByName(txtProductName.getText(),
-					cbCategory.getSelectedIndex() + 1);
+					cbCategory.getSelectedIndex());
 			loadTableProduct();
 		} else if (o.equals(btnPay)) {
 			if (validateName() && validPhoneNumber() && validEmpty(txtCustomerName, lblCustomeName)

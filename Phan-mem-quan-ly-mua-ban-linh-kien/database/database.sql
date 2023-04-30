@@ -247,8 +247,12 @@ AS
 GO
 CREATE PROC GetProductByName @ProductName NVARCHAR(255), @CategoryID INT
 AS
-	SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia 
-	FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @ProductName + '%' AND LK.MaLoai = @CategoryID
+	IF @CategoryID != 0
+		SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia 
+		FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @ProductName + '%' AND LK.MaLoai = @CategoryID
+	ELSE
+		SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia 
+		FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai WHERE TenLinhKien LIKE '%' + @ProductName + '%'
 GO
 CREATE PROC statisticByProduct @productId INT, @fromDate DATE, @toDate DATE
 AS
