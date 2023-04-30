@@ -85,12 +85,12 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 
 		dcFromDate = new JDateChooser();
 		dcFromDate.setDate(new java.util.Date());
-		dcFromDate.setBounds(142, 78, 96, 19);
+		dcFromDate.setBounds(142, 78, 126, 19);
 		pnStatistic.add(dcFromDate);
 
 		dcToDate = new JDateChooser();
 		dcToDate.setDate(new java.util.Date());
-		dcToDate.setBounds(394, 78, 96, 19);
+		dcToDate.setBounds(394, 78, 126, 19);
 		pnStatistic.add(dcToDate);
 
 		lblToDate = new JLabel("Đến ngày");
@@ -98,11 +98,11 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnStatistic.add(lblToDate);
 
 		btnStatistic = new JButton("Thống kế");
-		btnStatistic.setBounds(529, 78, 102, 21);
+		btnStatistic.setBounds(628, 78, 102, 21);
 		pnStatistic.add(btnStatistic);
 
 		btnBack = new JButton("Thoát");
-		btnBack.setBounds(664, 78, 102, 21);
+		btnBack.setBounds(763, 78, 102, 21);
 		pnStatistic.add(btnBack);
 
 		lblCategory = new JLabel("Loại");
@@ -232,7 +232,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		modelBillList.fireTableDataChanged();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		DecimalFormat df = new DecimalFormat("#,###.##");
-		int serial = 0;
+		int serial = 1;
 		for (Bill bill : list) {
 			modelBillList.addRow(new Object[] { Integer.toString(serial++), Integer.toString(bill.getBillId()),
 					bill.getCustomerName(), sdf.format(bill.getPurchaseDate()), bill.getEmpName(), bill.getDiscount(),
@@ -249,7 +249,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	private void loadTableBillDetail(ArrayList<BillDetail> list) {
 		modelBillDetail.getDataVector().removeAllElements();
 		modelBillDetail.fireTableDataChanged();
-		int serial = 0;
+		int serial = 1;
 		for (BillDetail billDetail : list) {
 			modelBillDetail.addRow(new Object[] { Integer.toString(serial++), billDetail.getProductName(),
 					billDetail.getCategory(), billDetail.getQty(), billDetail.getPrice() });
