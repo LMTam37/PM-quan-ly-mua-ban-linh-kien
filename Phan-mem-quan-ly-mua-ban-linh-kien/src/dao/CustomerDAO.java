@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.Customer;
-import entity.Emp;
 
 public class CustomerDAO {
 	public static CustomerDAO getInstance() {

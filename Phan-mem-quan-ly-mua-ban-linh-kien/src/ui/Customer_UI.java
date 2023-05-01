@@ -10,23 +10,20 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.CustomerDAO;
-import dao.EmpManageDAO;
 import entity.Customer;
 import entity.Emp;
-import javax.swing.border.EtchedBorder;
 
 public class Customer_UI extends JFrame implements ActionListener, MouseListener {
 	/**

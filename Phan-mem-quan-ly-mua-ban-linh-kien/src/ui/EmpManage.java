@@ -23,7 +23,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.EmpManageDAO;
-import dao.ProductDAO;
 import entity.Emp;
 
 public class EmpManage extends JFrame implements ActionListener, MouseListener {
