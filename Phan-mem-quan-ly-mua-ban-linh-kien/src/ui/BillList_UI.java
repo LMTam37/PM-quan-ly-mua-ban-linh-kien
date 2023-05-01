@@ -109,7 +109,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		lblCategory.setBounds(58, 27, 74, 13);
 		pnStatistic.add(lblCategory);
 
-		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
+		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListNameCategory()));
 		cbCategory.setBounds(142, 23, 126, 21);
 		pnStatistic.add(cbCategory);
 

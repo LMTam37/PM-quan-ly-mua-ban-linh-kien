@@ -165,7 +165,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		lblCategory.setBounds(320, 52, 100, 13);
 		pnProductManage.add(lblCategory);
 
-		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
+		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListNameCategory()));
 		cbCategory.removeItemAt(0);
 		cbCategory.setBounds(430, 49, 170, 21);
 		pnProductManage.add(cbCategory);
@@ -190,7 +190,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		btnSearch.setBounds(458, 16, 85, 21);
 		pnSearch.add(btnSearch);
 
-		cbCategorySearch = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
+		cbCategorySearch = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListNameCategory()));
 
 		cbCategorySearch.addActionListener(new ActionListener() {
 

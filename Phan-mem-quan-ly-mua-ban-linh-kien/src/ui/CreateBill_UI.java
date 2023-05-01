@@ -307,7 +307,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		lblCategory.setBounds(322, 25, 45, 13);
 		pnProductInfo.add(lblCategory);
 
-		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListCategory()));
+		cbCategory = new JComboBox<>(new Vector<>(CategoryDAO.getInstance().getListNameCategory()));
 		cbCategory.addActionListener(new ActionListener() {
 
 			@Override

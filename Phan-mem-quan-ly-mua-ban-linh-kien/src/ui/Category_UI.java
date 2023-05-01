@@ -231,20 +231,20 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 		txtCategoryName.setText("");
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int row = tableCategory.getSelectedRow();
-		Category tempCategory = categoryList.get(row);
-		txtCategoryId.setText(Integer.toString(tempCategory.getCategoryId()));
-		txtCategoryName.setText(tempCategory.getCategoryName());
-	}
-
 	private boolean isEmpty(JTextField txt) {
 		if (txt.getText().trim().equals("")) {
 			txt.requestFocus();
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int row = tableCategory.getSelectedRow();
+		Category tempCategory = categoryList.get(row);
+		txtCategoryId.setText(Integer.toString(tempCategory.getCategoryId()));
+		txtCategoryName.setText(tempCategory.getCategoryName());
 	}
 
 	@Override
