@@ -28,7 +28,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTextField txtUserName;
 	private JPasswordField txtPassword;
-	private JButton btnCreateBill, btnBills, btnProduct, btnEmpManage, btnLogin, btnLogOut, btnCustomer;
+	private JButton btnCreateBill, btnLogin, btnLogOut, btnSystemManagement;
 	private JLabel lblRightTitle, lblUserName, lblPassword;
 	private Emp curAccount;
 
@@ -62,37 +62,19 @@ public class Feature_UI extends JFrame implements ActionListener {
 
 		btnCreateBill = new JButton("Lập hóa đơn");
 		btnCreateBill.setBackground(new Color(255, 255, 255));
-		btnCreateBill.setBounds(56, 66, 316, 56);
+		btnCreateBill.setBounds(56, 80, 316, 150);
 		pnLeft.add(btnCreateBill);
-		btnCreateBill.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnCreateBill.setFont(new Font("Tahoma", Font.BOLD, 30));
 
-		btnBills = new JButton("Thông tin hóa đơn");
-		btnBills.setBackground(new Color(255, 255, 255));
-		btnBills.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnBills.setBounds(56, 148, 316, 56);
-		pnLeft.add(btnBills);
-
-		btnProduct = new JButton("Thông tin sản phẩm");
-		btnProduct.setBackground(new Color(255, 255, 255));
-		btnProduct.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnProduct.setBounds(56, 230, 316, 56);
-		pnLeft.add(btnProduct);
-
-		btnEmpManage = new JButton("Quản lý nhân viên");
-		btnEmpManage.setBackground(new Color(255, 255, 255));
-		btnEmpManage.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnEmpManage.setBounds(56, 312, 316, 56);
-		pnLeft.add(btnEmpManage);
-
-		btnCustomer = new JButton("Quản lý khách hàng");
-		btnCustomer.addActionListener(new ActionListener() {
+		btnSystemManagement = new JButton("Quản trị hệ thống");
+		btnSystemManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnCustomer.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnCustomer.setBackground(Color.WHITE);
-		btnCustomer.setBounds(56, 394, 316, 56);
-		pnLeft.add(btnCustomer);
+		btnSystemManagement.setFont(new Font("Tahoma", Font.BOLD, 30));
+		btnSystemManagement.setBackground(Color.WHITE);
+		btnSystemManagement.setBounds(56, 270, 316, 150);
+		pnLeft.add(btnSystemManagement);
 
 		JPanel pnRight = new JPanel();
 		pnRight.setBackground(new Color(0, 128, 255));
@@ -144,10 +126,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 
 		contentPane.setVisible(true);
 		btnCreateBill.addActionListener(this);
-		btnBills.addActionListener(this);
-		btnProduct.addActionListener(this);
-		btnEmpManage.addActionListener(this);
-		btnCustomer.addActionListener(this);
+		btnSystemManagement.addActionListener(this);
 		btnLogin.addActionListener(this);
 		btnLogOut.addActionListener(this);
 		switchBtnByRole();
@@ -160,20 +139,9 @@ public class Feature_UI extends JFrame implements ActionListener {
 			this.setVisible(false);
 			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			new CreateBill_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnBills)) {
+		} else if (o.equals(btnSystemManagement)) {
 			this.setVisible(false);
-			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-			new BillList_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnProduct)) {
-			this.setVisible(false);
-			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-			new Product_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnEmpManage)) {
-			this.setVisible(false);
-			new EmpManage(curAccount).setVisible(true);
-		} else if (o.equals(btnCustomer)) {
-			this.setVisible(false);
-			new Customer_UI(curAccount).setVisible(true);
+			new SystemManagement(curAccount).setVisible(true);
 		} else if (o.equals(btnLogin)) {
 			if (isEmpty(txtUserName, lblUserName) || isEmpty(txtPassword, lblPassword)) {
 			} else {
@@ -216,10 +184,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 			txtUserName.setEnabled(true);
 			txtPassword.setEnabled(true);
 			btnCreateBill.setEnabled(false);
-			btnBills.setEnabled(false);
-			btnProduct.setEnabled(false);
-			btnEmpManage.setEnabled(false);
-			btnCustomer.setEnabled(false);
+			btnSystemManagement.setEnabled(false);
 			btnLogin.setEnabled(true);
 			btnLogOut.setEnabled(false);
 			return false;
@@ -230,16 +195,10 @@ public class Feature_UI extends JFrame implements ActionListener {
 		if (isLogin()) {
 			if (curAccount.isRole() == true) {
 				btnCreateBill.setEnabled(true);
-				btnBills.setEnabled(false);
-				btnProduct.setEnabled(false);
-				btnEmpManage.setEnabled(false);
-				btnCustomer.setEnabled(false);
+				btnSystemManagement.setEnabled(false);
 			} else {
 				btnCreateBill.setEnabled(false);
-				btnBills.setEnabled(true);
-				btnProduct.setEnabled(true);
-				btnEmpManage.setEnabled(true);
-				btnCustomer.setEnabled(true);
+				btnSystemManagement.setEnabled(true);
 			}
 		}
 	}

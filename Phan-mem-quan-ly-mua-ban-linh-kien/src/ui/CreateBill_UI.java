@@ -17,9 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -39,10 +38,8 @@ import dao.CategoryDAO;
 import dao.CreateBillDAO;
 import dao.ProductDAO;
 import entity.BillDetail;
-import entity.Category;
 import entity.Emp;
 import entity.Product;
-import javax.swing.JComboBox;
 
 public class CreateBill_UI extends JFrame implements ActionListener {
 

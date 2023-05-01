@@ -5,20 +5,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,9 +33,8 @@ import dao.CategoryDAO;
 import dao.ProductDAO;
 import entity.Emp;
 import entity.Product;
-import javax.swing.JComboBox;
 
-public class Product_UI extends JFrame implements ActionListener, MouseListener {
+public class PnProduct extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel pnTitle, pnProductManage, pnSearch, pnTableProduct;
 	private JLabel lblNewLabel, lblProductId, lblProductName, lblMFG, lblMFGer, lblSearch, lblQty, lblPrice,
@@ -52,22 +48,15 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	private JScrollPane spProduct;
 	private ArrayList<Product> productList;
 	private JComboBox<String> cbCategory, cbCategorySearch;
-	private Emp curAccount;
 
-	public Product_UI(Emp account) {
-		getContentPane().setBackground(new Color(255, 255, 255));
-		setTitle("Thong Tin San Pham");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1400, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-		curAccount = account;
+	public PnProduct(Emp account) {
+		setBackground(new Color(255, 255, 255));
+		setLayout(null);
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
-		getContentPane().add(pnTitle);
+		add(pnTitle);
 
 		lblNewLabel = new JLabel("Quản lý linh kiện");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 26));
@@ -78,7 +67,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnProductManage.setBorder(
 				new TitledBorder(null, "Thông tin linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnProductManage.setBounds(0, 50, 1386, 117);
-		getContentPane().add(pnProductManage);
+		add(pnProductManage);
 		pnProductManage.setLayout(null);
 
 		lblProductId = new JLabel("Mã linh kiện");
@@ -174,7 +163,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(new Color(255, 255, 255));
 		pnSearch.setBounds(0, 175, 1386, 47);
-		getContentPane().add(pnSearch);
+		add(pnSearch);
 		pnSearch.setLayout(null);
 
 		lblSearch = new JLabel("Tìm linh kiện theo tên");
@@ -209,7 +198,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 
 		pnTableProduct = new JPanel();
 		pnTableProduct.setBounds(0, 232, 1386, 431);
-		getContentPane().add(pnTableProduct);
+		add(pnTableProduct);
 		pnTableProduct.setLayout(new BorderLayout(0, 0));
 
 		String[] productColumnName = { "STT", "Mã linh kiện", "Tên linh kiện", "Loại linh kiện", "Ngày sản xuất",
@@ -237,11 +226,8 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (o.equals(btnBack)) {
-			this.setVisible(false);
-			new Feature_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnAdd)) {
-			//tạo linh kiện cả khi ko điền thông tin
+		if (o.equals(btnAdd)) {
+			// tạo linh kiện cả khi ko điền thông tin
 			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
 					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
 					new BigDecimal(spinnerPrice.getValue().toString()));
@@ -286,6 +272,10 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 				JOptionPane.showMessageDialog(null, "Cập nhật linh kiện thành công");
 			}
 		}
+	}
+
+	public JButton getBtnBack() {
+		return btnBack;
 	}
 
 	public void instanceLoadList() {

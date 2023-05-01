@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import dao.EmpManageDAO;
 import entity.Emp;
 
-public class EmpManage extends JFrame implements ActionListener, MouseListener {
+public class PnEmp extends JPanel implements ActionListener, MouseListener {
 
 	/**
 	 * 
@@ -40,23 +39,17 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	private JComboBox<String> cbRole;
 	private ArrayList<Emp> list;
 	private JLabel lblEmpId;
-	private Emp curAccount;
 	private JPasswordField txtPassword;
 	private JTextField txtSearch;
 
-	public EmpManage(Emp account) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1400, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		getContentPane().setBackground(new Color(255, 255, 255));
-		getContentPane().setLayout(null);
-		curAccount = account;
+	public PnEmp(Emp account) {
+		setBackground(new Color(255, 255, 255));
+		setLayout(null);
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
-		getContentPane().add(pnTitle);
+		add(pnTitle);
 
 		lblTitle = new JLabel("Quản lý tài khoản");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
@@ -67,7 +60,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		pnEmp.setBorder(
 				new TitledBorder(null, "Thông tin tài khoản", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnEmp.setBounds(0, 50, 1386, 165);
-		getContentPane().add(pnEmp);
+		add(pnEmp);
 		pnEmp.setLayout(null);
 
 		lblEmpId = new JLabel("Mã");
@@ -144,7 +137,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 				new TitledBorder(null, "T\u00ECm ki\u1EBFm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(Color.WHITE);
 		pnSearch.setBounds(0, 217, 1386, 50);
-		getContentPane().add(pnSearch);
+		add(pnSearch);
 		pnSearch.setLayout(null);
 
 		lblSearch = new JLabel("Tìm theo tên");
@@ -165,7 +158,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 		pnTableEmp.setBorder(
 				new TitledBorder(null, "Danh sách tài khoản", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnTableEmp.setBounds(0, 267, 1386, 396);
-		getContentPane().add(pnTableEmp);
+		add(pnTableEmp);
 
 		String[] empColumnName = { "STT", "Tên đăng nhập", "Tên nhân viên", "Loại nhân viên" };
 		modelEmp = new DefaultTableModel(empColumnName, 0);
@@ -190,10 +183,7 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (o.equals(btnBack)) {
-			this.setVisible(false);
-			new Feature_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnAdd)) {
+		if (o.equals(btnAdd)) {
 			if (isEmpty(txtUsername) || isEmpty(txtEmpName) || isEmpty(txtPassword)) {
 				JOptionPane.showMessageDialog(null, "Chưa nhập đủ thông tin");
 			} else if (txtPassword.getPassword().length < 8) {
@@ -252,6 +242,10 @@ public class EmpManage extends JFrame implements ActionListener, MouseListener {
 			list = EmpManageDAO.getInstance().getListEmpBySearch(txtSearch.getText());
 			load(list);
 		}
+	}
+
+	public JButton getBtnBack() {
+		return btnBack;
 	}
 
 	private void loadAccountList() {

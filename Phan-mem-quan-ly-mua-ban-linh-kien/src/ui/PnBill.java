@@ -15,11 +15,11 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,9 +32,8 @@ import entity.Bill;
 import entity.BillDetail;
 import entity.Emp;
 import entity.Product;
-import javax.swing.JTextField;
 
-public class BillList_UI extends JFrame implements ActionListener, MouseListener {
+public class PnBill extends JPanel implements ActionListener, MouseListener {
 
 	/**
 	 * 
@@ -49,23 +48,17 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	private JButton btnStatistic, btnBack;
 	private ArrayList<Bill> billList;
 	private ArrayList<BillDetail> billDetailList;
-	private Emp curAccount;
 	private JTextField txtIncome;
 	private ArrayList<Product> listProduct;
 
-	public BillList_UI(Emp account) {
-		getContentPane().setBackground(new Color(255, 255, 255));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1400, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-		curAccount = account;
+	public PnBill(Emp account) {
+		setBackground(new Color(255, 255, 255));
+		setLayout(null);
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
-		getContentPane().add(pnTitle);
+		add(pnTitle);
 
 		lblTitle = new JLabel("Quán lý hóa đơn");
 		lblTitle.setForeground(new Color(0, 0, 0));
@@ -77,7 +70,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnStatistic.setBorder(new TitledBorder(null, "Thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnStatistic.setBackground(Color.WHITE);
 		pnStatistic.setBounds(0, 50, 1386, 109);
-		getContentPane().add(pnStatistic);
+		add(pnStatistic);
 
 		lblDateFrom = new JLabel("Từ ngày");
 		lblDateFrom.setBounds(58, 81, 74, 13);
@@ -142,7 +135,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnBillList.setBorder(
 				new TitledBorder(null, "Danh sách hóa đơn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnBillList.setBounds(0, 167, 1386, 233);
-		getContentPane().add(pnBillList);
+		add(pnBillList);
 		pnBillList.setLayout(null);
 
 		String[] billListColumnName = { "STT", "Mã hóa đơn", "Tên khách hàng", "Ngày mua", "Tên nhân viên", "Giảm giá",
@@ -164,7 +157,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnBillDetail.setBorder(
 				new TitledBorder(null, "Chi tiết hoa đơn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnBillDetail.setBounds(0, 410, 1386, 213);
-		getContentPane().add(pnBillDetail);
+		add(pnBillDetail);
 
 		String[] billDetailColumnName = { "STT", "Tên linh kiện", "Tên loại", "Số lượng", "Đơn giá" };
 		modelBillDetail = new DefaultTableModel(billDetailColumnName, 0);
@@ -178,7 +171,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 		pnStatisticIncome = new JPanel();
 		pnStatisticIncome.setBackground(new Color(255, 255, 255));
 		pnStatisticIncome.setBounds(0, 623, 1386, 40);
-		getContentPane().add(pnStatisticIncome);
+		add(pnStatisticIncome);
 		pnStatisticIncome.setLayout(null);
 
 		lblIncome = new JLabel("Tổng doanh thu");
@@ -201,10 +194,7 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (o.equals(btnBack)) {
-			this.setVisible(false);
-			new Feature_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnStatistic)) {
+		if (o.equals(btnStatistic)) {
 			if (cbCategory.getSelectedIndex() == 0 && cbProduct.getSelectedIndex() == 0) {
 				billList = BillListDAO.getInstance().getListBillByDate(new Date(dcFromDate.getDate().getTime()),
 						new Date(dcToDate.getDate().getTime()));
@@ -220,6 +210,10 @@ public class BillList_UI extends JFrame implements ActionListener, MouseListener
 				loadTableBill(billList);
 			}
 		}
+	}
+
+	public JButton getBtnBack() {
+		return btnBack;
 	}
 
 	private void setTableBillList() {

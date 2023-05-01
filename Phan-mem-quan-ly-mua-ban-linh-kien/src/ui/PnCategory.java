@@ -10,7 +10,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,7 +23,7 @@ import dao.CategoryDAO;
 import entity.Category;
 import entity.Emp;
 
-public class Category_UI extends JFrame implements ActionListener, MouseListener {
+public class PnCategory extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel pnTitle, pnCategory, pnSearch, pnTableCategory;
 	private JLabel lblNewLabel, lblCategoryId, lblCategoryName, lblSearch;
@@ -34,22 +33,15 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 	private JButton btnAdd, btnRemove, btnUpdate, btnClear, btnBack, btnSearch;
 	private JScrollPane spCategory;
 	private ArrayList<Category> categoryList;
-	private Emp curAccount;
 
-	public Category_UI(Emp account) {
-		getContentPane().setBackground(new Color(255, 255, 255));
-		setTitle("Thong Tin San Pham");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1400, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-		curAccount = account;
+	public PnCategory(Emp account) {
+		setBackground(new Color(255, 255, 255));
+		setLayout(null);
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
-		getContentPane().add(pnTitle);
+		add(pnTitle);
 
 		lblNewLabel = new JLabel("Quản lý Loại linh kiện");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 26));
@@ -60,7 +52,7 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 		pnCategory.setBorder(
 				new TitledBorder(null, "Thông tin linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnCategory.setBounds(0, 50, 1386, 117);
-		getContentPane().add(pnCategory);
+		add(pnCategory);
 		pnCategory.setLayout(null);
 
 		lblCategoryId = new JLabel("Mã loại");
@@ -108,7 +100,7 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(new Color(255, 255, 255));
 		pnSearch.setBounds(0, 175, 1386, 47);
-		getContentPane().add(pnSearch);
+		add(pnSearch);
 		pnSearch.setLayout(null);
 
 		lblSearch = new JLabel("Tìm linh kiện theo tên");
@@ -126,7 +118,7 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 
 		pnTableCategory = new JPanel();
 		pnTableCategory.setBounds(0, 232, 1386, 431);
-		getContentPane().add(pnTableCategory);
+		add(pnTableCategory);
 		pnTableCategory.setLayout(new BorderLayout(0, 0));
 
 		String[] CategoryColumnName = { "STT", "Mã loại", "Tên loại", };
@@ -153,10 +145,7 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (o.equals(btnBack)) {
-			this.setVisible(false);
-			new Feature_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnAdd)) {
+		if (o.equals(btnAdd)) {
 			if (isEmpty(txtCategoryName)) {
 				JOptionPane.showMessageDialog(null, "Tên loại linh kiện không được để trống");
 			} else {
@@ -212,6 +201,10 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 		}
 	}
 
+	public JButton getBtnBack() {
+		return btnBack;
+	}
+
 	private void loadAllcategoryList() {
 		categoryList = CategoryDAO.getInstance().getListCategory();
 		load(categoryList);
@@ -238,7 +231,7 @@ public class Category_UI extends JFrame implements ActionListener, MouseListener
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int row = tableCategory.getSelectedRow();

@@ -10,7 +10,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +24,7 @@ import dao.CustomerDAO;
 import entity.Customer;
 import entity.Emp;
 
-public class Customer_UI extends JFrame implements ActionListener, MouseListener {
+public class PnCustomer extends JPanel implements ActionListener, MouseListener {
 	/**
 	 * 
 	 */
@@ -38,23 +37,17 @@ public class Customer_UI extends JFrame implements ActionListener, MouseListener
 	private DefaultTableModel modelCustomer;
 	private ArrayList<Customer> list;
 	private JLabel lblCustomerId;
-	private Emp curAccount;
 	private JTextField txtSearch;
 	private JTextField txtAddress;
 
-	public Customer_UI(Emp account) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1400, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		getContentPane().setBackground(new Color(255, 255, 255));
-		getContentPane().setLayout(null);
-		curAccount = account;
+	public PnCustomer(Emp account) {
+		setBackground(new Color(255, 255, 255));
+		setLayout(null);
 
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);
-		getContentPane().add(pnTitle);
+		add(pnTitle);
 
 		lblTitle = new JLabel("Quản lý khách hàng");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
@@ -64,10 +57,9 @@ public class Customer_UI extends JFrame implements ActionListener, MouseListener
 		pnCustomer.setBackground(new Color(255, 255, 255));
 		pnCustomer.setBorder(new TitledBorder(
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
-				"Th\u00F4ng tin kh\u00E1ch h\u00E0ng", TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0)));
+				"Thông tin khách hàng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnCustomer.setBounds(0, 50, 1386, 157);
-		getContentPane().add(pnCustomer);
+		add(pnCustomer);
 		pnCustomer.setLayout(null);
 
 		lblCustomerId = new JLabel("Mã");
@@ -132,7 +124,7 @@ public class Customer_UI extends JFrame implements ActionListener, MouseListener
 		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(Color.WHITE);
 		pnSearch.setBounds(0, 207, 1386, 50);
-		getContentPane().add(pnSearch);
+		add(pnSearch);
 		pnSearch.setLayout(null);
 
 		lblSearch = new JLabel("Tìm theo tên");
@@ -154,7 +146,7 @@ public class Customer_UI extends JFrame implements ActionListener, MouseListener
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
 				"Danh sách khách hàng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnTableCustomer.setBounds(0, 259, 1386, 404);
-		getContentPane().add(pnTableCustomer);
+		add(pnTableCustomer);
 
 		String[] customerColumnName = { "STT", "Tên khách hàng", "Số điện thoại", "Địa chỉ" };
 		modelCustomer = new DefaultTableModel(customerColumnName, 0);
@@ -179,10 +171,7 @@ public class Customer_UI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (o.equals(btnBack)) {
-			this.setVisible(false);
-			new Feature_UI(curAccount).setVisible(true);
-		} else if (o.equals(btnAdd)) {
+		if (o.equals(btnAdd)) {
 			if (isEmpty(txtCustomerName) || isEmpty(txtPhoneNumber) || isEmpty(txtAddress)) {
 				JOptionPane.showMessageDialog(null, "Chưa nhập đủ thông tin");
 			} else {
@@ -226,6 +215,10 @@ public class Customer_UI extends JFrame implements ActionListener, MouseListener
 			list = CustomerDAO.getInstance().getListCustomerBySearch(txtSearch.getText());
 			load(list);
 		}
+	}
+
+	public JButton getBtnBack() {
+		return btnBack;
 	}
 
 	private void loadCustomerList() {
