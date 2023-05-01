@@ -32,7 +32,7 @@ public class SystemManagement extends JFrame implements ActionListener {
 		setBackground(new Color(255, 255, 255));
 		setTitle("Quản trị hệ thống");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1400, 700);
+		setSize(1400, 730);
 		setResizable(false);
 		setLocationRelativeTo(null);
 

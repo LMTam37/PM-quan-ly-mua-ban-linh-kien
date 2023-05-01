@@ -67,7 +67,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	public CreateBill_UI(Emp account) {
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1400, 700);
+		setSize(1400, 730);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
@@ -84,7 +84,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnHeader.add(lblTieuDe);
 
 		pnBill = new JPanel();
-		pnBill.setBounds(0, 46, 698, 617);
+		pnBill.setBounds(0, 46, 698, 647);
 		getContentPane().add(pnBill);
 		pnBill.setLayout(new BorderLayout());
 
@@ -273,7 +273,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnOrderList.add(spOrderList);
 
 		pnProduct = new JPanel();
-		pnProduct.setBounds(704, 46, 682, 607);
+		pnProduct.setBounds(704, 46, 682, 647);
 		getContentPane().add(pnProduct);
 		pnProduct.setLayout(new BorderLayout(0, 0));
 

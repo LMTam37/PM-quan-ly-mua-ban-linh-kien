@@ -51,7 +51,7 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 		pnTitle.setBounds(0, 0, 1386, 40);
 		add(pnTitle);
 
-		lblTitle = new JLabel("Quản lý tài khoản");
+		lblTitle = new JLabel("Quản lý nhân viên");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
 		pnTitle.add(lblTitle);
 
