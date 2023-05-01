@@ -134,7 +134,7 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 
 		pnSearch = new JPanel();
 		pnSearch.setBorder(
-				new TitledBorder(null, "T\u00ECm ki\u1EBFm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				new TitledBorder(null, "Tìm kiếm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(Color.WHITE);
 		pnSearch.setBounds(0, 217, 1386, 50);
 		add(pnSearch);
@@ -206,11 +206,11 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 			if (row == -1) {
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhân viên cần xóa");
 			} else {
-				String username = modelEmp.getValueAt(row, 1).toString();
-				String notifyMsg = "Bạn có chắc xóa nhân viên " + username;
+				Emp emp = list.get(row);
+				String notifyMsg = "Bạn có chắc xóa nhân viên " + emp.getEmpName();
 				int select = JOptionPane.showConfirmDialog(null, notifyMsg, "Thông báo", JOptionPane.YES_NO_OPTION);
 				if (select == JOptionPane.YES_OPTION) {
-					int result = EmpManageDAO.getInstance().deleteEmp(username);
+					int result = EmpManageDAO.getInstance().deleteEmp(emp.getEmpId());
 					if (result != 0) {
 						modelEmp.removeRow(row);
 						clear();

@@ -52,7 +52,7 @@ public class PnProduct extends JPanel implements ActionListener, MouseListener {
 	public PnProduct(Emp account) {
 		setBackground(new Color(255, 255, 255));
 		setLayout(null);
-
+		setSize(1400, 700);
 		pnTitle = new JPanel();
 		pnTitle.setBackground(new Color(0, 128, 255));
 		pnTitle.setBounds(0, 0, 1386, 40);

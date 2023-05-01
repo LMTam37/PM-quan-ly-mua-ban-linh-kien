@@ -72,13 +72,12 @@ public class EmpManageDAO {
 		return result;
 	}
 
-	public int deleteEmp(String username) {
+	public int deleteEmp(int empId) {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "DELETE FROM NhanVien WHERE TenDangNhap = ?";
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, username);
+			PreparedStatement pst = con.prepareStatement("DELETE FROM NhanVien WHERE MaNhanVien = ?");
+			pst.setInt(1, empId);
 			result = pst.executeUpdate();
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {
