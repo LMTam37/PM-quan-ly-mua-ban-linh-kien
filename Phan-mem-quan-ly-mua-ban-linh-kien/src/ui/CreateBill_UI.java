@@ -258,9 +258,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 		pnOrderList = new JPanel();
 		pnOrderList.setBackground(new Color(255, 255, 255));
-		pnOrderList.setBorder(new TitledBorder(
-				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
-				"Danh sách linh kiện đã chọn", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnOrderList.setBorder(
+				new TitledBorder(null, "Danh sách linh kiện đã chọn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnBill.add(pnOrderList);
 		pnOrderList.setLayout(new BorderLayout(0, 0));
 
@@ -280,7 +279,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnProductInfo = new JPanel();
 		pnProductInfo.setBackground(new Color(255, 255, 255));
 		pnProductInfo.setBorder(
-				new TitledBorder(null, "Thông tin sản phẩm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				new TitledBorder(null, "Thông tin linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnProduct.add(pnProductInfo, BorderLayout.NORTH);
 		pnProductInfo.setPreferredSize(new Dimension(400, 60));
 		pnProductInfo.setLayout(null);
@@ -317,6 +316,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		pnProductInfo.add(cbCategory);
 
 		pnProductList = new JPanel();
+		pnProductList.setBackground(new Color(255, 255, 255));
+		pnProductList.setBorder(new TitledBorder(null, "Danh sách linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnProduct.add(pnProductList, BorderLayout.CENTER);
 		pnProductList.setLayout(new BorderLayout(0, 0));
 
