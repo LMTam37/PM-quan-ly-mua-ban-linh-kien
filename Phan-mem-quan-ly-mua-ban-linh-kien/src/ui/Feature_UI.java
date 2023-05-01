@@ -28,7 +28,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTextField txtUserName;
 	private JPasswordField txtPassword;
-	private JButton btnCreateBill, btnBills, btnProduct, btnEmpManage, btnLogin, btnLogOut;
+	private JButton btnCreateBill, btnBills, btnProduct, btnEmpManage, btnLogin, btnLogOut, btnCustomer;
 	private JLabel lblRightTitle, lblUserName, lblPassword;
 	private Emp curAccount;
 
@@ -38,7 +38,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		curAccount = account;
-		
+
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,27 +62,37 @@ public class Feature_UI extends JFrame implements ActionListener {
 
 		btnCreateBill = new JButton("Lập hóa đơn");
 		btnCreateBill.setBackground(new Color(255, 255, 255));
-		btnCreateBill.setBounds(56, 66, 316, 80);
+		btnCreateBill.setBounds(56, 66, 316, 56);
 		pnLeft.add(btnCreateBill);
 		btnCreateBill.setFont(new Font("Tahoma", Font.BOLD, 20));
 
 		btnBills = new JButton("Thông tin hóa đơn");
 		btnBills.setBackground(new Color(255, 255, 255));
 		btnBills.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnBills.setBounds(56, 163, 316, 80);
+		btnBills.setBounds(56, 148, 316, 56);
 		pnLeft.add(btnBills);
 
 		btnProduct = new JButton("Thông tin sản phẩm");
 		btnProduct.setBackground(new Color(255, 255, 255));
 		btnProduct.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnProduct.setBounds(56, 260, 316, 80);
+		btnProduct.setBounds(56, 230, 316, 56);
 		pnLeft.add(btnProduct);
 
 		btnEmpManage = new JButton("Quản lý nhân viên");
 		btnEmpManage.setBackground(new Color(255, 255, 255));
 		btnEmpManage.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnEmpManage.setBounds(56, 367, 316, 80);
+		btnEmpManage.setBounds(56, 312, 316, 56);
 		pnLeft.add(btnEmpManage);
+
+		btnCustomer = new JButton("Quản lý khách hàng");
+		btnCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnCustomer.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnCustomer.setBackground(Color.WHITE);
+		btnCustomer.setBounds(56, 394, 316, 56);
+		pnLeft.add(btnCustomer);
 
 		JPanel pnRight = new JPanel();
 		pnRight.setBackground(new Color(0, 128, 255));
@@ -137,6 +147,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 		btnBills.addActionListener(this);
 		btnProduct.addActionListener(this);
 		btnEmpManage.addActionListener(this);
+		btnCustomer.addActionListener(this);
 		btnLogin.addActionListener(this);
 		btnLogOut.addActionListener(this);
 		switchBtnByRole();
@@ -160,6 +171,9 @@ public class Feature_UI extends JFrame implements ActionListener {
 		} else if (o.equals(btnEmpManage)) {
 			this.setVisible(false);
 			new EmpManage(curAccount).setVisible(true);
+		} else if (o.equals(btnCustomer)) {
+			this.setVisible(false);
+			new Customer_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnLogin)) {
 			if (isEmpty(txtUserName, lblUserName) || isEmpty(txtPassword, lblPassword)) {
 			} else {
@@ -172,7 +186,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
 				}
 			}
-		} else if(o.equals(btnLogOut)) {
+		} else if (o.equals(btnLogOut)) {
 			curAccount = new Emp();
 			JOptionPane.showMessageDialog(null, "Đăng xuất thành công");
 			isLogin();
@@ -205,6 +219,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 			btnBills.setEnabled(false);
 			btnProduct.setEnabled(false);
 			btnEmpManage.setEnabled(false);
+			btnCustomer.setEnabled(false);
 			btnLogin.setEnabled(true);
 			btnLogOut.setEnabled(false);
 			return false;
@@ -218,11 +233,13 @@ public class Feature_UI extends JFrame implements ActionListener {
 				btnBills.setEnabled(false);
 				btnProduct.setEnabled(false);
 				btnEmpManage.setEnabled(false);
+				btnCustomer.setEnabled(false);
 			} else {
 				btnCreateBill.setEnabled(false);
 				btnBills.setEnabled(true);
 				btnProduct.setEnabled(true);
 				btnEmpManage.setEnabled(true);
+				btnCustomer.setEnabled(true);
 			}
 		}
 	}

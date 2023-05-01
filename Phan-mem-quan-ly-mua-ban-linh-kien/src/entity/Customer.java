@@ -3,10 +3,10 @@ package entity;
 public class Customer {
 	private int customerId;
 	private String customerName;
-	private int customerPhoneNumber;
+	private String customerPhoneNumber;
 	private String address;
 
-	public Customer(int customerId, String customerName, int customerPhoneNumber, String address) {
+	public Customer(int customerId, String customerName, String customerPhoneNumber, String address) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
@@ -30,11 +30,11 @@ public class Customer {
 		this.customerName = customerName;
 	}
 
-	public int getCustomerPhoneNumber() {
+	public String getCustomerPhoneNumber() {
 		return customerPhoneNumber;
 	}
 
-	public void setCustomerPhoneNumber(int customerPhoneNumber) {
+	public void setCustomerPhoneNumber(String customerPhoneNumber) {
 		this.customerPhoneNumber = customerPhoneNumber;
 	}
 
