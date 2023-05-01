@@ -96,6 +96,7 @@ public class PnProduct extends JPanel implements ActionListener, MouseListener {
 		pnProductManage.add(lblMFG);
 
 		dcMFG = new JDateChooser();
+		dcMFG.setDate(new java.util.Date());
 		dcMFG.setFont(new Font("Tahoma", Font.BOLD, 10));
 		dcMFG.setBounds(430, 20, 170, 19);
 		pnProductManage.add(dcMFG);
@@ -227,12 +228,15 @@ public class PnProduct extends JPanel implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnAdd)) {
-			// tạo linh kiện cả khi ko điền thông tin
-			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
-					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
-					new BigDecimal(spinnerPrice.getValue().toString()));
-			instanceLoadList();
-			JOptionPane.showMessageDialog(null, "Tạo linh kiện thành công");
+			if(isEmpty(txtMFGer) || isEmpty(txtProductName)) {				
+				JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ thông tin");
+			}else {
+				ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
+						new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
+						new BigDecimal(spinnerPrice.getValue().toString()));
+				instanceLoadList();
+				JOptionPane.showMessageDialog(null, "Tạo linh kiện thành công");				
+			}
 		} else if (o.equals(btnClear)) {
 			clear();
 		} else if (o.equals(btnSearch)) {
@@ -316,6 +320,14 @@ public class PnProduct extends JPanel implements ActionListener, MouseListener {
 		txtMFGer.setText("");
 		spinnerQty.setValue(Integer.parseInt("0"));
 		spinnerPrice.setValue(Integer.parseInt("0"));
+	}
+
+	private boolean isEmpty(JTextField txt) {
+		if (txt.getText().trim().equals("")) {
+			txt.requestFocus();
+			return true;
+		}
+		return false;
 	}
 
 	@Override
