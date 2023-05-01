@@ -241,6 +241,7 @@ public class Product_UI extends JFrame implements ActionListener, MouseListener 
 			this.setVisible(false);
 			new Feature_UI(curAccount).setVisible(true);
 		} else if (o.equals(btnAdd)) {
+			//tạo linh kiện cả khi ko điền thông tin
 			ProductDAO.getInstance().addProduct(txtProductName.getText(), cbCategory.getSelectedIndex() + 1,
 					new Date(dcMFG.getDate().getTime()), txtMFGer.getText(), (Integer) spinnerQty.getValue(),
 					new BigDecimal(spinnerPrice.getValue().toString()));
