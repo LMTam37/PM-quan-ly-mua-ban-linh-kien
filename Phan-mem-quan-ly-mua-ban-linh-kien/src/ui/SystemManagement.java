@@ -9,6 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 import entity.Emp;
+import ui.panelView.PnBill;
+import ui.panelView.PnCategory;
+import ui.panelView.PnCustomer;
+import ui.panelView.PnEmp;
+import ui.panelView.PnProduct;
 
 public class SystemManagement extends JFrame implements ActionListener {
 
