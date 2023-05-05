@@ -271,3 +271,13 @@ AS
 	JOIN LinhKien LK ON LK.MaLinhKien = CTDH.MaLinhKien
 	WHERE Maloai = @categoryId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
+CREATE FUNCTION isExistsUsername (@username NVARCHAR(50))
+RETURNS INT
+AS
+BEGIN
+	IF EXISTS (SELECT * FROM NhanVien WHERE TenDangNhap = @username)
+		RETURN 1
+	RETURN 0
+END
+GO
+SELECT dbo.isExistsUsername('Ta')

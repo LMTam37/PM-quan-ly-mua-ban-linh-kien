@@ -120,4 +120,19 @@ public class EmpManageDAO {
 		return result;
 	}
 	
+	public boolean isExistsUsername(String username) {
+		int result = 0;
+		try {
+			Connection con = ConnectDB.getConnection();
+			PreparedStatement pst = con.prepareStatement("SELECT dbo.isExistsUsername(?)");
+			pst.setString(1, username);
+			result = pst.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		if(result == 1) {
+			return true;
+		}
+		return false;
+	}
 }

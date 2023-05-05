@@ -188,7 +188,10 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 			} else if (txtPassword.getPassword().length < 8) {
 				JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất phải có 8 ký tự");
 				txtPassword.requestFocus();
-			} else {
+			} else if(!EmpManageDAO.getInstance().isExistsUsername(txtUsername.getText())){
+				JOptionPane.showMessageDialog(null, "Tên tài khoản này đã tồn tại");
+			}
+			else {
 				boolean role = true;
 				if (cbRole.getSelectedIndex() == 1) {
 					role = false;
