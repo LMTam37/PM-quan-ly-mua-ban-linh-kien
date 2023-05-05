@@ -119,7 +119,7 @@ public class PnProduct extends JPanel implements ActionListener, MouseListener {
 		btnRemove.setBounds(140, 86, 100, 21);
 		pnProductManage.add(btnRemove);
 
-		btnUpdate = new JButton("Sửa");
+		btnUpdate = new JButton("Cập nhật");
 		btnUpdate.setBounds(270, 86, 100, 21);
 		pnProductManage.add(btnUpdate);
 

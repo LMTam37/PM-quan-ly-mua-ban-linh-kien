@@ -84,7 +84,7 @@ public class PnCategory extends JPanel implements ActionListener, MouseListener 
 		btnRemove.setBounds(140, 86, 100, 21);
 		pnCategory.add(btnRemove);
 
-		btnUpdate = new JButton("Sửa");
+		btnUpdate = new JButton("Cập nhật");
 		btnUpdate.setBounds(270, 86, 100, 21);
 		pnCategory.add(btnUpdate);
 
