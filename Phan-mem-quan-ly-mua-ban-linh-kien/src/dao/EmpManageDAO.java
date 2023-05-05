@@ -103,4 +103,21 @@ public class EmpManageDAO {
 		}
 		return result;
 	}
+	
+	public int updateEmpPassword(int empId, String newPassword) {
+		int result = 0;
+		try {
+			Connection con = ConnectDB.getConnection();
+			PreparedStatement pst = con.prepareStatement("UPDATE NhanVien SET MatKhau = ? WHERE MaNhanVien = ?");
+			pst.setString(1, newPassword);
+			pst.setInt(2, empId);
+			result = pst.executeUpdate();
+			ConnectDB.closeConnection(con);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

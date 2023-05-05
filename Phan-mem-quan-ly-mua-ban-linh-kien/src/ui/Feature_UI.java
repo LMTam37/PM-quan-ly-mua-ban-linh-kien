@@ -1,10 +1,14 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
+import javax.swing.Box;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +22,7 @@ import javax.swing.border.LineBorder;
 
 import dao.AccountDAO;
 import entity.Emp;
+import ui.panelView.updatePassword;
 
 public class Feature_UI extends JFrame implements ActionListener {
 
@@ -28,7 +33,7 @@ public class Feature_UI extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTextField txtUserName;
 	private JPasswordField txtPassword;
-	private JButton btnCreateBill, btnLogin, btnLogOut, btnSystemManagement;
+	private JButton btnCreateBill, btnChangePassword, btnAuthentication, btnSystemManagement;
 	private JLabel lblRightTitle, lblUserName, lblPassword;
 	private Emp curAccount;
 
@@ -107,10 +112,10 @@ public class Feature_UI extends JFrame implements ActionListener {
 		txtPassword.setBounds(185, 209, 194, 40);
 		pnRight.add(txtPassword);
 
-		btnLogin = new JButton("Đăng nhập");
-		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnLogin.setBounds(42, 316, 172, 50);
-		pnRight.add(btnLogin);
+		btnChangePassword = new JButton("Đổi mật khẩu");
+		btnChangePassword.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnChangePassword.setBounds(42, 316, 172, 50);
+		pnRight.add(btnChangePassword);
 
 		lblRightTitle = new JLabel("Đăng nhập");
 		lblRightTitle.setForeground(new Color(255, 255, 255));
@@ -119,16 +124,16 @@ public class Feature_UI extends JFrame implements ActionListener {
 		lblRightTitle.setBounds(10, 0, 443, 56);
 		pnRight.add(lblRightTitle);
 
-		btnLogOut = new JButton("Đăng xuất");
-		btnLogOut.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnLogOut.setBounds(253, 316, 172, 50);
-		pnRight.add(btnLogOut);
+		btnAuthentication = new JButton("Đăng nhập");
+		btnAuthentication.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnAuthentication.setBounds(253, 316, 172, 50);
+		pnRight.add(btnAuthentication);
 
 		contentPane.setVisible(true);
 		btnCreateBill.addActionListener(this);
 		btnSystemManagement.addActionListener(this);
-		btnLogin.addActionListener(this);
-		btnLogOut.addActionListener(this);
+		btnChangePassword.addActionListener(this);
+		btnAuthentication.addActionListener(this);
 		switchBtnByRole();
 	}
 
@@ -142,22 +147,27 @@ public class Feature_UI extends JFrame implements ActionListener {
 		} else if (o.equals(btnSystemManagement)) {
 			this.setVisible(false);
 			new SystemManagement(curAccount).setVisible(true);
-		} else if (o.equals(btnLogin)) {
-			if (isEmpty(txtUserName, lblUserName) || isEmpty(txtPassword, lblPassword)) {
-			} else {
-				Emp emp = AccountDAO.getInstance().login(txtUserName.getText(), txtPassword.getText());
-				if (emp.getEmpId() == 0) {
-					JOptionPane.showMessageDialog(null, "Thông tin đăng nhập không đúng");
+		} else if (o.equals(btnChangePassword)) {
+			new updatePassword(curAccount).setVisible(true);;
+		} else if (o.equals(btnAuthentication)) {
+			if (!isLogin()) {
+				if (isEmpty(txtUserName, lblUserName) || isEmpty(txtPassword, lblPassword)) {
 				} else {
-					curAccount = emp;
-					switchBtnByRole();
-					JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
+					Emp emp = AccountDAO.getInstance().login(txtUserName.getText(), txtPassword.getText());
+					if (emp.getEmpId() == 0) {
+						JOptionPane.showMessageDialog(null, "Thông tin đăng nhập không đúng");
+					} else {
+						curAccount = emp;
+						switchBtnByRole();
+						login();
+						JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
+					}
 				}
+			} else if (isLogin()) {
+				curAccount = new Emp();
+				logout();
+				JOptionPane.showMessageDialog(null, "Đăng xuất thành công");
 			}
-		} else if (o.equals(btnLogOut)) {
-			curAccount = new Emp();
-			JOptionPane.showMessageDialog(null, "Đăng xuất thành công");
-			isLogin();
 		}
 	}
 
@@ -172,27 +182,33 @@ public class Feature_UI extends JFrame implements ActionListener {
 
 	public boolean isLogin() {
 		if (curAccount.getEmpId() != 0) {
-			txtUserName.setText(curAccount.getUsername());
-			txtUserName.setEnabled(false);
-			txtPassword.setEnabled(false);
-			btnLogin.setEnabled(false);
-			btnLogOut.setEnabled(true);
 			return true;
-		} else {
-			txtUserName.setText("");
-			txtPassword.setText("");
-			txtUserName.setEnabled(true);
-			txtPassword.setEnabled(true);
-			btnCreateBill.setEnabled(false);
-			btnSystemManagement.setEnabled(false);
-			btnLogin.setEnabled(true);
-			btnLogOut.setEnabled(false);
-			return false;
 		}
+		return false;
+	}
+
+	public void login() {
+		txtUserName.setText(curAccount.getUsername());
+		txtUserName.setEnabled(false);
+		txtPassword.setEnabled(false);
+		btnChangePassword.setEnabled(true);
+		btnAuthentication.setText("Đăng xuất");
+	}
+
+	public void logout() {
+		txtUserName.setText("");
+		txtPassword.setText("");
+		txtUserName.setEnabled(true);
+		txtPassword.setEnabled(true);
+		btnCreateBill.setEnabled(false);
+		btnSystemManagement.setEnabled(false);
+		btnChangePassword.setEnabled(false);
+		btnAuthentication.setText("Đăng nhập");
 	}
 
 	public void switchBtnByRole() {
 		if (isLogin()) {
+			login();
 			if (curAccount.isRole() == true) {
 				btnCreateBill.setEnabled(true);
 				btnSystemManagement.setEnabled(false);
@@ -200,6 +216,9 @@ public class Feature_UI extends JFrame implements ActionListener {
 				btnCreateBill.setEnabled(false);
 				btnSystemManagement.setEnabled(true);
 			}
+		} else {
+			logout();
 		}
 	}
+
 }
