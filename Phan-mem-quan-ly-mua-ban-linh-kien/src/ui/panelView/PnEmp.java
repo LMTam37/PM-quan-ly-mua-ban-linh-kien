@@ -133,8 +133,7 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 		pnEmp.add(txtPassword);
 
 		pnSearch = new JPanel();
-		pnSearch.setBorder(
-				new TitledBorder(null, "Tìm kiếm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnSearch.setBorder(new TitledBorder(null, "Tìm kiếm", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnSearch.setBackground(Color.WHITE);
 		pnSearch.setBounds(0, 217, 1386, 50);
 		add(pnSearch);
@@ -223,20 +222,25 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 		} else if (o.equals(btnClear)) {
 			clear();
 		} else if (o.equals(btnUpdate)) {
-			int row = tableEmp.getSelectedRow();
-			boolean role;
-			if (cbRole.getSelectedIndex() == 0) {
-				role = true;
+			if (txtPassword.getPassword().length < 8) {
+				txtPassword.requestFocus();
+				JOptionPane.showMessageDialog(null, "Mật khẩu ít nhất phải có 8 ký tự");
 			} else {
-				role = false;
-			}
-			if (row == -1) {
-				JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhân viên cần cập nhật ");
-			} else {
-				EmpManageDAO.getInstance().updateEmp(Integer.parseInt(txtEmpId.getText()), txtUsername.getText(),
-						txtEmpName.getText(), new String(txtPassword.getPassword()), role);
-				JOptionPane.showMessageDialog(null, "Cập nhật nhân viên thành công");
-				loadAccountList();
+				int row = tableEmp.getSelectedRow();
+				boolean role;
+				if (cbRole.getSelectedIndex() == 0) {
+					role = true;
+				} else {
+					role = false;
+				}
+				if (row == -1) {
+					JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhân viên cần cập nhật ");
+				} else {
+					EmpManageDAO.getInstance().updateEmp(Integer.parseInt(txtEmpId.getText()), txtUsername.getText(),
+							txtEmpName.getText(), new String(txtPassword.getPassword()), role);
+					JOptionPane.showMessageDialog(null, "Cập nhật nhân viên thành công");
+					loadAccountList();
+				}
 			}
 		} else if (o.equals(btnSearch)) {
 			list = EmpManageDAO.getInstance().getListEmpBySearch(txtSearch.getText());
