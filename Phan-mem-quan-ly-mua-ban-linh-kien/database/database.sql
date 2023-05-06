@@ -275,7 +275,7 @@ AS
 	SELECT DISTINCT BV.* FROM BillView BV JOIN ChiTietDonHang CTDH ON BV.MaDon = CTDH.MaDon
 	WHERE MaLinhKien = @productId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
-ALTER PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
+CREATE PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
 AS
 	SELECT DISTINCT BV.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien
 	FROM BillView BV JOIN BillDetailView BDV ON BV.Madon = BDV.MaDon

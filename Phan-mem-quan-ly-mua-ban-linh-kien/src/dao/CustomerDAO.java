@@ -17,7 +17,7 @@ public class CustomerDAO {
 		ArrayList<Customer> list = new ArrayList<Customer>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "SELECT * FROM KhachHang";
+			String sql = "SELECT * FROM KhachHang WHERE TenKhachHang IS NOT NULL";
 			PreparedStatement pst = con.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
