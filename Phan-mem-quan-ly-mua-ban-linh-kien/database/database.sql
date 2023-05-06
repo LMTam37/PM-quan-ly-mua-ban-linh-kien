@@ -189,9 +189,9 @@ LEFT JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 GO
 CREATE PROC GetBillDetail @billID INT
 AS
-	SELECT MaChiTietDon, MaDon, TenLinhKien, TenLoai, CTD.SoLuong, DonGia 
-	FROM ChiTietDonHang CTD JOIN LinhKien LK ON CTD.MaLinhKien = LK.MaLinhKien
-	JOIN LoaiLinhKien LLK ON LLK.MaLoai = LK.MaLoai
+	SELECT MaChiTietDon, MaDon, TenLinhKien, TenLoai, SoLuong, DonGia 
+	FROM BillDetailView BDV
+	JOIN LoaiLinhKien LLK ON LLK.MaLoai = BDV.MaLoai
 	WHERE MaDon = @billID
 GO
 CREATE PROC GetBillByDate @startDay DATE, @endDay DATE
@@ -275,11 +275,10 @@ AS
 	SELECT DISTINCT BV.* FROM BillView BV JOIN ChiTietDonHang CTDH ON BV.MaDon = CTDH.MaDon
 	WHERE MaLinhKien = @productId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
-CREATE PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
+ALTER PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
 AS
 	SELECT DISTINCT BV.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien
-	FROM BillView BV JOIN ChiTietDonHang CTDH ON CTDH.MaDon = BV.MaDon
-	JOIN LinhKien LK ON LK.MaLinhKien = CTDH.MaLinhKien
+	FROM BillView BV JOIN BillDetailView BDV ON BV.Madon = BDV.MaDon
 	WHERE Maloai = @categoryId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
 CREATE FUNCTION isExistsUsername (@username NVARCHAR(50))
