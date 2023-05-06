@@ -38,7 +38,7 @@ public class CreateBillDAO {
 			Connection con = ConnectDB.getConnection();
 			PreparedStatement pst = con.prepareStatement("EXEC UpdateBillDate");
 			billId = pst.executeUpdate();
-			pst = con.prepareStatement("EXEC GetNewBill");
+			pst = con.prepareStatement("SELECT dbo.GetNewBill() AS MaDon");
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
 				billId = rs.getInt("MaDon");
@@ -51,19 +51,18 @@ public class CreateBillDAO {
 		return billId;
 	}
 
-	public int payBill(int billId, int empId, int discount, BigDecimal total, String customerName, String phoneNumber,
+	public int payBill(int billId, int empId, int discount, String customerName, String phoneNumber,
 			String address) {
 		int result = 0;
 		try {
 			Connection con = ConnectDB.getConnection();
-			PreparedStatement pst = con.prepareStatement("EXEC PayBill ?, ?, ?, ?, ?, ?, ?");
+			PreparedStatement pst = con.prepareStatement("EXEC PayBill ?, ?, ?, ?, ?, ?");
 			pst.setInt(1, billId);
 			pst.setInt(2, empId);
 			pst.setInt(3, discount);
-			pst.setBigDecimal(4, total);
-			pst.setString(5, customerName);
-			pst.setString(6, phoneNumber);
-			pst.setString(7, address);
+			pst.setString(4, customerName);
+			pst.setString(5, phoneNumber);
+			pst.setString(6, address);
 			result = pst.executeUpdate();
 			ConnectDB.closeConnection(con);
 		} catch (Exception e) {

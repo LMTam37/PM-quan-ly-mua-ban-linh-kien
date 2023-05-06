@@ -20,7 +20,7 @@ public class BillListDAO {
 		ArrayList<Bill> list = new ArrayList<Bill>();
 		try {
 			Connection con = ConnectDB.getConnection();
-			String sql = "SELECT * FROM BillView";
+			String sql = "SELECT * FROM BillView WHERE ThanhTien != 0";
 			PreparedStatement pst = con.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {

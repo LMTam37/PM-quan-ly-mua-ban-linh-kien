@@ -37,8 +37,7 @@ CREATE TABLE DonHang(
 	MaKhachHang INT FOREIGN KEY REFERENCES KhachHang(MaKhachHang) ON DELETE CASCADE,
 	NgayMua DATETIME NOT NULL DEFAULT GETDATE(),
 	MaNhanVien INT FOREIGN KEY REFERENCES NhanVien(MaNhanVien) ON DELETE CASCADE,
-	GiamGia INT DEFAULT 0,
-	ThanhTien MONEY CHECK(ThanhTien >= 0) DEFAULT 1000,
+	GiamGia INT DEFAULT 0
 )
 GO
 CREATE TABLE ChiTietDonHang(
@@ -133,14 +132,14 @@ VALUES
 	('870 EVO',6, '2021-1-1','Samsung',100,2800000),
 	('MX500 ',6, '2018-1-1','Samsung',100,4999000)
 GO
-INSERT INTO DonHang(MaKhachHang, NgayMua, MaNhanVien, GiamGia, ThanhTien)
+INSERT INTO DonHang(MaKhachHang, NgayMua, MaNhanVien, GiamGia)
 VALUES 
-	(1,'2023-4-20','3',0,6499000),
-	(2,'2007-12-3','3',0,2889000),
-	(3,'2007-12-3','3',0,18497000),
-	(4,'2007-12-3','3',0,23927000),
-	(5,'2007-12-3','3',0,23336000),
-	(6,'2007-12-3','3',0,62157000)
+	(1,'2022-4-20',3,0),
+	(2,'2022-12-3',3,0),
+	(3,'2022-12-3',3,0),
+	(4,'2022-12-3',3,0),
+	(5,'2022-12-3',3,0),
+	(6,'2022-12-3',3,0)
 GO
 INSERT INTO ChiTietDonHang (MaDon, MaLinhKien, SoLuong)
 VALUES
@@ -166,13 +165,27 @@ VALUES
 	(6,43,1),
 	(6,51,1)
 GO
-CREATE VIEW BillView AS 
-SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
-FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
+CREATE VIEW BillDetailView AS
+SELECT MaChiTietDon, MaDon, CTDH.MaLinhKien, TenLinhKien, CTDH.SoLuong, MaLoai, NgaySanXuat, HangSanXuat, LK.SoLuong AS SoLuongTonKho, DonGia 
+FROM ChiTietDonHang CTDH JOIN LinhKien LK ON CTDH.MaLinhKien = LK.MaLinhKien
+GO
+CREATE FUNCTION CalcTotal (@billID INT)
+RETURNS MONEY
+AS
+BEGIN
+	RETURN (SELECT COALESCE(sum(SoLuong * DonGia),0)
+	FROM BillDetailView
+	WHERE MaDon = @billID)
+END
 GO
 CREATE VIEW ProductView AS
 SELECT MaLinhKien, TenLinhKien, TenLoai, NgaySanXuat, HangSanXuat, SoLuong, DonGia
 FROM LinhKien LK JOIN LoaiLinhKien LLK ON LK.MaLoai = LLK.MaLoai
+GO
+CREATE VIEW BillView AS 
+SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien = dbo.CalcTotal(DH.MaDon)
+FROM DonHang DH LEFT JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
+LEFT JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
 GO
 CREATE PROC GetBillDetail @billID INT
 AS
@@ -183,16 +196,16 @@ AS
 GO
 CREATE PROC GetBillByDate @startDay DATE, @endDay DATE
 AS
-	SELECT MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
-	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
-	WHERE NgayMua >= @startDay AND NgayMua < DATEADD(DAY, 1, @endDay)
+	SELECT *
+	FROM BillView
+	WHERE NgayMua >= @startDay AND NgayMua < DATEADD(DAY, 1, @endDay) AND ThanhTien != 0
 GO
 CREATE PROC addNewBill
 AS
 BEGIN
-	IF NOT EXISTS (SELECT * FROM DonHang WHERE ThanhTien = 0)
-		INSERT INTO DonHang(MaKhachHang,NgayMua,MaNhanVien,GiamGia,ThanhTien)
-		VALUES (null,GETDATE(),null,0,0)
+	IF (SELECT TOP 1 ThanhTien FROM BillView ORDER BY MaDon DESC) != 0
+		INSERT INTO DonHang(MaKhachHang,NgayMua,MaNhanVien,GiamGia)
+		VALUES (null,GETDATE(),null,0)
 END
 GO
 CREATE TRIGGER addNewCustomer ON DonHang
@@ -201,24 +214,27 @@ AS
 	INSERT INTO KhachHang(TenKhachHang, SoDienThoai, DiaChi)
 	VALUES (null, null, null)
 GO
+CREATE FUNCTION GetNewBill()
+RETURNS INT
+AS
+BEGIN
+	RETURN (SELECT TOP 1 MaDon FROM BillView
+	ORDER BY MaDon DESC)
+END
+GO
 CREATE TRIGGER addCustomerToBill ON KhachHang
 FOR INSERT
 AS
 	DECLARE @MaKhachHang INT
-	SELECT @MaKhachHang = MaKhachHang FROM KhachHang
+	SELECT @MaKhachHang = MaKhachHang FROM inserted
 	UPDATE DonHang SET MaKhachHang = @MaKhachHang
-	WHERE ThanhTien = 0
-GO
-CREATE PROC GetNewBill
-AS
-	SELECT MaDon FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang
-	WHERE ThanhTien = 0
+	WHERE MaDon = dbo.getNewBill()
 GO
 CREATE PROC UpdateBillDate
 AS
-	UPDATE DonHang SET NgayMua = GETDATE() WHERE ThanhTien = 0
+	UPDATE DonHang SET NgayMua = GETDATE() WHERE MaDon = dbo.getNewBill()
 GO
-CREATE PROC PayBill @BillID INT, @EmpID INT, @Discount INT, @Total MONEY, @CustomerName NVARCHAR(50), @PhoneNumber NVARCHAR(10), @Address NVARCHAR(100)
+CREATE PROC PayBill @BillID INT, @EmpID INT, @Discount INT, @CustomerName NVARCHAR(50), @PhoneNumber NVARCHAR(10), @Address NVARCHAR(100)
 AS
 	DEClARE @MaKhachHang NVARCHAR(50)
 	SELECT @MaKhachHang = MaKhachHang FROM DonHang WHERE MaDon = @BillID
@@ -228,7 +244,7 @@ AS
 	WHERE @MaKhachHang = MaKhachHang
 
  	UPDATE DonHang
-	SET MaNhanVien = @EmpID, GiamGia = @Discount, ThanhTien = @Total
+	SET MaNhanVien = @EmpID, GiamGia = @Discount
 	WHERE MaDon = @BillID
 GO
 CREATE PROC PayBillDetail @BillID INT, @ProductID INT, @Qty INT
@@ -256,18 +272,13 @@ AS
 GO
 CREATE PROC statisticByProduct @productId INT, @fromDate DATE, @toDate DATE
 AS
-	SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien 
-	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
-	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
-	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
+	SELECT DISTINCT BV.* FROM BillView BV JOIN ChiTietDonHang CTDH ON BV.MaDon = CTDH.MaDon
 	WHERE MaLinhKien = @productId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO
 CREATE PROC statisticByCategory @categoryId INT, @fromDate DATE, @toDate DATE
 AS
-	SELECT DISTINCT DH.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien
-	FROM DonHang DH JOIN KhachHang KH ON DH.MaKhachHang = KH.MaKhachHang 
-	JOIN NhanVien NV ON DH.MaNhanVien = NV.MaNhanVien
-	JOIN ChiTietDonHang CTDH ON CTDH.MaDon = DH.MaDon
+	SELECT DISTINCT BV.MaDon, TenKhachHang, NgayMua, TenNhanVien, GiamGia, ThanhTien
+	FROM BillView BV JOIN ChiTietDonHang CTDH ON CTDH.MaDon = BV.MaDon
 	JOIN LinhKien LK ON LK.MaLinhKien = CTDH.MaLinhKien
 	WHERE Maloai = @categoryId AND NgayMua >= @fromDate AND NgayMua < DATEADD(DAY, 1, @toDate)
 GO

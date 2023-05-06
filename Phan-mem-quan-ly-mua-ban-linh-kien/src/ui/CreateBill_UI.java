@@ -363,7 +363,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				addProduct();
 			}
-		});loadAllProductList();
+		});
+		loadAllProductList();
 		useBill();
 	}
 
@@ -398,7 +399,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 					&& validEmpty(txtPhoneNumber, lblPhoneNumber) && validEmpty(txtAddress, lblAddress)) {
 				int billId = Integer.parseInt(txtBillid.getText());
 				CreateBillDAO.getInstance().payBill(billId, curAccount.getEmpId(),
-						Integer.parseInt(discountPercent.getValue().toString()), billTotalDue,
+						Integer.parseInt(discountPercent.getValue().toString()),
 						txtCustomerName.getText(), txtPhoneNumber.getText(), txtAddress.getText());
 				for (BillDetail curBillDetail : orderList) {
 					CreateBillDAO.getInstance().payBillDetail(billId, curBillDetail);
@@ -407,6 +408,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 				orderListModel.getDataVector().removeAllElements();
 				orderListModel.fireTableDataChanged();
 				orderList.removeAll(orderList);
+				clear();
 				useBill();
 			}
 		}
@@ -514,5 +516,17 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	private void loadAllProductList() {
 		productList = ProductDAO.getInstance().getListProduct();
 		loadProduct(productList);
+	}
+	
+	private void clear() {
+		txtCustomerName.setText("");
+		txtPhoneNumber.setText("");
+		txtAddress.setText("");
+		discountPercent.setValue(0);
+		txtSubTotal.setText("");
+		txtTotalDue.setText("");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+		String dateFormated = formatter.format(LocalDate.now());
+		txtBillDate.setText(dateFormated);
 	}
 }
