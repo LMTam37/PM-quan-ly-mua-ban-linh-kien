@@ -261,6 +261,7 @@ public class PnEmp extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private void clear() {
+		txtEmpId.setText("");
 		txtEmpName.setText("");
 		txtUsername.setText("");
 		txtEmpName.setText("");
