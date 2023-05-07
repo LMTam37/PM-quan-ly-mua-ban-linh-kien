@@ -258,8 +258,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 		pnOrderList = new JPanel();
 		pnOrderList.setBackground(new Color(255, 255, 255));
-		pnOrderList.setBorder(
-				new TitledBorder(null, "Danh sách linh kiện đã chọn", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnOrderList.setBorder(new TitledBorder(null, "Danh sách linh kiện đã chọn", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		pnBill.add(pnOrderList);
 		pnOrderList.setLayout(new BorderLayout(0, 0));
 
@@ -317,7 +317,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 
 		pnProductList = new JPanel();
 		pnProductList.setBackground(new Color(255, 255, 255));
-		pnProductList.setBorder(new TitledBorder(null, "Danh sách linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnProductList.setBorder(
+				new TitledBorder(null, "Danh sách linh kiện", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnProduct.add(pnProductList, BorderLayout.CENTER);
 		pnProductList.setLayout(new BorderLayout(0, 0));
 
@@ -391,16 +392,14 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Hãy chọn sản phẩm cần xóa");
 			}
 		} else if (o.equals(btnSearch)) {
-			productList = ProductDAO.getInstance().getProductByName(txtProductName.getText(),
-					cbCategory.getSelectedIndex());
 			loadTableProduct();
 		} else if (o.equals(btnPay)) {
 			if (validateName() && validPhoneNumber() && validEmpty(txtCustomerName, lblCustomeName)
 					&& validEmpty(txtPhoneNumber, lblPhoneNumber) && validEmpty(txtAddress, lblAddress)) {
 				int billId = Integer.parseInt(txtBillid.getText());
 				CreateBillDAO.getInstance().payBill(billId, curAccount.getEmpId(),
-						Integer.parseInt(discountPercent.getValue().toString()),
-						txtCustomerName.getText(), txtPhoneNumber.getText(), txtAddress.getText());
+						Integer.parseInt(discountPercent.getValue().toString()), txtCustomerName.getText(),
+						txtPhoneNumber.getText(), txtAddress.getText());
 				for (BillDetail curBillDetail : orderList) {
 					CreateBillDAO.getInstance().payBillDetail(billId, curBillDetail);
 				}
@@ -408,6 +407,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 				orderListModel.getDataVector().removeAllElements();
 				orderListModel.fireTableDataChanged();
 				orderList.removeAll(orderList);
+				loadAllProductList();
 				clear();
 				useBill();
 			}
@@ -416,6 +416,8 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 	}
 
 	public void loadTableProduct() {
+		productList = ProductDAO.getInstance().getProductByName(txtProductName.getText(),
+				cbCategory.getSelectedIndex());
 		loadProduct(productList);
 	}
 
@@ -461,19 +463,27 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		int row = productListTable.getSelectedRow();
 		int serial = Integer.parseInt(productListModel.getValueAt(row, 0).toString());
 		Product product = productList.get(serial - 1);
-		return new BillDetail(product.getProductId(), product.getProductName(), product.getCategory(), 1,
-				product.getPrice());
+		if (product.getQty() == 0) {
+			return null;
+		} else {
+			return new BillDetail(product.getProductId(), product.getProductName(), product.getCategory(), 1,
+					product.getPrice());
+		}
 	}
 
 	private void addProduct() {
 		BillDetail newBillDetail = getBillDetail();
-		if (orderList.contains(newBillDetail)) {
-			BillDetail temp = orderList.get(orderList.indexOf(newBillDetail));
-			temp.setQty(temp.getQty() + 1);
+		if (newBillDetail == null) {
+			JOptionPane.showMessageDialog(null, "Không thể chọn mua sản phẩm này vì đã hết hàng");
 		} else {
-			orderList.add(newBillDetail);
+			if (orderList.contains(newBillDetail)) {
+				BillDetail temp = orderList.get(orderList.indexOf(newBillDetail));
+				temp.setQty(temp.getQty() + 1);
+			} else {
+				orderList.add(newBillDetail);
+			}
+			loadOrder(orderList);
 		}
-		loadOrder(orderList);
 	}
 
 	public boolean validateName() {
@@ -517,7 +527,7 @@ public class CreateBill_UI extends JFrame implements ActionListener {
 		productList = ProductDAO.getInstance().getListProduct();
 		loadProduct(productList);
 	}
-	
+
 	private void clear() {
 		txtCustomerName.setText("");
 		txtPhoneNumber.setText("");

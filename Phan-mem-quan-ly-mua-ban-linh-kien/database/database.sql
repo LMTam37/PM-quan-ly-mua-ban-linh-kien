@@ -44,14 +44,14 @@ CREATE TABLE ChiTietDonHang(
 	MaChiTietDon INT PRIMARY KEY IDENTITY,
 	MaDon INT FOREIGN KEY REFERENCES DonHang(MaDon) ON DELETE CASCADE,
 	MaLinhKien INT FOREIGN KEY REFERENCES LinhKien(MaLinhKien) ON DELETE CASCADE,
-	SoLuong INT CHECK(SoLuong >0) DEFAULT 1
+	SoLuong INT CHECK(SoLuong >= 0) DEFAULT 1
 )
 GO
 INSERT INTO NhanVien(TenNhanVien, TenDangNhap, MatKhau, VaiTro)
 VALUES 
 	('admin','admin','1',0),
 	(N'Nguyễn Hồng Đức','Duc','11111111',1),
-	(N'La Minh Tâm','Tam','11111111',1),
+	(N'La Minh Tâm','Tam','1',1),
 	(N'Nguyễn Thiên Tứ','Tu','11111111',1),
 	(N'Văn Quí','Qui','11111111',1)
 GO
@@ -251,6 +251,8 @@ CREATE PROC PayBillDetail @BillID INT, @ProductID INT, @Qty INT
 AS
 	INSERT INTO ChiTietDonHang (MaDon,MaLinhKien,SoLuong)
 	VALUES (@BillID, @ProductID, @Qty)
+
+	UPDATE LinhKien SET SoLuong = SoLuong - @Qty WHERE MaLinhKien = @ProductID
 GO
 CREATE PROC Login @username NVARCHAR(50), @password NVARCHAR(50)
 AS
